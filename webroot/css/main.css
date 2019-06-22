@@ -1,0 +1,2375 @@
+@charset "UTF-8";
+
+@font-face{
+  font-family:'NotoSerifCJKjp-Reguler';
+  src:url("/font/NotoSerifJP-Regular.woff2") format("woff2"),
+  url("/font/NotoSerifJP-Regular.woff") format("woff"),
+  url("/font/NotoSerifJP-Regular.ttf") format("truetype");    font-style: normal;
+    font-weight: normal;font-weight: 400;
+  font-display:fallback;
+}
+
+body, html{
+    height: 100%;
+    width: 100%;
+    background-color:  #F4F4F4;
+    background-repeat: no-repeat;
+    margin: 0;
+}
+
+body{
+  /*background-color: #efeceb;*/
+  font-size: 12px;
+  color: rgb(94,94,94);
+  /*margin-top: 100px;*/
+  /*font-size: calc(112.5% + 0.25vw);*/
+  /*font-family: 游ゴシック体, 'Yu Gothic', YuGothic, 'ヒラギノ角ゴシック Pro', 'Hiragino Kaku Gothic Pro', メイリオ, Meiryo, Osaka, 'MS Pゴシック', 'MS PGothic', sans-serif;*/
+  font-family: "Yu Gothic", "游ゴシック", YuGothic, "游ゴシック体", "ヒラギノ角ゴ Pro W3", "メイリオ", sans-serif;
+}
+
+/*chromeで入力後のinputが黄色になるのを防ぐ*/
+input:-webkit-autofill{
+  box-shadow: 0 0 0px 999px #fff inset !important;
+}
+
+/*iphoneで丸角になるのをリセット*/
+input[type="text"],
+input[type="password"],
+input[type="password-confirm"],
+input[type="email"],
+input[type="submit"],
+textarea  {
+  -webkit-appearance: none;
+  border-radius: 0;
+}ƒ
+
+.mincho {
+  font-family:'NotoSerifCJKjp-Reguler', '游明朝体', 'YuMincho', '游明朝', 'Yu Mincho', 'ヒラギノ明朝 ProN W3', 'Hiragino Mincho ProN W3', HiraMinProN-W3, 'ヒラギノ明朝 ProN', 'Hiragino Mincho ProN', 'ヒラギノ明朝 Pro', 'Hiragino Mincho Pro', 'HGS明朝E', 'ＭＳ Ｐ明朝', 'MS PMincho', serif;  
+}
+
+.bg_white{
+  background-color: #fff;
+}
+
+/*スマホサイトで横ずれしないための設定*/
+header,
+main{
+  overflow:hidden;
+}
+
+.header_inner,
+.main{
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 10px;
+}
+
+/*▼▽▼▽▼▽ヘッダーの設定▼▽▼▽▼▽*/
+
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100%;
+  height: 100px;
+  background-color: #fff;
+  transition: .3s;
+  border-bottom: 1px solid rgba(0,0,0,.1);
+}
+
+.scroll-height {
+  height: 80px;
+}
+
+#scrool-header {
+  height: 80px;
+  top: -66px;/* 上に隠す高さをjsと合わせて、ぬるっと表示させる設定 */
+  width: 100%;
+  position: fixed;
+  opacity: 0;/*  最初読み込んだときは透過 */
+}
+
+.header_inner{
+  text-align: center;
+  position: relative;
+  z-index: 999;/*　他のアイテムに対して最上位のレイヤーになるように */
+}
+
+#header_logo{
+  width: 200px;
+  position: absolute;
+  top: 20px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  z-index: 800;
+}
+
+
+#scroll-header_logo{
+  top: 10px;
+}
+
+#header-link{
+  display: flex;
+  display: -webkit-flex;
+  height: 30px;
+}
+
+#header-link{
+  padding-top: 50px;
+}
+
+#scroll-header-link{
+  padding-top: 40px;
+}
+
+.header_inner .left{
+  margin-right: 40px;
+}
+
+
+.header_inner .right{
+  margin-left: auto; 
+}
+
+.header_inner .home_button{
+  display: none;
+}
+
+
+@media (max-width: 767px)  {
+
+  header {
+    position: static;
+    height: 60px;
+  }
+
+  #header_logo{
+    top: 0px;
+  }
+
+  .header_inner{
+    padding: 0;
+  }
+
+  #header-link{
+    position: fixed;
+    top: auto;
+    bottom: 0px;
+    width: 100%;
+    margin-left: 0;
+    height: 45px;
+    padding-top: 0px;
+    font-size: 12px;
+    background-color: #eee;
+  }
+
+  .header_inner .left,
+  .header_inner .right{
+    margin: auto;
+  }
+  
+  .header-link-item{
+     display: -webkit-box;
+     display: -ms-flexbox;
+     display: flex;
+     -webkit-box-pack: justify;
+     -ms-flex-pack: justify;
+     justify-content: space-between;
+  }
+
+  .header_inner .home_button{
+    display: inline;
+  }
+
+}
+
+/*△▲△▲△▲ヘッダーの設定△▲△▲△▲*/
+
+
+.main , .logon ,.footer{
+  width: 100%;
+}
+
+.main{
+  padding-top: 100px;
+}
+
+@media (max-width: 767px)  {
+  .main{
+    padding-top: 0px;
+  }
+}
+
+#top .content{
+  width: 100%;
+  padding: 100px 0 40px 0;
+}
+
+
+
+#top #headers .comment{
+  margin-top: 100px;
+  margin-bottom: 50px;
+}
+
+#top .main .top-copy_ja{
+  font-size: 30px; 
+  margin: 0;
+}
+
+
+#top .main .top-copy_en{
+  font-size:20px;
+}
+
+#top #header-links{
+  margin-bottom: 100px;
+}
+
+.top-hero_image{
+  max-height: 500px;
+  overflow: hidden;
+  vertical-align: middle;
+  z-index: 1;
+}
+
+.top-hero_image img{
+  width: 100vw;
+}
+
+
+#top .concept{
+  margin: -20px auto 0 auto;
+  z-index: 2;
+  position: relative;
+  width: 70vw;
+  text-align: center;
+  opacity:0.9;
+  padding: 100px 0;
+}
+
+
+#top .concept hr{
+  width: 200px;
+  margin: 30px auto;
+}
+
+
+#top .comment{
+  text-align: center;/*一応BOX内の文字も中央寄せ*/
+  margin:  0 auto;
+  max-width: 1000px;
+}
+
+#top .head
+er .comment{
+  padding: 100px 0 60px 0;
+
+}
+#top .comment p{
+  line-height: 2;
+  font-size: 14px;
+}
+
+
+#top h2{
+  font-size: 25px;
+  margin-bottom: 30px;
+}
+
+#top .how_to hr{
+  width: 600px;
+  margin: 30px auto;
+}
+
+#top .function .img{
+  max-height: 400px;
+  width: 100px;
+}
+
+#top .function h3{
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+#top .list-inline-item{
+  padding: 15px;
+  font-size: 14px;
+}
+
+.how_to .flex-item img{
+  width: 100%;
+  padding: 20px;
+}
+
+.flex-container{
+  display: flex;
+  flex-direction: row;
+  max-width: 1000px;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.flex-item{
+  /*background-color: #9f0;*/
+  width: 30%;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.flex-item p{
+  margin-bottom: 5px;
+}
+
+.function .flex-item img{
+  width: 75px;
+  padding: 20px;
+}
+
+
+
+@media (max-width: 767px)  {
+  .top-copy{
+    margin: 60px auto;
+  }
+
+
+  #top .content{
+    padding: 80px 0 30px 0;
+  }
+  #top #header-links{
+    margin-bottom: 80px;
+  }
+
+  #top .main .top-copy_ja{
+    font-size: 25px; 
+  }
+
+  #top .main .top-copy_en{
+    font-size: 15px; 
+  }
+
+  #top .img{
+    height: 180px;
+  }
+  
+  #top .how_to h2 {
+    font-size: 20px;
+    margin-top: 100px;
+  }
+  
+  #top section{
+     width: 90vw;
+     margin: 0 auto;
+    padding: 10px 0px;
+
+  }
+
+  #top .how_to {
+    padding: 20px 5px;
+  }
+  
+  .top-copy_comment{
+    padding: 0 15px;
+  }
+ .top-main .top-copy_ja p{
+    font-size: 20px;
+  }
+
+  #top .concept{
+    width: 90vw;
+  }
+
+  .top-main .top-copy_en p{
+    font-size:12px;
+    margin-bottom: 35px;
+  }
+  
+  .top-copy_comment p{
+    font-size: 13px;
+  }
+
+  #top .list-inline-item{
+  font-size: 12px;
+  }
+
+  .flex-container{
+    flex-direction: column;
+  }
+
+  .flex-item{
+    /*background-color: #9f0;*/
+    width: 90%;
+    margin-bottom: 60px;
+  }
+
+
+  .function .flex-item img{
+    width: 70px;
+    height: auto;
+  }
+
+  .breakSP{
+    display: block;
+  }
+}
+
+
+/*△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲TOP△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲*/
+
+/*▽▼▽▼▽▼▽▼▽▼▽▼▽▼▽▼▽▼▽▼▽▼▽▼▽▼▽▼▽▼▽▼▽▼LOGIN▽▼▽▼▽▼▽▼▽▼▽▼▽▼▽▼▽▼▽▼▽▼▽▼▽▼▽▼▽▼▽▼▽▼▽▼*/
+
+.users .error{
+  color: red;
+}
+.users .content{
+  max-width: 500px;
+  margin: 0 auto 50px auto;
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #eee;
+}
+
+
+.users legend{
+  font-size: 20px;
+  text-align: center;
+}
+
+.users label[for="password"],
+.users label[for="password-confirm"],
+.users label[for="email"]{
+  display: block;
+  margin-top: 30px;
+}
+
+.users label[for="username"]{
+  display: block;
+}
+
+.users input[type="text"],
+.users input[type="password"],
+.users input[type="password-confirm"],
+.users input[type="email"]{
+  width: 100%;
+  height: 30px;
+  background: none;
+  border: 0;
+  border-bottom: solid 1px #999;
+  outline: 0px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  font-size:16px;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.users fieldset{
+  margin-bottom: 30px;
+}
+
+.users button,
+.regist button,
+.shop button{
+  height: 40px;
+  width: 100%;
+  display: inline-block;
+  margin-top: 25px;
+  background-color: #888;
+  border: none;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  font-size: 12px;
+  /*margin: 0;*/
+  border-radius: 0;
+  cursor: pointer;
+}
+
+.users .link{
+  margin-top: 10px;
+}
+
+/*△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲LOGIN△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲*/
+
+
+
+.notice{
+  color: red;
+}
+
+
+.img-container {
+width: 400px;
+height: 300px;
+display: inline-block;
+}
+.img-canvas {
+display: inline-block;
+}
+
+
+li{
+  list-style: none;
+}
+
+.follow .switch{
+  width: 268px;
+  margin: 0 auto 30px auto;
+}
+
+.follow .switch ul{
+  padding: 0 40px;
+}
+
+.search .switch .display_tab li,
+.follow .switch .tab li{
+  color: #333;
+  margin: 0 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: .3s;
+  background-color: #fff;
+  border: 1px solid #eee;
+}
+
+
+.search .switch .display_tab li.active,
+.follow .switch .tab li.active{
+  color: #fff;
+  background: #EEC246;
+}
+
+
+
+.search .search_box .switch ul{
+  padding: 0;
+  border-bottom :solid 1px #888;
+}
+
+.search .switch .search_tab li{
+  float: left;
+  margin-right: 30px;
+  cursor: pointer;
+}
+
+.search .switch .search_tab li{
+  height: 30px;
+  width: 80px;
+}
+
+.search .switch .search_tab li.active{
+  border-bottom :solid 2px #888;
+}
+
+
+.search .category ul,
+.search .result ul 
+ {
+  display: none;
+  padding: 0;
+}
+
+.search .search_result{
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.search .search_result .switch {
+  position: relative;
+  overflow: hidden;
+}
+
+.search .search_result .switch ul{
+  padding-left: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.search .search_result .switch li{
+  width: 120px;
+  text-align: center;
+}
+
+
+.search .category ul.show_category,
+.search .result ul.show_result {
+  display: block;
+}
+
+.require {
+  color: red;
+}
+
+
+.shop .swiper-container {
+  margin-bottom: 20px;
+}
+
+.regist .swiper-container {
+  height: 100%;
+}
+.swiper-slide {
+ 
+  /* Center slide text vertically */
+/*  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;*/
+}
+/* ★ページネーション・スクロールバー分の余白50pxを下に取る */
+.swiper-container {
+  padding-bottom: 40px;   
+}
+
+/* Swiper本体 */
+.swiper-container {
+  /*width: calc(100% - 100px);   ☆前・次ページボタンの幅をそれぞれ50pxとして、その分を引く */
+  margin-right: 50px;
+  padding-bottom: 50px;   /* ★ページネーション・スクロールバー分の余白50pxを下に取る */
+  box-sizing: content-box;
+  overflow: visible;
+}
+/* 前・次スライドボタンの縦位置調整（スライドの高さの中央に合わせる） */
+.swiper-button-prev, .swiper-button-next {
+  top: calc((100% - 50px) * 0.5); /* ☆★ページネーション・スクロールバー（50px）を除く縦位置の中央（＝スライドの高さの中央）に一旦配置 */
+  margin-top: -22px;      /* ★ボタンの高さ（44px）の半分のネガティブマージンで上に少しずらす */
+}
+
+
+input::placeholder{
+  color: #ccc;
+}
+
+/* ▼ ▼ ▼ ▼ 各ページに跨る設定 ▼ ▼ ▼ ▼ */
+/*bootstarpの設定解除*/
+.row{ 
+  margin: 0;
+}
+.col-sm-9{
+  /*padding-left: 0;*/
+}
+.col-sm-3{
+  padding-left: 0;
+}
+/*bootstarpの設定解除*/
+
+.container{
+  /*max-width: 1050px; /* 最大横幅 */
+/*  max-width: 100vw;
+  width: 100vw;*/
+  margin: 0 auto;
+  /*padding: 0 15px;*/
+  padding: 0;
+  /*overflow: hidden;*/
+}
+
+
+
+
+@media (max-width: 767px)  {
+
+    input[type=text] {
+    font-size: 16px !important;
+    transform: scale(0.8) !important;
+    transform-origin: left;
+
+  }
+
+
+  /*bootstarpの設定解除*/
+  .col-sm-12{
+    padding: 0;
+  }
+  /*bootstarpの設定解除*/
+
+  .contents{
+    padding: 5px;
+  }
+
+
+
+
+  #modal-content{
+    width: 80%;
+  }
+
+}
+
+.contents{
+  width: 100%;
+}
+
+
+.regist #googlemap{
+  height: 300px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+
+
+h2{
+  font-size: 16px;
+  margin: 0;
+}
+
+a{
+  color: #000;
+  /*font-weight: normal;*/
+}
+
+
+/*画面左からの文字の隙間幅*/
+/*.shop_detail,*/
+.shop_infor header,
+.shop .shop_detail,
+.shop .followlist
+.follow .followlist{
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+
+
+
+
+
+
+.bgw{
+  background-color: #fff;
+}
+
+.bgt{
+background-color: transparent;
+}
+
+.fluid-box{  
+width: 100vw;
+position: relative;
+left: 50%;
+transform: translateX(-50%);
+background-color: #ff0;
+    z-index: 100;
+
+}
+.fluid-box-inner{
+margin: 0 auto;
+padding: 0 25px;
+
+}
+
+
+
+/* ▲ ▲ ▲ ▲ 各ページに跨る設定 ▲ ▲ ▲ ▲ /
+
+/* ▼ ▼ ▼ ▼ ログインページ ▼ ▼ ▼ ▼ */
+
+.login h1{
+  color: #888;
+  font-size: 1.2em;
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+.top input[type="text"],
+.top select{
+background: none;
+border: none;
+border-radius: 0;
+outline: none;
+-webkit-appearance: none;
+-moz-appearance: none;
+appearance: none;
+font-size:16px;
+-webkit-box-shadow: none;
+box-shadow: none;
+
+}
+
+
+
+.login #login_form{
+ border-bottom:#888 1px solid;
+ /*border-top:#fff 1px solid;*/
+ height: 30px;
+ width: 100%;
+ color: #888;
+ font-size: 16px;
+}
+
+
+
+.login .btn{
+  display: inline-block;
+  width: 300px;
+  margin-top: 30px;
+  /*margin: 45px 40px 40px;*/
+  padding: 15px 10px;
+  border: 1px solid #888;
+  background: transparent;
+  color: #888;
+  text-align: center;
+  text-decoration: none;
+  line-height: 1;
+  font-weight: normal;
+}
+.login .btn a:hover{
+  color: #888;
+}
+
+.login label{
+  padding-top: 15px;
+  color: #888;
+  font-weight: normal;
+  text-decoration: underline;
+}
+.login .title{
+  width: 300px;
+}
+
+.login .box__bg_photo {
+  /*background-image: url(http://voice-odai.jp/wp-content/uploads/2017/02/L1008143-1024x684.jpg);*/
+  background-size: cover;
+  background-position: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.login .form-control{
+  margin-bottom:20px;
+}
+
+.login .box__bg_photo p{
+color: #aaa;
+
+}
+.login .box{
+  width: 100%;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  height: 100vh;
+/*  height: calc(100vh / 2);
+  margin-top: calc(100vh / 2 - 300px);*/
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+/*  -webkit-box-align: center;
+  -ms-flex-align: center;*/
+/*  -webkit-align-items: center;
+  align-items: center;*/
+  /*-webkit-box-pack: center;
+  -ms-flex-pack: center;*//*
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;*/
+}
+
+.login .box p{
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* ▲ ▲ ▲ ▲ ログインページ ▲ ▲ ▲ ▲ */
+/* ▼ ▼ ▼ ▼ User.indexのショップ情報 ▼ ▼ ▼ ▼ */
+.top .introduction {
+overflow : hidden;
+text-overflow: ellipsis;
+display: -webkit-box;
+-webkit-box-orient: vertical;
+-webkit-line-clamp: 3;
+}
+
+.top .follow,
+.shop .follow,
+.shop .unfollow{
+  margin: 30px 0 10px 0;
+  font-weight: bold;
+  text-align: center;
+}
+
+.search .follow{
+  /*margin: 30px 0 10px 0;*/
+  font-weight: bold;
+  text-align: left;
+}
+
+.col-sm-3 .search_box{
+  /*text-align: right;*/
+  /*margin-right: 5%;*/
+  width: 100%;
+  box-sizing:border-box;
+  padding: 20px;
+  background-color: #fff;
+  /*background-color: red;*/
+  /*padding: 15px;*/
+}
+
+.search .search_box{
+  margin: 0 auto;
+  width: 720px;
+  padding: 40px 5px;
+  margin-bottom: 25px;
+  text-align: center;
+  position: static;
+}
+
+.search .search_box p{
+  text-align: center;
+}
+
+
+.search .search_box .user{
+  width: 100%;
+}
+
+.search .block{
+  display: table;
+  background-color: #fff;
+  border-collapse:collapse;
+}
+
+
+.search .element{
+  width: 100%;
+  vertical-align: top;
+  text-align: left;
+  border: 1px solid #eee;
+}
+
+.search .shops .element{
+  display: table-cell;
+}
+
+.search #login_form_select,
+.search #login_form_txt,
+.search #ac_word,
+.search #ac_user,
+.form_txt{
+  height: 40px;
+  width: 100%;
+  font-size: 12px;
+}
+
+.search .shop .input{
+  width: 212px;
+  padding: 0 5px;
+}
+
+.search .user .input{
+  width: 100%;
+  padding: 0 5px;
+}
+
+.search .button{
+  width: 39px;
+}
+
+ .search .search_btn{
+  height: 40px;
+  width: 39px;
+  display: inline-block;
+  /*margin: 45px 40px 40px;*/
+  background-color: #888;
+  border: none;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  font-size: 12px;
+  margin: 0;
+  border-radius: 0;
+  cursor: pointer;
+}
+
+
+.search ::-webkit-input-placeholder {
+  color: #ccc;
+}
+.search ::-moz-placeholder {
+  color: #ccc; opacity: 1;
+}
+.search :-ms-input-placeholder {
+  color: #ccc;
+}
+
+@media (max-width: 767px)  {
+  .search .block{
+    display: block;
+    background-color: transparent;
+  }
+
+  .search .shops .element{
+    display: block;
+    margin: 0 auto 10px auto;
+    background-color: #fff;
+  }
+
+
+  .search .search_box{
+    width: 90%;
+    padding: 10px 0;
+    height: auto;
+    margin-bottom: 0;
+  }
+
+  .search .shop .input,
+  .search .shop .button,
+  .search .shop .search_btn{
+    width: 100%;
+  }
+
+  .col-sm-12 .search_box{
+    width: 90%;
+  }
+}
+.search input[type="text"],
+.search select{
+background: none;
+border: 0px;
+outline: 0px;
+-webkit-appearance: none;
+-moz-appearance: none;
+appearance: none;
+font-size:16px;
+-webkit-box-shadow: none;
+box-shadow: none;
+}
+
+.search .search_box_select{
+  color: 000;
+}
+
+@media (max-width: 767px)  {
+  .search input[type="text"],
+  .search select{
+    display: block;
+    width: 80%;
+
+  }
+}
+
+.search_box p{
+  /*text-align: center;*/
+  font-size: 14px;
+}
+
+.search_box .submit{
+  text-align: center;
+}
+
+.top #login_form_select,
+.top #login_form_txt,
+.top .form_txt{
+  height: 50px;
+  color: #555;
+  font-size: 12px;
+}
+
+.top #login_form_select,
+.top #login_form_txt{
+  width: 100%;
+  margin-right: 10%;
+}
+
+@media (max-width: 767px) {/*レスポンシブ対応*/
+  .search #login_form_select,
+  .search #login_form_txt
+  .search #ac_word,
+  .search #ac_user{
+    margin: 0;
+  }
+}
+
+
+ .btn{
+  display: inline-block;
+  margin: 30px auto 0 auto;
+  /*margin: 45px 40px 40px;*/
+  padding: 5px 10px;
+  border: 1px solid #bbb;
+  background: transparent;
+  color: #333;
+  text-align: center;
+  text-decoration: none;
+  line-height: 1;
+  font-size: 12px;
+}
+
+.col-sm-3 .btn{
+  width: 80%;
+}
+
+.col-sm-12 .btn{
+  width: 30%;
+}
+
+
+@media (max-width: 767px) {/*レスポンシブ対応*/
+  .col-sm-12 .btn{
+    width: 50%;
+  }
+}
+.top .content{
+  margin-bottom: 50px !important;
+}
+
+
+/* ▲ ▲ ▲ ▲ Shopページのショップ情報 ▲ ▲ ▲ ▲ */
+
+/* ▼ ▼ ▼ ▼ User.indexとShopページのショップ情報 ▼ ▼ ▼ ▼ */
+
+
+.regist .content{
+  max-width: 1000px;
+  background-color: #fff;
+  border: 1px solid #eee;
+}
+.search .content{
+  max-width: 1000px;
+  background-color: #fff;
+  border: 1px solid #eee;
+}
+
+
+
+
+.regist .content{
+  padding: 15px 5px 30px 5px;
+  margin: 0 auto 50px auto;
+}
+
+.search .content{
+  padding: 15px 5px 15px 5px;
+  margin: 0 auto 30px auto;
+}
+
+
+.shop .content{
+  max-width: 1000px;
+  margin: 15px auto 50px auto;
+  background-color: #fff;
+  padding: 10px 10%;
+  border: 1px solid #eee;
+}
+
+
+.shop .content .photo img{
+  margin: auto;
+}
+.shop .shop_detail{
+  position: relative;
+  /*border: 1px solid #eee;*/
+  display: table-cell;
+  width: 55%;
+  vertical-align: top;
+}
+
+.shop .shop_detail h2,{
+  font-size: 30px;
+  color: #0f0f0f;
+  display: inline-block;
+}
+
+
+
+
+@media (max-width: 767px) {
+  .shop .content{
+  padding: 0 3%;
+  }
+}
+.shop dl{
+  padding: 13px 0;
+  border-top: 1px solid #e7e7e7;
+  margin: 0;
+}
+.shop dt{
+  display: inline-block;
+  width: 30%;
+  vertical-align: top;
+  color: #666;
+  font-weight: normal;
+  line-height: 27px;
+  /*border-bottom: 1px solid #e7e7e7;*/
+}
+
+@media (max-width: 767px) {
+  .shop dt{
+    display: block;
+  }
+}
+
+.shop dd{
+  display: inline-block;
+  margin: 0;
+  line-height: 22px;
+}
+
+.shop table td{
+  width: 70%;
+}
+
+.shop table th,
+.shop table td{
+  padding: 20px 0;
+}
+
+.shop .shop_detail .name{
+  padding-top: 25px;
+}
+
+.shop .edit{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+
+.shop .review_area{
+  background-color: #fff;
+  padding: 20px;
+}
+
+.shop .review_area_hide{
+  display: none;
+}
+
+/*ショップ写真*/
+.shop .content .photo{
+  width: 80%;
+  margin-bottom: 15px;
+  margin: 0 auto;
+}
+
+@media (max-width: 767px) {
+  .shop .content .photo{
+    width: 95%;
+  }
+}
+.shop .shop_detail{
+  display: block;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.shop .shop_header{
+  width: 100%;
+  text-align: center;
+  /*text-align: center;*/
+  padding: 10px;
+}
+
+.shop .shop_header .name{
+  margin-bottom: 10px;
+}
+
+.shop .shop_header .name h2{
+  font-size: 32px;
+  color: #000;
+  display: inline;
+}
+
+.shop .shop_header.type{
+  padding-bottom: 15px;
+}
+
+.shop .shop_detail .introduction,
+.shop .shop_detail .infor{
+  padding: 0;
+}
+
+/*ショップタイプ*/
+.shop .shop_detail .type
+.search .shop_detail .type{
+  margin: 0px;
+  font-size: 11px;
+}
+
+/*ショップ紹介*/
+.shop .shop_detail .introduction{
+  /*padding-left: 30px;*/
+  line-height: 20px;
+}
+
+
+
+
+.shop .shop_detail .infor{
+  /*margin-top: 50px;*/
+}
+
+
+
+/*フォローボタンはsearch/shopと同じ場所に記載*/
+
+/* ▲ ▲ ▲ ▲ User.indexとShopページのショップ情報 ▲ ▲ ▲ ▲ */
+
+/* ▼ ▼ ▼ ▼ Shopページのフォローリスト ▼ ▼ ▼ ▼ */
+
+.follow #googlemap,
+.follow .shoplist{
+  background-color: #fff;
+  height: 700px;
+  border: 1px solid #eee;
+}
+/*フォロー欄のユーザエリア余白*/
+.shop .followlist > p,
+.follow .shoplist > p{
+  font-weight: bold;
+  font-size: 13px;
+}
+
+/*フォロー欄のユーザエリア余白*/
+.shop .followlist .follow_user ul{
+  margin-top: 15px;
+  margin-left: 8px;
+}
+
+.follow .shoplist ul{
+  padding: 15px;
+}
+
+/*ユーザの隙間*/
+.follow_user li,
+.follow .shoplist li{
+  margin-bottom: 18px;
+}
+
+
+
+/*bootstrapの定義を解除*/
+.shop .followlist .list-inline{
+  padding: 0; 
+}
+
+/*bootstrapの定義を解除*/
+.shop .followlist .img-responsive,
+.follow .shoplist .img-responsive,
+.user .img-responsive{
+  display: inline;
+}
+
+/*アイコンサイズ*/
+
+.follow .shoplist img,
+.user .userlist img{
+  width: 40px;
+  height: 40px;
+}
+
+.shop .followlist .follow_user img{
+
+}
+
+/*写真と情報をflexboxで分割*/
+/*.shop .followlist .summary,*/
+.follow .shoplist .summary,
+.user .userlist .summary{
+  display: flex;
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: -moz-flex;
+  align-items: center; /*縦のセンタリング*/
+}
+
+/*写真欄の横幅を40pxで固定*/
+.shop .followlist .icon,
+.follow .shoplist .icon,
+.follow .shoplist .icon{
+  flex: 0 1 40px;
+  -webkit-flex: 0 1 40px;
+  -ms-flex: 0 1 40px;
+  -moz-flex: 0 1 40px;
+}
+
+/*情報欄は可変長*/
+.follow .shoplist .infor,
+.user .userlist .infor{
+  margin-left: 12px;
+  flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  -moz-flex: 1;
+}
+
+.shop .followlist .name{
+  font-size: 14px;
+}
+
+/*情報の文字を調整*/
+.shop .followlist p,
+.follow .shoplist p,
+.user .userlist p{
+  margin: 0;
+}
+
+.shop .followlist>p{
+  text-align: center;
+  margin: 20px 0 30px 0;
+}
+.shop .followlist .name p,
+.follow .shoplist .name p,,
+.user .userlist .name p
+{ /*ユーザ名*/
+  line-height: 19px;
+}
+.shop .followlist .other p,
+.follow .shoplist .other p,
+.user .userlist .other p{ /*カテゴリ・住所*/
+  color: rgb(94,94,94);
+  font-size: 11px;  
+  line-height: 14px;
+}
+
+/* ▲ ▲ ▲ ▲ Shopページのフォローリスト ▲ ▲ ▲ ▲ */
+
+
+
+/* ▼ ▼ ▼ ▼ SearchとFollowページ ▼ ▼ ▼ ▼ */
+/*ショップ情報を並べるためのパラメータ*/
+
+.follow .shop_list,
+.search .shop_list {
+  width: 100%;
+/*  display: -webkit-flex;
+  display: -ms-flex;
+  display: -moz-flex;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  -webkit-justify-content: space-between;
+  -ms-justify-content: space-between;
+  -moz-justify-content: space-between;*/
+}
+
+/*最後の行が2つになった場合、両端揃えになってしまうため、最後に擬似クラスを作成（横幅は下のショップ枠とセットで変更する事）*/
+
+
+/*ショップの枠*/
+.follow .shop_infor{
+  display: flex;
+  -webkit-flex: 0 0 calc(33% - 10px); /* 1マスのサイズ設定 */
+  -ms-flex: 0 0 calc(33% - 10px); /* 1マスのサイズ設定 */
+  -moz-flex: 0 0 calc(33% - 10px); /* 1マスのサイズ設定 */
+  flex: 0 0 calc(33% - 10px); /* 1マスのサイズ設定 */
+  max-width: -webkit-calc(33% - 10px); /* IE11バグ対応 */
+  max-width: calc(33% - 10px); /* IE11バグ対応 */
+  width: 100%;
+  /*padding: 0px 10px;*/
+  margin-bottom: 30px;
+  background-color: #fff;
+  /*border: 1px solid #eee;*/
+}
+
+.search .shop_flame,
+.user .shop_flame,
+.user .user_flame{
+  margin: 0 auto;
+  display: flex;
+  max-width: 100%;
+  /*padding: 0 10px;*/
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.search .shop_infor,
+.user .shop_infor{
+  background-color: #fff;
+  -webkit-flex: 0 0 calc(32% - 10px); /* 1マスのサイズ設定 */
+  -ms-flex: 0 0 calc(32% - 10px); /* 1マスのサイズ設定 */
+  -moz-flex: 0 0 calc(32% - 10px); /* 1マスのサイズ設定 */
+  flex: 0 0 calc(23% - 10px); /* 1マスのサイズ設定 */*/
+  max-width: -webkit-calc(32% - 10px); /* IE11バグ対応 */
+  max-width: calc(32% - 10px); /* IE11バグ対応 */
+  max-width: 23%;
+  margin-bottom: 30px;
+}
+
+.user .shop_flame::before{
+  content:"";
+  display: block;
+  width:23%;
+  order:1;
+}
+.user .shop_flame::after{
+  content:"";
+  display: block;
+  width:23%;
+  order:1;
+}
+
+.search .shop_thumbnail,
+.user .shop_thumbnail{
+  display: table-cell;
+  width: 100%;
+  height: 165px;
+  text-align: center;
+  vertical-align: middle;
+  background-color: #F9F9F9;
+  /*padding: 7px;*/
+}
+
+.search .shop_detail,
+.user .shop_detail{
+  /*display: table-cell;*/
+  width: 100%;
+  text-align: left;
+  vertical-align: top;
+  padding:  10px 20px 20px 20px;
+}
+
+
+.search .col-sm-9{
+  padding-right: 60px;
+}
+
+@media (max-width: 767px)  {
+  .search .col-sm-9{
+    padding-right: 15px;
+  }
+}
+
+
+/*レスポンシブ対応*/
+@media (max-width: 767px) {
+  .follow .shop_infor{
+    flex: 0 0 100%;
+    max-width: 100%; /* IE11バグ対応 */
+  }
+
+  .search .shop_infor,
+  .user .shop_infor{
+    flex: 0 0 calc(50% - 10px);
+    max-width: 100%; /* IE11バグ対応 */
+  }
+}
+
+/*レスポンシブ対応*/
+@media (max-width: 480px) {
+  .search .shop_infor{
+    flex: 0 0 calc(100% - 10px);
+    max-width: 100%; /* IE11バグ対応 */
+  }
+}
+
+/*ショップ情報の枠*/
+.follow .shop_infor header,
+.search .shop_infor header{
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+/*ショップ名*/
+.follow .shop_summary a,
+.search .shop_infor a,
+.user .shop_infor a{
+  font-size: 20px;
+}
+
+/*フォローするボタンをショップ名に並べる*/
+.follow .shop_summary form,/*フォローボタンをショップ名に並べるため*/
+.search .shop_detail form,
+.shop .shop_detail form{
+  display: inline;
+}
+.follow .shop_summary input,/*フォローボタンのパラメータ*/
+.search .shop_detail input{
+/*.shop .shop_detail input{*/
+  border: 0;
+  padding: 0;
+  background: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+.follow .shop_summary .follow input,/*フォローをするは強調*/
+.search .shop_detail .follow input,
+.shop .shop_detail .follow input{ 
+  color: #333;
+  font-size: 11px;
+  border-bottom: 1px solid #D17D74;
+  padding-bottom: 4px;
+}
+
+.follow .shop_summary .unfollow input,/*フォローをやめるは控えめに*/
+.search .shop_detail .unfollow input,
+.shop .shop_detail .unfollow input{
+  color: #aaa;
+  font-size: 10px;
+}
+.follow .shop_summary input:hover, /*submitボタンはon mouseで下線が出ないため*/
+.search .shop_detail input:hover,
+.shop .shop_detail input:hover{
+  /*text-decoration: underline;*/
+}
+
+/*ショップのカテゴリと住所*/
+.follow .shop_summary p,
+.search .shop_summary p{
+  padding: 0;
+  font-size: 11px;
+}
+
+/*画像のレスポンシブ対応とトリミング*/
+/*.search .shop_thumbnail{
+  overflow: hidden;
+  position: relative;
+  padding-top: 65%;
+  margin-bottom: 5px;
+}*/
+
+.follow .trimming,
+/*.search .trimming,*/
+/*.user .trimming*/{
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+}
+
+#googlemap{
+  margin:0;
+  padding: 0;
+  height: 700px;
+  width: 100%;
+}
+
+.follow #googlemap{
+  margin-bottom: 50px;
+  border: 1px solid #eee;
+}
+
+.follow{
+  position:relative
+}
+
+.tab{
+  /*display: none;*/
+}
+
+.cagtegory ul,
+.result ul{
+  padding: 0;
+}
+.category li,
+.result li{
+  list-style: none;
+}
+
+@media (max-width: 767px) {
+
+  #hide_logo{
+    display: none;
+  }
+
+  #googlemap{
+    margin-bottom: 45px;
+  }
+
+
+  .follow #googlemap{
+    height: calc(100vh - 45px);
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    z-index: 910;
+  }
+
+  .shop #googlemap,
+  .follow #googlemap,
+  .search #googlemap{
+    height: calc(100vh - 45px);
+  }
+
+  .search .switch ul,
+  .follow .switch ul{
+    padding: 0;
+  }
+
+  .search .switch .display_tab,
+  .follow .switch .tab{
+    display: block;
+    position: fixed;
+    bottom: 55px;
+    z-index: 990;
+    left:calc(50% - 130px);
+  }
+
+  .search .switch .search_tab{
+    display: block;
+  }
+
+  .search .switch .display_tab li ,
+  .follow .switch .tab li{
+    float: left;
+    text-align: center;
+    width: 120px;
+    padding: 5px;
+    margin: 0 5px;
+  }
+
+
+
+  .search .switch .display_tab li.active ,
+  .follow .switch .tab li.active {
+    color: #fff;
+    cursor: auto;
+  }
+   
+
+  .search .category ul, 
+  .search .result ul, 
+  .foillow .area ul {
+    display: none;
+  }
+
+  .search .category ul.show_category ,
+  .search .result ul.show_result ,
+  .follow .area ul.show{
+    display: block;
+  }
+
+  .search .switch .search_tab li{
+    float: left;
+    margin: 0;
+    cursor: pointer;
+    height: 30px;
+    width: 50%;
+    text-align: center;
+  }
+
+
+}
+
+.user .userlist{
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.user .header{
+  width: 600px;
+  margin: 0 auto 50px;
+  display: flex;
+}
+
+.user .header .icon_area{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 100px;
+  min-height: 100px;
+  width: 150px;
+  height: 150px;
+  background-color: #f9f9f9;
+}
+
+
+.user .header .detail{
+  margin-left: 20px;
+}
+
+.user .header .user_name{
+  font-size: 35px;
+}
+
+.user .header .account_name{
+  font-size: 20px;
+}
+
+.user .header .sex{
+  font-size: 15px;
+}
+.user .header .address{
+  font-size: 15px;
+}
+
+.user ul{
+  overflow: hidden;
+}
+
+.user article {
+  margin-bottom: 150px;
+}
+
+.user article .icon{
+  width: 50px;
+}
+
+.user .type{
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.user .shops li{
+  float:left;
+  width: 33%;
+  height: 80px;
+}
+
+
+.user .type ul{
+  padding: 0;
+  border-bottom :solid 1px #888;
+}
+
+
+.user .type li{
+  float: left;
+  /*cursor: pointer;*/
+}
+
+
+.user .type li{
+  width: calc(100%/3);
+  text-align: center;
+}
+
+.user .type a{
+  display: block;
+}
+
+.user .type li.active{
+  border-bottom :solid 2px #888;
+}
+
+
+.user .user_infor{
+  width: 350px;
+  margin: 0 auto 50px;
+  display: flex;
+}
+
+.user .user_infor .icon_area{
+  text-align: center;
+  width: 60px;
+}
+
+.user .user_infor .icon_area img{
+  width: 40px;
+}
+
+
+.user .user_infor ul{
+  margin: 0;
+  padding-left: 30px;
+}
+
+.user .user_infor hr{
+  margin: 4px 0;
+}
+.user .user_infor td{
+  padding-right: 5px;
+}
+
+.user .user_infor .sex{
+  width: 100%;
+  text-align: center;
+}
+
+.user .user_infor .address{
+  text-align: left;
+}
+
+@media (max-width: 767px)  {
+
+  .user header{
+    width: 80%;
+  }
+
+.user header .icon_area{
+  width: 100px;
+  height: 100px;
+  background-color: #f9f9f9;
+}
+
+  .user header .icon{
+    flex: 0 1 50px;
+    -webkit-flex: 0 1 50px;
+    -ms-flex: 0 1 50px;
+    -moz-flex: 0 1 50px;
+  }
+
+  .user header .user_name{
+    font-size: 20px;
+  }
+
+  .user header .account_name{
+    font-size: 14px;
+  }
+
+  .user header .sex{
+    font-size: 12px;
+  }
+  .user header .address{
+    font-size: 12px;
+  }
+
+  .user article li{
+    width: 100%;
+  }
+  .user .type{
+    font-size: 10px;
+  }
+}
+
+
+.regist label{
+  /*display: block;*/
+  font-size: 14px;
+}
+
+.regist input,
+.shop textarea{
+  margin-bottom: 20px;
+  width: 100%;
+  height: 30px;
+  background: none;
+  border: 0;
+  border-bottom: solid 1px #999;
+  outline: 0px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  font-size:16px;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+
+.regist .form{
+  padding: 10px 30px;
+}
+
+.regist ul{
+  margin-top: 25px;
+  padding-inline-start: 0;
+  padding-left: 0;
+}
+
+.regist .duplex_shops{
+  margin-bottom: 40px;
+}
+
+/*-- チェックボック自体は非表示 --*/
+.week_set [id^="week"]{
+  display: none;
+}
+
+/*-- 切り替えをアニメーションで --*/
+.week_set [id^="week"]+label,
+.week_set input+label::before,
+.week_set input+label::after {
+  transition: all .2s;
+}
+
+/*-- ボタンの本体 --*/
+.week_set [id^="week"]+label{ 
+  display: inline-block;
+  position: relative;
+  width: 30px;
+  height: 30px;
+  padding: 5px 5px 2px 5px;
+  text-align: center; line-height: 1.0;
+  border-radius: 15px;
+  background: #ddd;
+  cursor: pointer;
+}
+
+/*-- ボタンのラベル --*/
+.week_set [id^="week"]+label::before{
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  top: 7px;
+  content: attr(data-off-label);
+  width: 100%;
+  font-size: 14px;
+  color: #666;
+}
+
+/*-- チェックでボタンを変更 --*/
+.week_set [id^="week"]:checked+label{
+  background: #EEC246;
+}
+
+.week_set [id^="week"]:checked+label::before{
+  content: attr(data-on-label);
+  color: #fff;
+}
+
+.regist .bussinesshour input{
+  width: 150px;
+}
+
+.regist .bussinesshour ul{
+  margin: 10px 0 30px 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.regist .bussinesshour li{
+  padding-right : 10px;
+}
+
+.regist hr{
+  margin: 0;
+}
+
+.hidden_box {
+  margin: 5px 0 15px 0;
+}
+
+.hidden_box label {
+  font-weight: normal;
+  padding: 3px 5px;
+  cursor: pointer;
+}
+
+/*チェックは見えなくする*/
+.hidden_box input {
+  display: none;
+}
+
+/*中身を非表示にしておく*/
+.hidden_box .hidden_show {
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: 0.3s;
+}
+
+/*クリックで中身表示*/
+.hidden_box input:checked ~ .hidden_show {
+  padding: 10px 0;
+  height: auto;
+  opacity: 1;
+}
+
+.hidden_box input:checked ~ .label_add  {
+  display: none;
+}
+
+.regist .notice{
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+
+.regist button{
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.regist button.back{
+  background-color: #fff;
+  border: 1px solid #888;
+  color: #888;
+}
+
+.regist table{
+  width: 100%;
+  margin: 20px 0;
+  border-collapse:collapse;
+}
+
+.regist table tr{
+  height: 50px;
+  border-top: 1px solid #bbb;
+  border-bottom: 1px solid #bbb;
+}
+
+.regist table th{
+  width: 150px;
+  font-style: normal;
+  background-color: #eee;
+}
+
+.regist table td{
+  width: calc(100% - 150px);
+}
+
+
+.regist table th,
+.regist table td{
+  padding: 0 20px;
+}
+
+.shop .shoprating,
+.shop .myrating{
+  width: auto;
+  margin-top: 10px;
+}
+
+.shop .shoprating form{
+  display: inline;
+}
+
+.shop .myrating{
+  margin-top: 10px;
+}
+.search .rating,
+.follow_user .rating,
+.user .rating{
+  width: 75px;
+}
+
+.follower_followed{
+  margin-top: 30px;
+  background-color: #fafafa;
+  padding: 20px 10px;
+  width: 100%;
+  margin-top: 30px;
+  border: 1px solid #eee;
+  margin-bottom: 20px;
+}
+
+
+.evaluation{
+  display: inline-flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  margin-right: auto;
+}
+.evaluation input[type='radio']{
+  display: none;
+}
+.evaluation label{
+  position: relative;
+  color: gray;
+}
+.myrating .evaluation label{
+  cursor: pointer;
+  margin-bottom: 0;
+}
+
+.evaluation label{
+  padding: 0px;
+  font-size: 12px;
+  margin: 0;
+}
+.evaluation label .text{
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  text-align: center;
+  font-size: 12px;
+  color: gray;
+}
+
+.shop .shop_detail .myrating .evaluation label:hover,
+.shop .shop_detail .myrating .evaluation label:hover ~ label,
+.myrating .evaluation input[type='radio']:checked ~ label{
+  color: #ff0000;
+}
+
+.shoprating .evaluation input[type='radio']:checked ~ label{
+  color: #ffcc00;
+}
+
+.shop .review{
+  margin-top: 10px;
+  width: 100%;
+}
+
+.wrap {
+    position: relative;
+    min-height: 1em;
+}
+ 
+.on textarea {
+    display: block;
+    resize: none;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    padding: 0;
+    margin: 0;
+    min-height: 20px;
+    height: 100%;
+    font-size: 100%;
+    width:100%;
+    line-height: 1em;
+}
+ 
+.on textarea:focus {
+    outline: 0;
+}
+ 
+.on .mirror {
+    visibility: hidden;
+    font-size: 100 %;
+    line-height: 1em;
+}
+ 
+/*sample*/
+.on{
+width:100%;
+display:inline-block;
+}
+textarea{
+width:100%;
+}
+
+.containera{
+  margin-top: 20px;
+}
+
+.panel-heading{
+  margin-bottom: 10px;
+}
+
+.shop .croppie-container{
+  height: auto;
+}
+
+.shop .modal-body .button {
+  text-align: center;
+}
+
+.shop .modal-body .button form{
+  display: inline;
+}
+
+#modal-main {
+display: none;
+min-width: 320px;
+max-width: 500px;
+height: 300px;
+margin: 0;
+padding: 0;
+background-color: #ffffff;
+color: #666666;
+position:fixed;
+z-index: 2;
+}
+/* モーダル 背景エリア */
+#modal-bg {
+display:none;
+width:100%;
+height:100%;
+background-color: rgba(0,0,0,0.5);
+position:fixed;
+top:0;
+left:0;
+z-index: 1;
+}
+
+#contents {
+z-index: 0;
+font-size: 16px;
+}
+.page-txt {
+margin: 30px 0 0;
+height: 2000px;
+}
+
+.cancel_button{
+  display: inline-block;
+  position: relative;
+  margin: 0 20px 0 7px;
+  padding: 0;
+  width: 2px;
+  height: 20px;
+  background: #000;
+  transform: rotate(45deg);
+}
+.cancel_button:before{
+  display: block;
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -8px;
+  width: 20px;
+  height: 2px;
+  margin-top: -2px;
+  background: #000;
+}
+
+
+
+
+
+
+
+
+
+// モーダルウィンドウの上下の余白（コンテンツ内の要素が画面の高さを超えた場合に適用される）
+$modal_padding_top-bottom: 20px;
+
+// モーダルウィンドウの左右の余白
+$modal_padding_left-right: 20px;
+
+.modal {
+  visibility: hidden;
+  overflow-y: scroll;
+  opacity: 0;
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0 $modal_padding_left-right;
+  transition: opacity 0.3s, visibility 0s 0.3s;
+  background: rgba(0, 0, 0, 0.8);
+}
+.modal .is-active {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.3s, visibility 0s 0s;
+  }
+
+
+.modal_container {
+  display: flex;
+  min-height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+  .modal_container::after {
+    content: '';
+    min-height: inherit;
+    font-size: 0;
+  }
+
+.modal_inner {
+  margin: $modal_padding_top-bottom auto;
+  width: 100%;
+}
+
+.modal_content {
+  display: none;
+  border-radius: 2px;
+  background: #fff;
+}
+.modal_content  .is-active & {
+    display: block;
+  }
+

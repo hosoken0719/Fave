@@ -1,0 +1,244 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2018-12-15 14:47+0000\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: Controller/ProfileController.php:54;78
+msgid "The profile has been saved."
+msgstr ""
+
+#: Controller/ProfileController.php:58;82
+msgid "The profile could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/ProfileController.php:99
+msgid "The profile has been deleted."
+msgstr ""
+
+#: Controller/ProfileController.php:101
+msgid "The profile could not be deleted. Please, try again."
+msgstr ""
+
+#: Controller/aUsersController.php:54;79
+#: Controller/bUsersController.php:54;79
+msgid "The user could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/aUsersController.php:76
+#: Controller/bUsersController.php:76
+msgid "The user has been saved."
+msgstr ""
+
+#: Controller/aUsersController.php:97
+#: Controller/bUsersController.php:97
+msgid "The user has been deleted."
+msgstr ""
+
+#: Controller/aUsersController.php:99
+#: Controller/bUsersController.php:99
+msgid "The user could not be deleted. Please, try again."
+msgstr ""
+
+#: Controller/aUsersController.php:131
+#: Controller/bUsersController.php:131
+msgid "ユーザ名もしくはパスワードが間違っています"
+msgstr ""
+
+#: Template/Layout/default.ctp:40
+msgid "フォロー"
+msgstr ""
+
+#: Template/Layout/default.ctp:41
+msgid "検索"
+msgstr ""
+
+#: Template/Layout/default.ctp:42
+msgid "投稿"
+msgstr ""
+
+#: Template/Layout/default.ctp:43
+msgid "アカウント"
+msgstr ""
+
+#: Template/Layout/error.ctp:35
+#: Template/Error/error400.ctp:36
+#: Template/Error/error500.ctp:41
+msgid "Error"
+msgstr ""
+
+#: Template/Layout/error.ctp:43
+msgid "Back"
+msgstr ""
+
+#: Template/Regists/addresscheck.ctp:23
+#: Template/Regists/index.ctp:54
+#: Template/Regists/mapcheck.ctp:13
+msgid "進む"
+msgstr ""
+
+#: Template/Regists/checkshopname.ctp:21
+msgid "登録を続ける"
+msgstr ""
+
+#: Template/Regists/checkshopname.ctp:25
+#: Template/Regists/confirm.ctp:27
+#: Template/Regists/mapcheck.ctp:23
+#: Template/Regists/option1.ctp:36
+#: Template/Regists/option2.ctp:76
+msgid "戻る"
+msgstr ""
+
+#: Template/Regists/confirm.ctp:24
+#: Template/Plugin/CakeDC/Users/Users/register.ctp:46
+msgid "登録"
+msgstr ""
+
+#: Template/Regists/confirm.ctp:31
+msgid "修正"
+msgstr ""
+
+#: Template/Regists/duplex_check.ctp.php:27
+#: Template/Regists/map_check.ctp:24
+#: Template/Regists/option2.ctp:73
+msgid "確認"
+msgstr ""
+
+#: Template/Error/error400.ctp:37
+msgid "The requested address {0} was not found on this server."
+msgstr ""
+
+#: Template/Error/error500.ctp:39
+msgid "An Internal Error Has Occurred"
+msgstr ""
+
+#: Template/Plugin/CakeDC/Users/Users/index.ctp.php:13;26
+msgid "Actions"
+msgstr ""
+
+#: Template/Plugin/CakeDC/Users/Users/index.ctp.php:15
+msgid "New {0}"
+msgstr ""
+
+#: Template/Plugin/CakeDC/Users/Users/index.ctp.php:22
+msgid "Username"
+msgstr ""
+
+#: Template/Plugin/CakeDC/Users/Users/index.ctp.php:23
+#: Template/Plugin/CakeDC/Users/Users/register.ctp:24
+msgid "Email"
+msgstr ""
+
+#: Template/Plugin/CakeDC/Users/Users/index.ctp.php:24
+msgid "First name"
+msgstr ""
+
+#: Template/Plugin/CakeDC/Users/Users/index.ctp.php:25
+msgid "Last name"
+msgstr ""
+
+#: Template/Plugin/CakeDC/Users/Users/index.ctp.php:37
+msgid "View"
+msgstr ""
+
+#: Template/Plugin/CakeDC/Users/Users/index.ctp.php:38
+msgid "Change password"
+msgstr ""
+
+#: Template/Plugin/CakeDC/Users/Users/index.ctp.php:39
+msgid "Edit"
+msgstr ""
+
+#: Template/Plugin/CakeDC/Users/Users/index.ctp.php:40
+msgid "Delete"
+msgstr ""
+
+#: Template/Plugin/CakeDC/Users/Users/index.ctp.php:40
+msgid "Are you sure you want to delete # {0}?"
+msgstr ""
+
+#: Template/Plugin/CakeDC/Users/Users/index.ctp.php:49
+msgid "previous"
+msgstr ""
+
+#: Template/Plugin/CakeDC/Users/Users/index.ctp.php:51
+msgid "next"
+msgstr ""
+
+#: Template/Plugin/CakeDC/Users/Users/login.ctp:21;32
+#: Template/Plugin/CakeDC/Users/Users/register.ctp:52
+#: Template/Tops/top.ctp:20;96
+msgid "ログイン"
+msgstr ""
+
+#: Template/Plugin/CakeDC/Users/Users/login.ctp:22
+#: Template/Plugin/CakeDC/Users/Users/login.ctp.php:20
+#: Template/Plugin/CakeDC/Users/Users/register.ctp:22
+msgid "ユーザ名"
+msgstr ""
+
+#: Template/Plugin/CakeDC/Users/Users/login.ctp:23
+#: Template/Plugin/CakeDC/Users/Users/login.ctp.php:21
+#: Template/Plugin/CakeDC/Users/Users/register.ctp:26
+msgid "パスワード"
+msgstr ""
+
+#: Template/Plugin/CakeDC/Users/Users/login.ctp:38
+#: Template/Plugin/CakeDC/Users/Users/login.ctp.php:29
+msgid "ログイン情報を保存する"
+msgstr ""
+
+#: Template/Plugin/CakeDC/Users/Users/login.ctp:49
+#: Template/Plugin/CakeDC/Users/Users/register.ctp:20
+#: Template/Tops/top.ctp:19;93
+msgid "新規登録"
+msgstr ""
+
+#: Template/Plugin/CakeDC/Users/Users/login.ctp:55
+msgid "パスワードを忘れた場合"
+msgstr ""
+
+#: Template/Plugin/CakeDC/Users/Users/login.ctp.php:19
+msgid "Please enter your username and password"
+msgstr ""
+
+#: Template/Plugin/CakeDC/Users/Users/login.ctp.php:37
+msgid "Register"
+msgstr ""
+
+#: Template/Plugin/CakeDC/Users/Users/login.ctp.php:43
+msgid "Reset Password"
+msgstr ""
+
+#: Template/Plugin/CakeDC/Users/Users/login.ctp.php:48
+msgid "Login"
+msgstr ""
+
+#: Template/Plugin/CakeDC/Users/Users/register.ctp:30
+msgid "パスワード確認"
+msgstr ""
+
+#: Template/Plugin/CakeDC/Users/Users/register.ctp:39
+msgid "Accept TOS conditions?"
+msgstr ""
+
+#: Template/Plugin/CakeDC/Users/Users/request-reset-password.ctp:5
+#: Template/Plugin/CakeDC/Users/Users/request_reset_password.ctp:5
+msgid "パスワードリセット"
+msgstr ""
+
+#: Template/Plugin/CakeDC/Users/Users/request-reset-password.ctp:8
+#: Template/Plugin/CakeDC/Users/Users/request_reset_password.ctp:8
+msgid "実行"
+msgstr ""
+
