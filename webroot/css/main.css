@@ -41,7 +41,7 @@ input[type="submit"],
 textarea  {
   -webkit-appearance: none;
   border-radius: 0;
-}ƒ
+}
 
 .mincho {
   font-family:'NotoSerifCJKjp-Reguler', '游明朝体', 'YuMincho', '游明朝', 'Yu Mincho', 'ヒラギノ明朝 ProN W3', 'Hiragino Mincho ProN W3', HiraMinProN-W3, 'ヒラギノ明朝 ProN', 'Hiragino Mincho ProN', 'ヒラギノ明朝 Pro', 'Hiragino Mincho Pro', 'HGS明朝E', 'ＭＳ Ｐ明朝', 'MS PMincho', serif;  
@@ -49,6 +49,19 @@ textarea  {
 
 .bg_white{
   background-color: #fff;
+}
+
+.hide{
+  display: none !important;
+}
+
+.pointer{
+  cursor: pointer;
+}
+
+
+*:focus { /*chromeの青い線を消す */
+outline: none !important;
 }
 
 /*スマホサイトで横ずれしないための設定*/
@@ -475,7 +488,7 @@ er .comment{
 
 .users button,
 .regist button,
-.shop button{
+.shop .display_favorite_button{
   height: 40px;
   width: 100%;
   display: inline-block;
@@ -486,9 +499,13 @@ er .comment{
   text-align: center;
   text-decoration: none;
   font-size: 12px;
-  /*margin: 0;*/
   border-radius: 0;
-  cursor: pointer;
+}
+
+.shop .clicked{
+  background-color: #fff;
+  border: 1px solid #ccc;
+  color: #000;
 }
 
 .users .link{
@@ -688,13 +705,18 @@ input::placeholder{
 
 @media (max-width: 767px)  {
 
-    input[type=text] {
+    input[type=text],
+    textarea {
     font-size: 16px !important;
     transform: scale(0.8) !important;
     transform-origin: left;
 
-  }
 
+  }
+.regist input,
+.shop textarea{
+  width: 120% !important;
+}
 
   /*bootstarpの設定解除*/
   .col-sm-12{
@@ -1164,14 +1186,35 @@ box-shadow: none;
 }
 
 
-.shop .content{
+.shop .content,
+.shop .content_review{
   max-width: 1000px;
   margin: 15px auto 50px auto;
   background-color: #fff;
-  padding: 10px 10%;
+  padding: 30px 10%;
   border: 1px solid #eee;
 }
 
+
+.shop .review_wrap{
+  display: flex;
+}
+
+.shop .review_wrap .icon_area{
+  margin-right: 20px;
+}
+
+.shop .review_wrap .icon_area img{
+  width: 40px;
+}
+
+.shop .review_wrap .review_area{
+  width: 100%;
+}
+
+.shop .review_wrap .review_area .myrating{
+  margin-bottom: 15px;
+}
 
 .shop .content .photo img{
   margin: auto;
@@ -1238,21 +1281,9 @@ box-shadow: none;
   padding-top: 25px;
 }
 
-.shop .edit{
-  position: absolute;
-  top: 10px;
-  right: 10px;
-}
 
 
-.shop .review_area{
-  background-color: #fff;
-  padding: 20px;
-}
 
-.shop .review_area_hide{
-  display: none;
-}
 
 /*ショップ写真*/
 .shop .content .photo{
@@ -1944,18 +1975,20 @@ box-shadow: none;
 .regist input,
 .shop textarea{
   margin-bottom: 20px;
+  resize: none;
   width: 100%;
-  height: 30px;
+  height: 150px;
   background: none;
   border: 0;
-  border-bottom: solid 1px #999;
+  border: solid 1px #999;
   outline: 0px;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  font-size:16px;
+  font-size:14px;
   -webkit-box-shadow: none;
   box-shadow: none;
+
 }
 
 
@@ -2119,8 +2152,7 @@ box-shadow: none;
   padding: 0 20px;
 }
 
-.shop .shoprating,
-.shop .myrating{
+.shop .shoprating{
   width: auto;
   margin-top: 10px;
 }
@@ -2129,9 +2161,7 @@ box-shadow: none;
   display: inline;
 }
 
-.shop .myrating{
-  margin-top: 10px;
-}
+
 .search .rating,
 .follow_user .rating,
 .user .rating{
@@ -2163,9 +2193,9 @@ box-shadow: none;
   color: gray;
 }
 .myrating .evaluation label{
-  cursor: pointer;
   margin-bottom: 0;
 }
+
 
 .evaluation label{
   padding: 0px;
@@ -2192,16 +2222,18 @@ box-shadow: none;
   color: #ffcc00;
 }
 
-.shop .review{
+.shop .review_wrap{
   margin-top: 10px;
   width: 100%;
 }
 
 .wrap {
-    position: relative;
-    min-height: 1em;
+  position: relative;
+  min-height: 1em;
+  width: 100%;
 }
- 
+
+/*改行したら幅が広かる設定*/
 .on textarea {
     display: block;
     resize: none;
@@ -2216,8 +2248,14 @@ box-shadow: none;
     font-size: 100%;
     width:100%;
     line-height: 1em;
+    border: 0;
 }
- 
+
+.on  textarea.border_bottom{
+  border-bottom: 1px solid #999;
+}
+
+
 .on textarea:focus {
     outline: 0;
 }
@@ -2229,13 +2267,13 @@ box-shadow: none;
 }
  
 /*sample*/
-.on{
+/*.on{
 width:100%;
 display:inline-block;
 }
 textarea{
 width:100%;
-}
+}*/
 
 .containera{
   margin-top: 20px;
@@ -2257,119 +2295,16 @@ width:100%;
   display: inline;
 }
 
-#modal-main {
-display: none;
-min-width: 320px;
-max-width: 500px;
-height: 300px;
-margin: 0;
-padding: 0;
-background-color: #ffffff;
-color: #666666;
-position:fixed;
-z-index: 2;
-}
-/* モーダル 背景エリア */
-#modal-bg {
-display:none;
-width:100%;
-height:100%;
-background-color: rgba(0,0,0,0.5);
-position:fixed;
-top:0;
-left:0;
-z-index: 1;
-}
-
-#contents {
-z-index: 0;
-font-size: 16px;
-}
-.page-txt {
-margin: 30px 0 0;
-height: 2000px;
-}
-
-.cancel_button{
-  display: inline-block;
-  position: relative;
-  margin: 0 20px 0 7px;
-  padding: 0;
-  width: 2px;
-  height: 20px;
-  background: #000;
-  transform: rotate(45deg);
-}
-.cancel_button:before{
-  display: block;
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: -8px;
-  width: 20px;
-  height: 2px;
-  margin-top: -2px;
-  background: #000;
-}
-
-
-
-
-
-
-
-
-
-// モーダルウィンドウの上下の余白（コンテンツ内の要素が画面の高さを超えた場合に適用される）
-$modal_padding_top-bottom: 20px;
-
-// モーダルウィンドウの左右の余白
-$modal_padding_left-right: 20px;
-
-.modal {
-  visibility: hidden;
-  overflow-y: scroll;
-  opacity: 0;
+.loading {
   position: fixed;
-  z-index: 100;
   top: 0;
+  right: 0;
+  bottom: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  padding: 0 $modal_padding_left-right;
-  transition: opacity 0.3s, visibility 0s 0.3s;
-  background: rgba(0, 0, 0, 0.8);
+  /*background: rgba(0,0,0,.5);*/
+  background-image: url(../img/loading.gif);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center center;
+  background-size: 50px 50px;
 }
-.modal .is-active {
-    visibility: visible;
-    opacity: 1;
-    transition: opacity 0.3s, visibility 0s 0s;
-  }
-
-
-.modal_container {
-  display: flex;
-  min-height: 100%;
-  justify-content: center;
-  align-items: center;
-}
-  .modal_container::after {
-    content: '';
-    min-height: inherit;
-    font-size: 0;
-  }
-
-.modal_inner {
-  margin: $modal_padding_top-bottom auto;
-  width: 100%;
-}
-
-.modal_content {
-  display: none;
-  border-radius: 2px;
-  background: #fff;
-}
-.modal_content  .is-active & {
-    display: block;
-  }
-

@@ -29,6 +29,8 @@ $(function() {
 
 // ユーザをフォローする
 $(function() {
+
+
     $(document).on('click', '.follow_button', function(){
         event.preventDefault();
         $.ajax({
@@ -39,6 +41,7 @@ $(function() {
                 button: $(this).attr('data-button'),
             },
             dataType: 'json',
+
         })
         .then(
             function(data) {
@@ -67,9 +70,10 @@ $(function() {
 // お店をお気に入りに追加する
 $(function() {
     $(document).on('click', '.favorite_button', function(){
+     const csrf = $('input[name=_csrfToken]').val();
         event.preventDefault();
         $.ajax({
-            type: 'GET',
+            type: 'POST',
             url: '/ajax/shoprating',
             data: {
                 shop: $(this).attr('data-shop'),
@@ -77,18 +81,54 @@ $(function() {
                 review: $("#input_review").val(),
             },
             dataType: 'json',
+            beforeSend: function(xhr){
+            $('.loading').removeClass('hide');//loading画像
+            xhr.setRequestHeader('X-CSRF-Token', csrf);
+            }
         })
         .then(
             function(data) {
                 var response = JSON.parse(data);
-                if(response.result == 'follow'){
-                    document.getElementById('favorite_button').value='お気に入りから削除';
-                }else if(response.result == 'followed'){
-                    document.getElementById('favorite_button').value='お気に入りに登録';
-                }
+                document.getElementById('favorite_button').value='更新';
             },
             function(data) {
                 alert('失敗しました。一度画面を更新してください');
+            }
+        ).then(//always
+            function() {
+                $('.loading').addClass('hide');
+            }
+        )
+    })
+});
+
+$(function() {
+    $(document).on('click', '.delete_favorite', function(){
+        event.preventDefault();
+        $.ajax({
+            type: 'GET',
+            url: '/ajax/deleteshoprating',
+            data: {
+                shop: $(this).attr('data-shop'),
+            },
+            dataType: 'json',
+                        //loading画像
+            beforeSend: function(){
+            $('.loading').removeClass('hide');
+          }
+        })
+        .then(
+            function(data) {
+                var response = JSON.parse(data);
+                document.getElementById('favorite_button').value='更新';                
+            },
+            function(data) {
+                var response = JSON.parse(data);
+                alert('失敗しました。一度画面を更新してください');
+            }
+        ).then(//always
+            function() {
+                $('.loading').addClass('hide');
             }
         )
     })

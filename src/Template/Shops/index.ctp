@@ -100,73 +100,87 @@
 								</span>
 							</dd>
 						</dl>
-
-					
-					<?php if($ShopFollowData['rating'] === 0): ?>
-						<?= $this->Form->button("お気に入りに登録する",['id'=>'disply_favorite_button'  ,'class'=>'disply_favorite_button']); ?>
-					<?php endif; ?>
-
-				</div>
-			</div>
-</article>
-
-		<!-- <?php if($ShopFollowData['rating'] > 0): ?> -->
-			<article class="review_area">
-<!-- 		<?php else: ?>
-			<article class="review_area_hide">
-		<?php endif; ?> -->
-				<span class="myrating">
-					お気に入り度<?= $this->element('rating',['rating'=>$ShopFollowData['rating'],'shop_id'=>$shopData->shop_id,'enable'=>1,'name'=>'input_rating']); ?>
-				</span>
-				<div class="review">
-					<p><a class="modal-open">コメント</a></p>
-					<div class="wrap on">
-						<?= $this->Form->control('クチコミ', [
-						    'type' => 'textarea',   
-					        'templates' => [
-						        'inputContainer' => '{{content}}'
-						    ],
-						    'placeholder' => 'クコチミを記入してください',
-						    'rows' => 1,
-						    'label' => false,
-						    'id' => 'input_review',
-						    'value' => $ShopFollowData['review']
-							]
-						 );
-						 ?>
-						<div class="mirror"></div>
-					</div>
-					<?php
-						echo "<div class='follow'>";
-						echo "<p>";
-						echo $this->Form->submit("お気に入り登録",['id'=>'favorite_button'  ,'class'=>'favorite_button','data-shop'=>$shopData->shop_id ]);
-						echo $this->Form->end();
-						echo "</p></div>";
-					?>
-					<?= $this->Form->create('Follow'); ?>
-					<?php if($ShopFollowData['rating'] > 0){
-							$buttonTitle = "更新";
-						}else{
-							$buttonTitle = "お気に入り登録";
-						}
-					?>
-					<?= $this->Form->end(); ?>
-				</div>
-
-				<div class="edit">
+										<div class="edit">
 					<?= $this->Html->link('編集', [
 				    'controller' => 'ShopUpdates',
 				    'action' => 'edit',
 				    'id' => $shopData->shop_id]);
 				 	?>
 				</div>
+
+					
+					<?php if($ShopFollowData['rating'] === 0){
+						echo $this->Form->button("お気に入りに登録する",['id'=>'display_favorite_button'  ,'class'=>'display_favorite_button pointer']);
+					}else{
+						echo $this->Form->button("お気に入りに登録する",['id'=>'display_favorite_button'  ,'class'=>'display_favorite_button pointer clicked hide']);
+					} ?>
+
+
+				</div>
 			</div>
-		</article>
+</article>
 
-	</div>
+		<?php if($ShopFollowData['rating'] > 0): ?>
+			<article class="content_review">
+		<?php else: ?>
+			<article class="content_review hide">
+		<?php endif; ?>
+				<!-- <div class="review_wrap"> -->
+					<!-- <div class="icon_area">
+	                    <span class="icon"> <?php echo $this->Html->image('icon_user',['alt'=> 'User']); ?></span>
+	                </div> -->
+	                <h5>お気に入りに登録</h5>
+	                <div class="review_area">
+						<div class="myrating">
+							お気に入り度<?= $this->element('rating',['rating'=>$ShopFollowData['rating'],'shop_id'=>$shopData->shop_id,'enable'=>1,'name'=>'input_rating']); ?>
+						</div>
+						<div class="myreview">
+							<!-- <div class="wrap on"> -->
+								<?= $this->Form->control('コメント', [
+								    'type' => 'textarea',   
+							        'templates' => [
+								        'inputContainer' => '{{content}}'
+								    ],
+								    'placeholder' => '',
+								    'rows' => 1,
+								    'label' => false,
+								    'id' => 'input_review',
+								    'value' => $ShopFollowData['review'],
+								    'disabled' => true,
+								    'maxlength' => 450,
+									]
+								 );
+								 ?>
+<!-- 								<div class="mirror"></div>
+							</div> -->
+						</div>
+					</div>
+				<!-- </div> -->
+				<?php if($ShopFollowData['rating'] > 0){
+						$buttonTitle = "更新";
+					}else{
+						$buttonTitle = "お気に入り登録";
+					}
+				?>
+				<?php
+					echo "<div class='follow hide'>";
+					echo "<p>";
+					echo $this->Form->submit($buttonTitle,['id'=>'favorite_button'  ,'class'=>'favorite_button','data-shop'=>$shopData->shop_id ]);
+					echo $this->Form->end();
+					echo "</p></div>";
+				?>
+
+				<?= $this->Form->button("編集",['id'=>'edit_favorite'  ,'class'=>'edit_favorite']); ?>
+				<?= $this->Form->submit("削除",['id'=>'delete_favorite'  ,'class'=>'delete_favorite','data-shop'=>$shopData->shop_id ]); ?>
+
+
+			</article>
+
+		</div>
 
 
 
+ 				<div class="loading hide"></div>
 	<div class="col-sm-12">
 
 
@@ -239,23 +253,6 @@
 </div>
 
 </div>
-</div>
-<!-- フォローワーのモーダルウィンドウ -->
-<div id="modal-main">
-	<div class="header">全てのフォロワー<span class="cancel_button"></span></div>
-
-<?php
-foreach ($followUserDatas as $followUserData) {
-
-echo $this->Html->link(__($followUserData->username), ['controller' => 'Users', 'action' => '/',$followUserData->username]);
-	echo "<div class='follow'>";
-	echo "<p>";
-	echo $this->Form->create('Follow'); 
-	echo $this->Form->submit('フォローする',array('id'=>'button'.$followUserData->user_id  ,'class'=>'follow_button','data-user'=>$followUserData->user_id , 'data-button'=>'button'.$followUserData->user_id ));
-	echo $this->Form->end();
-	echo "</p></div>";
-}
-?>
 </div>
 
 
@@ -358,7 +355,7 @@ echo $this->Html->link(__($followUserData->username), ['controller' => 'Users', 
 	  });
 	});
 // ▲croppieの設定▲
-	// <script async="async">
+
 // ▼クチコミ入力欄を可変高さにする▼
 	jQuery(document).ready(function($) {
 		$('textarea').on('keyup', function(event) {
@@ -369,54 +366,72 @@ echo $this->Html->link(__($followUserData->username), ['controller' => 'Users', 
 	});
 // ▲クチコミ入力欄を可変高さにする▲
 
-//modal
- 
-  //テキストリンクをクリックしたら
- $(".modal-open").click(function(){
-      //body内の最後に<div id="modal-bg"></div>を挿入
-     $("body").append('<div id="modal-bg"></div>');
- 
-    //画面中央を計算する関数を実行
-    modalResize();
- 
-    //モーダルウィンドウを表示
-        $("#modal-bg,#modal-main").fadeIn("slow");
- 
-    //画面のどこかをクリックしたらモーダルを閉じる
-      $("#modal-bg,.cancel_button").click(function(){
-          $("#modal-main,#modal-bg").fadeOut("slow",function(){
-         //挿入した<div id="modal-bg"></div>を削除
-              $('#modal-bg').remove() ;
-         });
- 
-        });
- 
-    //画面の左上からmodal-mainの横幅・高さを引き、その値を2で割ると画面中央の位置が計算できます
-     $(window).resize(modalResize);
-      function modalResize(){
- 
-            var w = $(window).width();
-          var h = $(window).height();
- 
-            var cw = $("#modal-main").outerWidth();
-           var ch = $("#modal-main").outerHeight();
- 
-        //取得した値をcssに追加する
-            $("#modal-main").css({
-                "left": ((w - cw)/2) + "px",
-                "top": ((h - ch)/2) + "px"
-          });
-     }
-   });
+// ▼お気に入りの登録▼
+	const placeholder = 'コメントは記載されていません';
+	const placeholder_edit = 'コメントを記入して下さい';
+ 	
+ 	//placeholderのデフォルト設定
+	$('#input_review').attr('placeholder',placeholder);
 
-	$("#disply_favorite_button").on("click",function(){
-		$('.review_area').css('display','block');
-		$('button').css({
-			'background-color':'#fff',
-			'border':'1px solid #ccc',
-			'color':'#000'});
-		$('#input_review').focus();
+ 	//「お気に入りに登録する」ボタン
+	$("#display_favorite_button").on("click",function(){
+		$('.content_review').removeClass('hide'); //お気に入り登録画面の表示
+		$('#display_favorite_button').addClass('clicked'); //ボタンの装飾を変更
+		$('#display_favorite_button').removeClass('pointer'); //ボタンのポインターを削除
+		disabled_review('enable'); //コメント蘭の編集を可能にする
 	});
 
+	//編集ボタン
+	$("#edit_favorite").on("click",function(){
+		disabled_review('enable'); //コメント蘭の編集を可能にする
+	});
+	
+	//お気に入りを削除ボタン
+	$("#delete_favorite").on("click",function(){ 
+		$('.content_review').addClass('hide'); //お気に入り登録画面を非表示
+		$('#display_favorite_button').removeClass('clicked hide'); //お気に入りに登録するボタンを再表示
+		$('#display_favorite_button').addClass('pointer'); //ポインタを表示
+		$('#input_review').val(""); //コメントを削除
+		$('input[name="input_rating"]').prop('checked',false); //お気に入り度のチェックを全て外す
+		$('#star5').prop('checked',true); //お気に入り度のチェックを1つだけ付ける
+	});
+
+	//お気に入り登録ボタン。
+	//ajaxの登録処理と以下の表示変更を実行
+	$("#favorite_button").on("click",function(){ 
+		disabled_review('disabled'); //コメントの編集を禁止
+	});
+
+	//お気に入り欄の編集モード
+	function disabled_review(mode){ 
+		if(mode === 'disabled' ){ //編集禁止
+			$('input[name="input_rating"]').prop('disabled', true); //お気に入り度の編集を禁止
+			$('#input_review').prop('disabled', true);  
+			$('#input_review').removeClass('border_bottom');//コメント記入欄に下線を削除
+			$('label').removeClass('pointer'); //お気に入り度のポインターを矢印に戻す
+			$('.follow').addClass('hide'); //登録ボタンの非表示
+			$('#display_favorite_button').addClass('hide'); //「お気に入りに登録する」ボタンを再表示
+			change_placeholder(); //
+
+		}else if(mode === 'enable'){ //編集モード
+			$('input[name="input_rating"]').prop('disabled', false); //お気に入り度の編集を許可
+			$('#input_review').prop('disabled', false);
+			$('#input_review').addClass('border_bottom'); //コメント記入欄に下線を表示
+			$('label').addClass('pointer'); //お気に入り度のポインターを指に変更
+			$('.follow').removeClass('hide');//登録ボタンの表示
+			change_placeholder('edit');
+		}
+	}
+
+	//コメントのplaceholder表示設定
+	function change_placeholder(data=''){
+		if(data === 'edit'){
+			$('#input_review').attr('placeholder',placeholder_edit); //placeholderを内容を変更
+		}else{
+			$('#input_review').attr('placeholder',placeholder); //placeholderを内容を変更
+		}
+
+	}
+// ▲お気に入りの登録▲
 
 </script>

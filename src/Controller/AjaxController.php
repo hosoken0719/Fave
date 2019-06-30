@@ -25,9 +25,9 @@ class AjaxController extends AppController
 			// if($this->FollowComp->isShopFollow($id) > 0){
 		    	$follow = $FollowsTable->newEntity();
 		        $follow->follow =  $this->Auth->user('id');
-		        $follow->follower_shop = $this->request->getQuery('shop');
-		        $follow->rating = $this->request->getQuery('rating');
-		        $follow->review = $this->request->getQuery('review');
+		        $follow->follower_shop = $this->request->getData('shop');
+		        $follow->rating = $this->request->getData('rating');
+		        $follow->review = $this->request->getData('review');
 		        $time = Time::now();
 		        $follow->created = $time->format('Y/m/d H:i:s');
 		        if($FollowsTable->save($follow)){
@@ -45,7 +45,23 @@ class AjaxController extends AppController
 	        $this->set('_serialize', 'result');
 		// }
 	}
+	public function deleteshoprating(){
 
+		if ($this->request->is('ajax')) {
+
+	        $FollowsTable = TableRegistry::get('follows');
+
+			if($FollowsTable->deleteAll(['follow'=>$this->Auth->user('id'),'follower_shop'=>$this->request->getQuery('shop')])){
+				$array = ['result'=>'success'];
+			}else{
+				$array = ['result'=>'fail'];
+			}
+	        $result = json_encode($array);
+			$this->viewClass = 'Json';
+			$this->set(compact('result'));
+	        $this->set('_serialize', 'result');
+		}
+	}
 
 	public function followuser(){
 
