@@ -110,9 +110,9 @@
 
 					
 					<?php if($ShopFollowData['rating'] === 0){
-						echo $this->Form->button("お気に入りに登録する",['id'=>'display_favorite_button'  ,'class'=>'display_favorite_button pointer']);
+						echo $this->Form->button("お気に入りに登録する",['id'=>'display_favorite_button'  ,'class'=>'display_favorite_button ']);
 					}else{
-						echo $this->Form->button("お気に入りに登録する",['id'=>'display_favorite_button'  ,'class'=>'display_favorite_button pointer clicked hide']);
+						echo $this->Form->button("お気に入りに登録する",['id'=>'display_favorite_button'  ,'class'=>'display_favorite_button hide']);
 					} ?>
 
 
@@ -125,53 +125,57 @@
 		<?php else: ?>
 			<article class="content_review hide">
 		<?php endif; ?>
-				<!-- <div class="review_wrap"> -->
-					<!-- <div class="icon_area">
-	                    <span class="icon"> <?php echo $this->Html->image('icon_user',['alt'=> 'User']); ?></span>
-	                </div> -->
-	                <h5>お気に入りに登録</h5>
+
+	                <h3>お気に入りに登録</h3>
 	                <div class="review_area">
 						<div class="myrating">
-							お気に入り度<?= $this->element('rating',['rating'=>$ShopFollowData['rating'],'shop_id'=>$shopData->shop_id,'enable'=>1,'name'=>'input_rating']); ?>
+							<h4>お気に入り度</h4><?= $this->element('rating',['rating'=>$ShopFollowData['rating'],'shop_id'=>$shopData->shop_id,'enable'=>1,'name'=>'input_rating']); ?>
 						</div>
-						<div class="myreview">
-							<!-- <div class="wrap on"> -->
-								<?= $this->Form->control('コメント', [
-								    'type' => 'textarea',   
-							        'templates' => [
-								        'inputContainer' => '{{content}}'
-								    ],
-								    'placeholder' => '',
-								    'rows' => 1,
-								    'label' => false,
-								    'id' => 'input_review',
-								    'value' => $ShopFollowData['review'],
-								    'disabled' => true,
-								    'maxlength' => 450,
-									]
-								 );
-								 ?>
-<!-- 								<div class="mirror"></div>
-							</div> -->
+						<div class="myreview_edit hide">
+							<?= $this->Form->control('コメント', [
+							    'type' => 'textarea',   
+						        'templates' => [
+							        'inputContainer' => '{{content}}'
+							    ],
+							    'placeholder' => 'コメントを記入して下さい',
+							    'rows' => 1,
+							    'label' => false,
+							    'id' => 'input_review',
+							    // 'class' => 'hide',
+							    'value' => $ShopFollowData['review'],
+							    'disabled' => true,
+							    'maxlength' => 450,
+								]
+							 );
+							 ?>
+
+
+							<?php if($ShopFollowData['rating'] > 0){
+									$buttonTitle = "更新";
+								}else{
+									$buttonTitle = "お気に入り登録";
+								}
+
+								echo "<div class='follow'>";
+								echo "<p>";
+								echo $this->Form->submit($buttonTitle,['id'=>'favorite_button'  ,'class'=>'favorite_button','data-shop'=>$shopData->shop_id ]);
+								echo $this->Form->end();
+								echo "</p></div>";
+							?>
+						</div>
+
+						<div class="myreview_display">
+							<div class="review">
+								<?= nl2br(h($ShopFollowData['review'])); ?>
+							</div>
+							<div class="button">
+								<?= $this->Form->button("編集",['id'=>'edit_favorite'  ,'class'=>'edit_favorite']); ?>
+								<?= $this->Form->submit("削除",['id'=>'delete_favorite'  ,'class'=>'delete_favorite','data-shop'=>$shopData->shop_id ]); ?>
+							</div>
 						</div>
 					</div>
-				<!-- </div> -->
-				<?php if($ShopFollowData['rating'] > 0){
-						$buttonTitle = "更新";
-					}else{
-						$buttonTitle = "お気に入り登録";
-					}
-				?>
-				<?php
-					echo "<div class='follow hide'>";
-					echo "<p>";
-					echo $this->Form->submit($buttonTitle,['id'=>'favorite_button'  ,'class'=>'favorite_button','data-shop'=>$shopData->shop_id ]);
-					echo $this->Form->end();
-					echo "</p></div>";
-				?>
 
-				<?= $this->Form->button("編集",['id'=>'edit_favorite'  ,'class'=>'edit_favorite']); ?>
-				<?= $this->Form->submit("削除",['id'=>'delete_favorite'  ,'class'=>'delete_favorite','data-shop'=>$shopData->shop_id ]); ?>
+
 
 
 			</article>
@@ -367,17 +371,11 @@
 // ▲クチコミ入力欄を可変高さにする▲
 
 // ▼お気に入りの登録▼
-	const placeholder = 'コメントは記載されていません';
-	const placeholder_edit = 'コメントを記入して下さい';
  	
- 	//placeholderのデフォルト設定
-	$('#input_review').attr('placeholder',placeholder);
-
  	//「お気に入りに登録する」ボタン
 	$("#display_favorite_button").on("click",function(){
 		$('.content_review').removeClass('hide'); //お気に入り登録画面の表示
 		$('#display_favorite_button').addClass('clicked'); //ボタンの装飾を変更
-		$('#display_favorite_button').removeClass('pointer'); //ボタンのポインターを削除
 		disabled_review('enable'); //コメント蘭の編集を可能にする
 	});
 
@@ -389,9 +387,10 @@
 	//お気に入りを削除ボタン
 	$("#delete_favorite").on("click",function(){ 
 		$('.content_review').addClass('hide'); //お気に入り登録画面を非表示
-		$('#display_favorite_button').removeClass('clicked hide'); //お気に入りに登録するボタンを再表示
-		$('#display_favorite_button').addClass('pointer'); //ポインタを表示
+		$('#display_favorite_button').removeClass('clicked'); //ボタンの装飾を変更
 		$('#input_review').val(""); //コメントを削除
+		$('.review').text(""); //コメントを削除
+		$('#display_favorite_button').removeClass('hide'); //「お気に入りに登録する」ボタンの表示
 		$('input[name="input_rating"]').prop('checked',false); //お気に入り度のチェックを全て外す
 		$('#star5').prop('checked',true); //お気に入り度のチェックを1つだけ付ける
 	});
@@ -405,33 +404,106 @@
 	//お気に入り欄の編集モード
 	function disabled_review(mode){ 
 		if(mode === 'disabled' ){ //編集禁止
+			$('.content_review').removeClass('edit');
 			$('input[name="input_rating"]').prop('disabled', true); //お気に入り度の編集を禁止
-			$('#input_review').prop('disabled', true);  
-			$('#input_review').removeClass('border_bottom');//コメント記入欄に下線を削除
-			$('label').removeClass('pointer'); //お気に入り度のポインターを矢印に戻す
-			$('.follow').addClass('hide'); //登録ボタンの非表示
-			$('#display_favorite_button').addClass('hide'); //「お気に入りに登録する」ボタンを再表示
-			change_placeholder(); //
-
+			$('#input_review').prop('disabled', true); 
+			$('#display_favorite_button').addClass('hide'); //「お気に入りに登録する」ボタンを非表示
+			$('.review').textWithLF($('#input_review').val()); //登録したコメントを表示
 		}else if(mode === 'enable'){ //編集モード
+			$('.content_review').addClass('edit');
 			$('input[name="input_rating"]').prop('disabled', false); //お気に入り度の編集を許可
 			$('#input_review').prop('disabled', false);
-			$('#input_review').addClass('border_bottom'); //コメント記入欄に下線を表示
-			$('label').addClass('pointer'); //お気に入り度のポインターを指に変更
-			$('.follow').removeClass('hide');//登録ボタンの表示
-			change_placeholder('edit');
 		}
 	}
 
-	//コメントのplaceholder表示設定
-	function change_placeholder(data=''){
-		if(data === 'edit'){
-			$('#input_review').attr('placeholder',placeholder_edit); //placeholderを内容を変更
-		}else{
-			$('#input_review').attr('placeholder',placeholder); //placeholderを内容を変更
-		}
-
-	}
 // ▲お気に入りの登録▲
+
+
+(function ($) {
+    var escapes = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;'
+        },
+        escapeRegexp = /[&<>"']/g,
+        hasEscapeRegexp = new RegExp(escapeRegexp.source),
+        unescapes = {
+            '&amp;': '&',
+            '&lt;': '<',
+            '&gt;': '>',
+            '&quot;': '"',
+            '&#39;': "'"
+        },
+        unescapeRegexp = /&(?:amp|lt|gt|quot|#39);/g,
+        hasUnescapeRegexp = new RegExp(unescapeRegexp.source),
+        stripRegExp = /<(?:.|\n)*?>/mg,
+        hasStripRegexp = new RegExp(stripRegExp.source),
+        nl2brRegexp = /([^>\r\n]?)(\r\n|\n\r|\r|\n)/g,
+        hasNl2brRegexp = new RegExp(nl2brRegexp.source),
+        br2nlRegexp = /<br\s*\/?>/mg,
+        hasBr2nlRegexp = new RegExp(br2nlRegexp.source);
+
+    $.fn.textWithLF = function (text) {
+        var type = typeof text;
+
+        return (type == 'undefined')
+            ? htmlToText(this.html())
+            : this.html((type == 'function')
+                ? function (index, oldHtml) {
+                    var result = text.call(this, index, htmlToText(oldHtml));
+                    return (typeof result == 'undefined')
+                        ? result
+                        : textToHtml(result);
+                } : textToHtml(text));
+    };
+
+    function textToHtml(text) {
+        return nl2br(escape(toString(text)));
+    }
+
+    function htmlToText(html) {
+        return unescape(strip(br2nl(html)));
+    }
+
+    function escape(string) {
+        return replace(string, escapeRegexp, hasEscapeRegexp, function (match) {
+            return escapes[match];
+        });
+    }
+
+    function unescape(string) {
+        return replace(string, unescapeRegexp, hasUnescapeRegexp, function (match) {
+            return unescapes[match];
+        });
+    }
+
+    function strip(html) {
+        return replace(html, stripRegExp, hasStripRegexp, '');
+    }
+
+    function nl2br(string) {
+        return replace(string, nl2brRegexp, hasNl2brRegexp, '$1<br>');
+    }
+
+    function br2nl(string) {
+        return replace(string, br2nlRegexp, hasBr2nlRegexp, '\n');
+    }
+
+    function replace(string, regexp, hasRegexp, replacement) {
+        return (string && hasRegexp.test(string))
+            ? string.replace(regexp, replacement)
+            : string;
+    }
+
+    function toString(value) {
+        if (value == null) return '';
+        if (typeof value == 'string') return value;
+        if (Array.isArray(value)) return value.map(toString) + '';
+        var result = value + '';
+        return '0' == result && 1 / value == -(1 / 0) ? '-0' : result;
+    }
+})(jQuery);
 
 </script>

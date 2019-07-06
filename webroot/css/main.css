@@ -500,13 +500,9 @@ er .comment{
   text-decoration: none;
   font-size: 12px;
   border-radius: 0;
+  cursor: pointer;
 }
 
-.shop .clicked{
-  background-color: #fff;
-  border: 1px solid #ccc;
-  color: #000;
-}
 
 .users .link{
   margin-top: 10px;
@@ -1195,25 +1191,42 @@ box-shadow: none;
   border: 1px solid #eee;
 }
 
-
-.shop .review_wrap{
-  display: flex;
+.content_review h4{
+  font-size: 14px;
+}
+/*コメント編集中モードのCSS*/
+.shop .clicked{
+  background-color: #fff;
+  border: 1px solid #ccc;
+  color: #000;
+  cursor: default;
 }
 
-.shop .review_wrap .icon_area{
-  margin-right: 20px;
+.content_review.edit .myreview_display,
+.content_review.edit .edit_favorite,
+.content_review.edit .delete_favorite{
+  display: none;
 }
 
-.shop .review_wrap .icon_area img{
-  width: 40px;
+.content_review.edit .evaluation label{
+  font-size: 24px;
+}
+/*登録ボタンの表示*/
+.content_review.edit .myreview_edit{
+  display: block !important;
+}
+/*お気に入り度のポインターを矢印にする*/
+.content_review.edit label{
+  cursor: pointer;
 }
 
-.shop .review_wrap .review_area{
-  width: 100%;
-}
+/*コメント編集中モードのCSS*/
 
-.shop .review_wrap .review_area .myrating{
-  margin-bottom: 15px;
+.shop .myrating{
+  margin-bottom: 20px;
+}
+.shop .myreview_display{
+  margin-top: 20px;
 }
 
 .shop .content .photo img{
