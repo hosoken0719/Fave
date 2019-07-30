@@ -149,7 +149,6 @@ class UsersController extends AppController
   public function followShops(){
     //フォローショップ・フォローユーザ・フォロワーで共通の値を取得
     $user_infor = $this->setCommonValue();
-
     //表示ユーザのフォローショップを取得
     $FollowShopsIn =  $this->FollowComp->getFollowerShopsByID($user_infor['user_id'])->where(['follower_shop IN' => $user_infor['LoginUserFollowShop']]);
     $FollowShopsNotIn = $this->FollowComp->getFollowerShopsByID($user_infor['user_id'])->where(['NOT' => ['follower_shop IN' => $user_infor['LoginUserFollowShop']]]);
@@ -163,8 +162,8 @@ class UsersController extends AppController
     $user_infor = $this->setCommonValue();
 
     //ログインユーザと共通のお店をフォローしているユーザを優先表示
-    $FollowedUsersIn= $this->FollowComp->getFollowerUserByID($user_infor['user_id'])->where(['follow IN' => $user_infor['LoginUserFollowShop']]);
-    $FollowedUsersNotIn= $this->FollowComp->getFollowerUserByID($user_infor['user_id'])->where(['NOT' => ['follow IN' => $user_infor['LoginUserFollowShop']]]);
+    $FollowedUsersIn= $this->FollowComp->getFollowerUserByID($user_infor['user_id'])->where(['follower_user IN' => $user_infor['LoginUserFollowShop']]);
+    $FollowedUsersNotIn= $this->FollowComp->getFollowerUserByID($user_infor['user_id'])->where(['NOT' => ['follower_user IN' => $user_infor['LoginUserFollowShop']]]);
 
     $this->set(compact('FollowedUsersIn','FollowedUsersNotIn'));
   }
@@ -197,22 +196,27 @@ class UsersController extends AppController
     //ログインIDを取得
     $this->set('login_id',$this->Auth->user('id'));
 
-    // ユーザ名を取得
+    // 表示しているユーザの名名を取得
     $user_name = $this->setUserName();
     
-    // ユーザIDを取得
+    // 表示しているユーザのIDを取得
     $user_id = $this->setUserdataByUsername($user_name);
    
-    // フォロー中か判定
+    // 表示しているユーザをフォロー中か判定
     $this->setIsFollowtxt($user_id);
 
-    //フォローショップ・フォローユーザ・フォロワー数の取得
+    // 表示しているユーザのフォローショップ・フォローユーザ・フォロワー数の取得
     $this->setCountQuery($user_id);
 
     //ログインユーザがフォローしているショップを取得
     $LoginUserFollow['follower_shop'] = $this->FollowComp->getLoginUserFollowShopArray($this->Auth->user('id'));
-    $LoginUserFollow['follower_user'] = $this->getLoginUserFollowUser();
-    $LoginUserFollow['follow'] = $this->getLoginUserFollowUser();
+    //誰もフォローしていない場合、ダミーを代入
+    if(empty($LoginUserFollow['follower_shop'])){
+      $LoginUserFollow['follower_shop'] = 0;
+    }
+
+    //自分がフォローしているユーザーを取得
+    $LoginUserFollow['follower_user'] = $this->FollowComp->getLoginUserFollowUserArray($this->Auth->user('id'));
 
     $this->set(compact('LoginUserFollow'));
 
@@ -233,7 +237,7 @@ class UsersController extends AppController
   //   return $login_user_follow_shop;
   // }
 
-  //自分のフォローショップを取得
+  //自分がフォローしているショップを取得
   private function getLoginUserFollowShop(){
     $FollowsTable = TableRegistry::get('follows');
     $login_user_follow_shop = $FollowsTable->Find()
@@ -243,20 +247,8 @@ class UsersController extends AppController
     return $login_user_follow_shop;
   }
 
-  //自分のフォローユーザーを取得
-  private function getLoginUserFollowUser(){
-    $FollowUsersTable = TableRegistry::get('follow_users');
 
-    $login_user_follow_user = $FollowUsersTable->Find()
-      ->where([
-        'follow' => $this->Auth->user('id'),
-      ])
-    ->combine('id','follower_user')
-    ->toArray();
-    return $login_user_follow_user;
-  }
-
-  //自分のフォロワーユーザーを取得
+  //自分をフォローしている（フォロワー）ユーザーを取得
   private function getLoginUserFollowerUser(){
     $FollowUsersTable = TableRegistry::get('follow_users');
 
@@ -269,7 +261,7 @@ class UsersController extends AppController
     return $login_user_follow_user;
   }
 
-  //ユーザ名を取得
+  // URLのパラメータからユーザ名を取得
   private function setUserName(){
     $user_name = $this->request->getParam("user_name");
     $this->set('user_name',$user_name);

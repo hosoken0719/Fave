@@ -1,40 +1,56 @@
 <?php ?>
+<div class="contents shop">
+    <article class="contain">
+		<div class="contain_inner">
+			<div class="information">
+				<div class="shop_header">
+					<div class="name">
 
+						<h2><?php echo h($shopData->shopname); ?></h2>
 
-	<div class="contents shop">
-		<article class="content">
-			<div class="shop_header">
-				<div class="name">
-
-					<h2><?php echo h($shopData->shopname); ?></h2>
-
-					<div class="type">
-						<?php echo h($shopData->typename); ?> | <?= h($shopData->pref.$shopData->city.$shopData->ward)?>
+						<div class="type">
+							<?php echo h($shopData->typename); ?> | <?= h($shopData->pref.$shopData->city.$shopData->ward)?>
+						</div>
 					</div>
-				</div>
-				<div class="photo">
-					<?php if($photoShop <> null): ?>
-					<?= $this->Html->image($photoShop,array("class" => "img-fluid")); ?>
-					<?php else: ?>
-					<div class="containera">
-						<div class="panel panel-default">
-							<div class="panel-heading">写真を投稿する</div>
-							<div class="panel-body">
-								<input type="file" name="upload_image" id="upload_image" />
-								<br />
-								<div id="uploaded_image"></div>
-							</div>
-					    </div>
-					</div>
-					<?php endif; ?>
+					<div class="photo">
+						<?php if($photoShop <> null): ?>
+						<?= $this->Html->image($photoShop,array("class" => "img-fluid")); ?>
+						<?php else: ?>
+						<div class="containera">
+							<div class="panel panel-default">
+								<div class="panel-heading">写真を投稿する</div>
+								<div class="panel-body">
+									<input type="file" name="upload_image" id="upload_image" />
+									<br />
+									<div id="uploaded_image"></div>
+								</div>
+						    </div>
+						</div>
+						<?php endif; ?>
 
-				</div>
-
-				<div class="follower_followed">あなたがフォローしているユーザの内、<br /><?php echo h($shopData->shopname); ?>をお気に入り登録している人数<br ><?php echo h($countShopFollowMyUser); ?>人
-					<div class="shoprating">
-						平均お気に入り度<br /><?= $this->element('rating',['rating'=>round($avgShopFollowMyUser->rating_avg),'shop_id'=>$shopData->shop_id,'enable'=>0]); ?>
-						<?= round($avgShopFollowMyUser->rating_avg,1)?> 
 					</div>
+					<?php if($countShopFollowMyUser > 0):
+						echo $this->Html->link(
+						"<div class='follower_followed'>あなたがフォローしているユーザの内、<br />".$shopData->shopname."をお気に入り登録している人数<br />".$countShopFollowMyUser."人
+							<div class='shoprating'>
+								平均お気に入り度<br />".$this->element('rating',['rating'=>round($avgShopFollowMyUser->rating_avg),'shop_id'=>$shopData->shop_id,'enable'=>0]).
+								round($avgShopFollowMyUser->rating_avg,1).
+							"</div>
+						</div>
+						", [
+							'controller' => 'shops',
+						    'action' => '/favorited_follow',$shopData->shop_id
+						],
+						['escape' => false]);
+					else:
+						echo $this->Html->link(
+						"<div class='follower_followed'>あなたがフォローしているユーザの内、<br />".$shopData->shopname."をお気に入り登録している人数<br />0人"
+						, [
+							'controller' => 'shops',
+						    'action' => '/favorited_all',$shopData->shop_id
+						], 
+						['escape' => false]);
+					endif; ?>
 				</div>
 			</div>
 
@@ -47,66 +63,71 @@
 					<?php //echo nl2br(h($shopData->introduction)); ?>
 					<!-- <p><?php //echo $hashtag; ?></p> -->
 				<!-- </div> -->
-				<div class="infor">
-					
-						<dl>
-							<dt>住所</dt>
-							<dd> <?= h($shopData->pref.$shopData->city.$shopData->ward.$shopData->town.$shopData->building); ?></dd>
-						</dl>
-						<dl>
-							<dt>営業時間</dt>
-				            <dd>
-				              <?php
-				                for($i = 0 ; $i <= 6 ; $i++) {
-				                  echo $week_ja[$i] . "曜日 : ";
-				                  $length = count($bussiness_hours[$i]);
-				                  $no = 0;
-				                  foreach ($bussiness_hours[$i] as $day) {
-				                    echo $day['open'] . "〜" . $day['close'];
-				                    if(++$no !== $length){
-				                      echo  " , ";
-				                    }
-				                  }
-				                  if($no === 0){
-				                    echo "定休日";
-				                  }
-				                  echo "<br />";
-				                }
-				              ?>
-				            </dd>
-				        </dl>
-	            		<!-- <p><?= h($shopData->holiday); ?></p> -->
-						<dl>
-							<dt>駐車場</dt>
-							<dd><?= h($shopData->parking); ?></dd>
-						</dl>
-						<dl>
-							<dt>電話番号</dt>
-							<dd><?= h($shopData->tel); ?></dd>
-						</dl>
-						<dl>
-							<dt>HP</dt>
-							<dd><?= $this->Html->link($shopData->homepage, $shopData->homapage,array('target'=>'_blank')); ?></dd>
-						</dl>
-						<dl>
-							<dt>お気に入り登録者数</dt>
-							<dd>
-								<?php echo h($countFollowShop); ?>人	<br />
-								<span class="shoprating">
-									<form>
-									平均お気に入り度：<?= $this->element('rating',['rating'=>round($avgFollowShop->rating_avg),'shop_id'=>$shopData->shop_id,'enable'=>0]); ?>
-									<?= round($avgFollowShop->rating_avg,1)?>	
-								</form>
-								</span>
-							</dd>
-						</dl>
-										<div class="edit">
-					<?= $this->Html->link('編集', [
-				    'controller' => 'ShopUpdates',
-				    'action' => 'edit',
-				    'id' => $shopData->shop_id]);
-				 	?>
-				</div>
+				<div class="infor">					
+					<dl>
+						<dt>住所</dt>
+						<dd> <?= h($shopData->pref.$shopData->city.$shopData->ward.$shopData->town.$shopData->building); ?></dd>
+					</dl>
+					<dl>
+						<dt>営業時間</dt>
+			            <dd>
+			              <?php
+			                for($i = 0 ; $i <= 6 ; $i++) {
+			                  echo $week_ja[$i] . "曜日 : ";
+			                  $length = count($bussiness_hours[$i]);
+			                  $no = 0;
+			                  foreach ($bussiness_hours[$i] as $day) {
+			                    echo $day['open'] . "〜" . $day['close'];
+			                    if(++$no !== $length){
+			                      echo  " , ";
+			                    }
+			                  }
+			                  if($no === 0){
+			                    echo "定休日";
+			                  }
+			                  echo "<br />";
+			                }
+			              ?>
+			            </dd>
+			        </dl>
+            		<!-- <p><?= h($shopData->holiday); ?></p> -->
+					<dl>
+						<dt>駐車場</dt>
+						<dd><?= h($shopData->parking); ?></dd>
+					</dl>
+					<dl>
+						<dt>電話番号</dt>
+						<dd><?= h($shopData->tel); ?></dd>
+					</dl>
+					<dl>
+						<dt>HP</dt>
+						<dd><?= $this->Html->link($shopData->homepage, $shopData->homapage,array('target'=>'_blank')); ?></dd>
+					</dl>
+					<dl>
+						<dt>お気に入り登録者数</dt>
+						<dd>
+						<?php echo $this->Html->link(
+							h($countFollowShop)."人	<br />
+							<span class='shoprating'>
+								<form>
+								平均お気に入り度：".
+								$this->element('rating',['rating'=>round($avgFollowShop->rating_avg),'shop_id'=>$shopData->shop_id,'enable'=>0]).round($avgFollowShop->rating_avg,1).
+								"</form>
+							</span>", [
+							'controller' => 'shops',
+						    'action' => '/favorited_all',$shopData->shop_id
+							],
+							['escape' => false]);
+						?>
+						</dd>
+					</dl>
+					<div class="edit">
+						<?= $this->Html->link('編集', [
+					    'controller' => 'ShopUpdates',
+					    'action' => 'edit',
+					    'id' => $shopData->shop_id]);
+					 	?>
+					</div>
 
 					
 					<?php if($ShopFollowData['rating'] === 0){
@@ -118,69 +139,69 @@
 
 				</div>
 			</div>
-</article>
-
-		<?php if($ShopFollowData['rating'] > 0): ?>
-			<article class="content_review">
-		<?php else: ?>
-			<article class="content_review hide">
-		<?php endif; ?>
-
-	                <h3>お気に入りに登録</h3>
-	                <div class="review_area">
-						<div class="myrating">
-							<h4>お気に入り度</h4><?= $this->element('rating',['rating'=>$ShopFollowData['rating'],'shop_id'=>$shopData->shop_id,'enable'=>1,'name'=>'input_rating']); ?>
-						</div>
-						<div class="myreview_edit hide">
-							<?= $this->Form->control('コメント', [
-							    'type' => 'textarea',   
-						        'templates' => [
-							        'inputContainer' => '{{content}}'
-							    ],
-							    'placeholder' => 'コメントを記入して下さい',
-							    'rows' => 1,
-							    'label' => false,
-							    'id' => 'input_review',
-							    // 'class' => 'hide',
-							    'value' => $ShopFollowData['review'],
-							    'disabled' => true,
-							    'maxlength' => 450,
-								]
-							 );
-							 ?>
-
-
-							<?php if($ShopFollowData['rating'] > 0){
-									$buttonTitle = "更新";
-								}else{
-									$buttonTitle = "お気に入り登録";
-								}
-
-								echo "<div class='follow'>";
-								echo "<p>";
-								echo $this->Form->submit($buttonTitle,['id'=>'favorite_button'  ,'class'=>'favorite_button','data-shop'=>$shopData->shop_id ]);
-								echo $this->Form->end();
-								echo "</p></div>";
-							?>
-						</div>
-
-						<div class="myreview_display">
-							<div class="review">
-								<?= nl2br(h($ShopFollowData['review'])); ?>
-							</div>
-							<div class="button">
-								<?= $this->Form->button("編集",['id'=>'edit_favorite'  ,'class'=>'edit_favorite']); ?>
-								<?= $this->Form->submit("削除",['id'=>'delete_favorite'  ,'class'=>'delete_favorite','data-shop'=>$shopData->shop_id ]); ?>
-							</div>
-						</div>
-					</div>
-
-
-
-
-			</article>
-
 		</div>
+	</article>
+
+	<?php if($ShopFollowData['rating'] > 0): ?>
+	<article class="content_review">
+	<?php else: ?>
+	<article class="contain content_review hide">
+	<?php endif; ?>
+	    
+		<div class="contain_inner">
+		    <h3>お気に入り登録</h3>
+			<div class="review_area">
+				<div class="myrating">
+					<h4 class="inline">お気に入り度</h4><?= $this->element('rating',['rating'=>$ShopFollowData['rating'],'shop_id'=>$shopData->shop_id,'enable'=>1,'name'=>'input_rating']); ?>
+				</div>
+				<div class="myreview_edit hide">
+					<?= $this->Form->control('コメント', [
+					    'type' => 'textarea',   
+				        'templates' => [
+					        'inputContainer' => '{{content}}'
+					    ],
+					    'placeholder' => 'コメントを記入して下さい',
+					    'rows' => 1,
+					    'label' => false,
+					    'id' => 'input_review',
+					    // 'class' => 'hide',
+					    'value' => $ShopFollowData['review'],
+					    'disabled' => true,
+					    'maxlength' => 1500,
+						]
+					 );
+					 ?>
+
+
+					<?php if($ShopFollowData['rating'] > 0){
+							$buttonTitle = "更新";
+						}else{
+							$buttonTitle = "お気に入り登録";
+						}
+
+						echo "<div class='follow'>";
+						echo "<p>";
+						echo $this->Form->submit($buttonTitle,['id'=>'favorite_button'  ,'class'=>'favorite_button','data-shop'=>$shopData->shop_id ]);
+						echo $this->Form->end();
+						echo "</p></div>";
+					?>
+				</div>
+
+				<div class="myreview_display">
+					<div class="review">
+						<?= nl2br(h($ShopFollowData['review'])); ?>
+					</div>
+					<div class="button">
+						<?= $this->Form->button("編集",['id'=>'edit_favorite'  ,'class'=>'edit_favorite']); ?>
+						<?= $this->Form->submit("削除",['id'=>'delete_favorite'  ,'class'=>'delete_favorite','data-shop'=>$shopData->shop_id]); ?>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</article>
+
+</div>
 
 
 

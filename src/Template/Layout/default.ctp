@@ -69,9 +69,7 @@ $(function() {
     </header>
     <main>
     <div class="main">
-      <div class="row">
         <?php echo $this->fetch('content'); ?>
-      </div>
     </div>
   <?php //else: //ログインしていない場合 ?>
 <!--     <div class="main">

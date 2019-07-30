@@ -11,48 +11,22 @@ class ShopsController extends AppController {
 
     public function initialize()
     {
-      parent::initialize();
+		parent::initialize();
 
-      $this->loadComponent('FollowComp'); // コンポーネントの読み込み
+		$this->loadComponent('FollowComp'); // コンポーネントの読み込み
     }
 
 	public function index(){
 		
-    $ShoptypeTable = TableRegistry::get('shoptypes');
-    $FollowTable = TableRegistry::get('follows');
-    $UserTagTable = TableRegistry::get('users_tags');
-    $TagTable = TableRegistry::get('tags');
-    $UsersTable = TableRegistry::get('users');
-    $this->loadComponent('FollowComp'); // コンポーネントの読み込み
+	    $ShoptypeTable = TableRegistry::get('shoptypes');
+	    $FollowTable = TableRegistry::get('follows');
+	    $UserTagTable = TableRegistry::get('users_tags');
+	    $TagTable = TableRegistry::get('tags');
+	    $UsersTable = TableRegistry::get('users');
+	    $this->loadComponent('FollowComp'); // コンポーネントの読み込み
 
 	//ショップ情報の抽出
-    	$shopData = $this->Shops->find()
-    	//非公開時の処理を追加すること！！！
-    	->where([
-    		'Shops.id' => $this->request->getParam('shop_id'),
-			'Shops.status' => '1'
-		])
-		->contain(['shoptypes'])
-		->select([
-			'shopname' => 'shopname',
-			'user_id' => 'Shops.user_id',
-			'shop_id' => 'Shops.id',
-			'shop_accountname' => 'Shops.accountname',
-			'introduction' => 'Shops.introduction',
-			'pref' => 'pref',
-			'city' => 'city',
-			'ward' => 'ward',
-			'town' => 'town',
-			'buolding' => 'building',
-			'parking' => 'parking',
-			'tel' => 'tel',
-			'homepage' => 'homepage',
-			// 'tag' => 'Users.tag',
-			'lat' => 'Shops.lat',
-			'lng' => 'Shops.lng',
-			'typename' => 'shoptypes.typename'
-		])
-		->first();
+    	$shopData = $this->getShopData($this->request->getParam('shop_id'));
 
 		//ショップの写真パスを取得
 		$dir = SHOPPHOTO_UPLOADDIR . '/photo_shop/' . $shopData->shop_id . '/';
@@ -86,13 +60,11 @@ class ShopsController extends AppController {
 		$this->set('ShopFollowData',$this->FollowComp->isShopFollow($isFollowId));
 
 	//ショップフォロワーのうち、ログインユーザがフォローしているユーザ数
-		$FollowerUser['FollowedId'] = $this->FollowComp->getLoginUserFollowShopArray($this->Auth->user('id'));
+		$FollowerUser['FollowedId'] = $this->FollowComp->getLoginUserFollowUserArray($this->Auth->user('id'));
 		$FollowerUser['follower_shop'] = $this->request->getParam('shop_id');
 		$this->set('countShopFollowMyUser',$this->FollowComp->getShopCountMyFollowUser($FollowerUser));
 		$this->set('avgShopFollowMyUser',$this->FollowComp->getShopRatingMyFollowUser($FollowerUser));
-
-
-
+		
         //フォローユーザを取得
         $followUserDatas = $this->FollowComp->getShopFollowUserDatas($shopData->shop_id);
 	//営業時間
@@ -156,5 +128,112 @@ class ShopsController extends AppController {
 		$this->set(compact('title','map_zoom','map_default_center','locate_json'));//locate_jsonはmain.ctpで受け取り
 
 	}
+
+//お店をフォローしている人一覧（自分がフォローしている人のみ表示）
+	public function favoritedFollow(){
+
+	    $this->loadComponent('FollowComp'); // コンポーネントの読み込み
+
+	//ショップ情報の抽出
+    	$shopData = $this->getShopData($this->request->getParam('shop_id'));
+
+	//ショップ情報の抽出
+    	$user_infor = $this->setCommonValue();
+    	$favoriteDatas= $this->FollowComp->getShopFollowUserDatas($shopData['shop_id'])->where(['follow IN' => $user_infor['LoginUserFollowerUser']]);
+
+    //ヘッダーに表示するためのカウント
+    	$count['followed'] = $favoriteDatas->count();
+    	$count['all'] = $this->FollowComp->getShopFollowUserDatas($shopData['shop_id'])->count();
+
+    	$this->set(compact('favoriteDatas','shopData','count'));
+	}
+
+//お店をフォローしている人一覧（全員表示）
+	public function favoritedAll(){
+	    $this->loadComponent('FollowComp'); // コンポーネントの読み込み
+
+	//ショップ情報の抽出
+    	$shopData = $this->getShopData($this->request->getParam('shop_id'));
+
+	//ショップ情報の抽出
+    	$user_infor = $this->setCommonValue();
+
+   	//ログインユーザを取得
+    	$favoriteDatasLoginUser = $this->FollowComp->getShopFollowUserDatas($shopData['shop_id'])->where(['follow' => $user_infor['user_id']]);
+
+   	//フォローユーザを取得
+    	$favoriteDatas = $this->FollowComp->getShopFollowUserDatas($shopData['shop_id'])->where(['follow IN' => $user_infor['LoginUserFollowerUser']]);
+
+   	//フォローしていないユーザを取得するが、ログインユーザは別のSQLで取得しているため対象外とする
+    	$LoginUserFollowerUserIncOwn = array_merge($user_infor['LoginUserFollowerUser'],[$user_infor['user_id']]); //ログインユーザを追加
+    	$favoriteDatasNotIn = $this->FollowComp->getShopFollowUserDatas($this->request->getParam('shop_id'))->where(['NOT' => ['follow IN' => $LoginUserFollowerUserIncOwn]]); 
+
+   	//ヘッダーに表示するためのカウント
+    	$count['followed'] = $this->FollowComp->getShopFollowUserDatas($shopData['shop_id'])->where(['follow IN' => $user_infor['LoginUserFollowerUser']])->count();
+    	$count['all'] = $this->FollowComp->getShopFollowUserDatas($shopData['shop_id'])->count();
+
+    	$this->set(compact('favoriteDatas','favoriteDatasLoginUser','favoriteDatasNotIn','shopData','count'));
+	}
+
+//favoritedFollowとfavoritedAllの共通処理
+	private function setCommonValue(){
+    
+	    $this->loadComponent('FollowComp'); // コンポーネントの読み込み
+	    
+	    // ユーザIDを取得
+	    $login_user_id = $this->Auth->user('id');
+	    
+	    //ログインユーザがフォローしているショップを取得
+	    $LoginUserFollow['follower_shop'] = $this->FollowComp->getLoginUserFollowShopArray($login_user_id);
+	    //誰もフォローしていない場合、ダミーを代入
+	    if(empty($LoginUserFollow['follower_shop'])){
+	      $LoginUserFollow['follower_shop'] = 0;
+	    }
+	   
+	    $LoginUserFollow['follower_user'] = $this->FollowComp->getLoginUserFollowUserArray($login_user_id);
+
+	    $this->set(compact('LoginUserFollow','login_user_id'));
+
+
+	    return ['user_id'=>$login_user_id,'LoginUserFollowShop'=>$LoginUserFollow['follower_shop'],'LoginUserFollowerUser'=>$LoginUserFollow['follower_user']];
+	}
+
+//仮引数のショップ情報を取得する
+  private function getShopData($shop_id){
+
+	//ショップ情報の抽出
+    	$shopData = $this->Shops->find()
+    	//非公開時の処理を追加すること！！！
+    	->where([
+    		'Shops.id' => $shop_id,
+			'Shops.status' => '1'
+		])
+		->contain(['shoptypes'])
+		->select([
+			'shopname' => 'shopname',
+			'user_id' => 'Shops.user_id',
+			'shop_id' => 'Shops.id',
+			'shop_accountname' => 'Shops.accountname',
+			'introduction' => 'Shops.introduction',
+			'pref' => 'pref',
+			'city' => 'city',
+			'ward' => 'ward',
+			'town' => 'town',
+			'buolding' => 'building',
+			'parking' => 'parking',
+			'tel' => 'tel',
+			'homepage' => 'homepage',
+			// 'tag' => 'Users.tag',
+			'lat' => 'Shops.lat',
+			'lng' => 'Shops.lng',
+			'typename' => 'shoptypes.typename'
+		])
+		->first();
+
+		return $shopData;
+  }
+
+
+
 
 }

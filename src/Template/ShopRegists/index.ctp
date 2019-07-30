@@ -4,8 +4,7 @@
 
 
 <div class="contents regist">
-	<div class="col-sm-12">
-		<article class="content">
+    <article class="contain">
 			<div class="form">
 
 <!-- 
@@ -58,7 +57,6 @@
         </fieldset>
       </div>
     </article>
-  </div>
 </div>
   
 

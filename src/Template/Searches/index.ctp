@@ -1,54 +1,41 @@
 <?php ?>
-
-
-
 <div class="contents search">
-	<div class="col-sm-12">
-		<article class="content">
-			<div class="search_box shop">
-				<div class="switch">
-					<ul class="search_tab clearfix">
-						<li class="active">ショップ</li>
-						<li>ユーザ</li>
-					</ul>
-				</div>
-				<div class="category">
-					<ul class="show_category shops block">
-						<li>
-						<?php echo $this->element('search_box'); ?>
-						</li>
-					</ul>
-					<ul class="user">
-						<li>
-							<div class="element">
-							<?php
-							//キーワード
-							echo $this->Form->control('word', array(
-								'type' => 'text',
-								'maxlength' => false,
-								'placeholder' => 'User Name',
-								'class' => 'search_box_line',
-								'id' => 'ac_user',
-								'label' => false
-							));?>
-							</div>
-						</li>
-					</ul>
-				</div>
+	<article class="contain">
+		<div class="search_box shop">
+			<div class="switch">
+				<ul class="search_tab clearfix">
+					<li class="active">ショップ</li>
+					<li>ユーザ</li>
+				</ul>
 			</div>
-		</article>
-
-<?php //if(!$this->request->getData('search_button')): //検索ボタンが押されていない場合?>
-
-
-<?php 
-// echo $this->Form->end();
-?>
-<?php //endif; ?>
+			<div class="category">
+				<ul class="show_category shops block">
+					<li>
+					<?php echo $this->element('search_box'); ?>
+					</li>
+				</ul>
+				<ul class="user">
+					<li>
+						<div class="element">
+						<?php
+						//キーワード
+						echo $this->Form->control('word', array(
+							'type' => 'text',
+							'maxlength' => false,
+							'placeholder' => 'User Name',
+							'class' => 'search_box_line',
+							'id' => 'ac_user',
+							'label' => false
+						));?>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</article>
 
 <?php if($this->request->getData('search_button')): //検索ボタンが押された場合?>
 
-		<div class="">
 	<div class="search_result">
 		<article>
 			<div class="switch">
@@ -59,7 +46,6 @@
 			</div>
 		</article>
 
-		<!-- <div class="content"> -->
 		<div class="result">
 			<ul class="show_result">
 				<li>
@@ -81,8 +67,8 @@ foreach($shopDatas as $shopData) :
 			?>
 
 
-					<div class="shop_infor">
-						<div class="shop_thumbnail">
+						<div class="shop_infor">
+							<div class="shop_thumbnail">
 								<?php if(!empty($photoShop)): ?>
 								<?= $this->Html->link(
 									$this->Html->image($photoShop,array("class" => "trimming img-fluid")),
@@ -96,19 +82,21 @@ foreach($shopDatas as $shopData) :
 							</div>
 							<div class="shop_detail">
 								<div class="name">
-							 	 	<h2><?php echo $this->Html->link($shopData->shopname, array('controller' => 'shops', 'action' => '/'. $shopData->shop_id)); ?>
+							 	 	<h2>
+							 	 		<?php echo $this->Html->link($shopData->shopname, array('controller' => 'shops', 'action' => '/'. $shopData->shop_id)); ?>
 									</h2>
 									<?= h($shopData->typename) ?>
-									<div> <?= h($shopData->pref.$shopData->city.$shopData->ward) ?>
+									<div>
+										<?= h($shopData->pref.$shopData->city.$shopData->ward) ?>
 									</div>
 								</div>
 								<div class="rating">
-								<?= $this->element('rating',['rating'=>$rating[$shopData->shop_id],'shop_id'=>$shopData->shop_id,'enable'=>0]); ?>
+									<?= $this->element('rating',['rating'=>$rating[$shopData->shop_id],'shop_id'=>$shopData->shop_id,'enable'=>0]); ?>
 								</div>
 							</div>
 					 	</div>
 <?php endforeach; ?>
-</div>
+					</div>
 				</li>
 			</ul>
 			<ul>
@@ -119,10 +107,8 @@ foreach($shopDatas as $shopData) :
 			</ul>
 		</div>
 	</div>
-		</div>
-	</div>
-</div>
 
+</div>
 
 <?php endif;?>
 	<script type="text/javascript">

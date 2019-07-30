@@ -21,13 +21,13 @@ use Cake\ORM\TableRegistry;
  */
 class FollowUser extends Entity
 {
+    //Viewから変数に代入される
 	public $FollowerId;
 	public $LoginUserFollow; //連想配列
-    private $TableEntity;
 
 	//フォローショップ数のカウント
     protected function _getFollowShopCount(){
-        $this->setTables();
+        $this->setTables(); //テーブルのセット
  		$follow_shop_count = $this->TableEntity['follows']->find()->where(['follow' => $this->FollowerId])->count();
     	return $follow_shop_count;
     }
@@ -63,7 +63,7 @@ class FollowUser extends Entity
 	//ログインユーザと共通のフォロワー数のカウント
 	protected function _getFollowerUserCommonCount(){
         $this->setTables();
-        $follower_user_common_count = $this->TableEntity['follow_users']->find()->where(['follower_user' => $this->FollowerId,'follow IN' => $this->LoginUserFollow['follow']])->count();
+        $follower_user_common_count = $this->TableEntity['follow_users']->find()->where(['follower_user' => $this->FollowerId,'follow IN' => $this->LoginUserFollow['follower_user']])->count();
 	    return $follower_user_common_count;
 	}
 

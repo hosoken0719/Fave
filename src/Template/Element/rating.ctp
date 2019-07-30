@@ -1,3 +1,5 @@
+<? //$this->element('rating',['rating'=>int,'shop_id'=>id,'enable'=> 0=編集不可,1=編集可能])  ?>
+
 <?php if(!isset($name)){$name = "rating";} ?>
 	<form type="get" action="#">
 		<div class="evaluation">

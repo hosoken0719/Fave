@@ -1,5 +1,6 @@
 @charset "UTF-8";
 
+
 @font-face{
   font-family:'NotoSerifCJKjp-Reguler';
   src:url("/font/NotoSerifJP-Regular.woff2") format("woff2"),
@@ -12,16 +13,14 @@
 body, html{
     height: 100%;
     width: 100%;
-    background-color:  #F4F4F4;
     background-repeat: no-repeat;
     margin: 0;
 }
 
 body{
-  /*background-color: #efeceb;*/
+  background-color:  #F4F4F4;
   font-size: 12px;
   color: rgb(94,94,94);
-  /*margin-top: 100px;*/
   /*font-size: calc(112.5% + 0.25vw);*/
   /*font-family: 游ゴシック体, 'Yu Gothic', YuGothic, 'ヒラギノ角ゴシック Pro', 'Hiragino Kaku Gothic Pro', メイリオ, Meiryo, Osaka, 'MS Pゴシック', 'MS PGothic', sans-serif;*/
   font-family: "Yu Gothic", "游ゴシック", YuGothic, "游ゴシック体", "ヒラギノ角ゴ Pro W3", "メイリオ", sans-serif;
@@ -43,6 +42,9 @@ textarea  {
   border-radius: 0;
 }
 
+.cake-error:first-child{
+  margin-top: 150px;
+}
 .mincho {
   font-family:'NotoSerifCJKjp-Reguler', '游明朝体', 'YuMincho', '游明朝', 'Yu Mincho', 'ヒラギノ明朝 ProN W3', 'Hiragino Mincho ProN W3', HiraMinProN-W3, 'ヒラギノ明朝 ProN', 'Hiragino Mincho ProN', 'ヒラギノ明朝 Pro', 'Hiragino Mincho Pro', 'HGS明朝E', 'ＭＳ Ｐ明朝', 'MS PMincho', serif;  
 }
@@ -59,6 +61,9 @@ textarea  {
   cursor: pointer;
 }
 
+.inline{
+  display: inline;
+}
 
 *:focus { /*chromeの青い線を消す */
 outline: none !important;
@@ -70,13 +75,14 @@ main{
   overflow:hidden;
 }
 
-.header_inner,
-.main{
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 0 10px;
-}
 
+
+
+@media (max-width: 767px)  {
+  .contain_inner{
+    padding: 5px 5%;
+  }
+}
 /*▼▽▼▽▼▽ヘッダーの設定▼▽▼▽▼▽*/
 
 
@@ -209,11 +215,33 @@ header {
 
 .main{
   padding-top: 100px;
+  height: 100%;
+    min-height: 100%;
+}
+
+body > .main{
+  height: auto;
+}
+.header_inner{
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 10px;
+
+}
+.contain{
+  max-width: 1000px;
+  margin: 0 auto;
+  background-color: #fff;
+  border: 1px solid #eee;
+}
+
+.contain_inner{
+  padding: 5px 10%;
 }
 
 @media (max-width: 767px)  {
   .main{
-    padding-top: 0px;
+    padding-top: 5px;
   }
 }
 
@@ -278,8 +306,7 @@ header {
   max-width: 1000px;
 }
 
-#top .head
-er .comment{
+#top .header .comment{
   padding: 100px 0 60px 0;
 
 }
@@ -633,22 +660,7 @@ li{
 .regist .swiper-container {
   height: 100%;
 }
-.swiper-slide {
- 
-  /* Center slide text vertically */
-/*  display: -webkit-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  -webkit-align-items: center;
-  align-items: center;*/
-}
+
 /* ★ページネーション・スクロールバー分の余白50pxを下に取る */
 .swiper-container {
   padding-bottom: 40px;   
@@ -674,58 +686,24 @@ input::placeholder{
 }
 
 /* ▼ ▼ ▼ ▼ 各ページに跨る設定 ▼ ▼ ▼ ▼ */
-/*bootstarpの設定解除*/
-.row{ 
-  margin: 0;
-}
-.col-sm-9{
-  /*padding-left: 0;*/
-}
-.col-sm-3{
-  padding-left: 0;
-}
-/*bootstarpの設定解除*/
-
-.container{
-  /*max-width: 1050px; /* 最大横幅 */
-/*  max-width: 100vw;
-  width: 100vw;*/
-  margin: 0 auto;
-  /*padding: 0 15px;*/
-  padding: 0;
-  /*overflow: hidden;*/
-}
-
-
-
 
 @media (max-width: 767px)  {
-
     input[type=text],
     textarea {
     font-size: 16px !important;
     transform: scale(0.8) !important;
     transform-origin: left;
 
-
   }
-.regist input,
-.shop textarea{
-  width: 120% !important;
-}
 
-  /*bootstarpの設定解除*/
-  .col-sm-12{
-    padding: 0;
+  .regist input,
+  .shop textarea{
+    width: 120% !important;
   }
-  /*bootstarpの設定解除*/
 
   .contents{
     padding: 5px;
   }
-
-
-
 
   #modal-content{
     width: 80%;
@@ -735,6 +713,7 @@ input::placeholder{
 
 .contents{
   width: 100%;
+    margin-top: 15px;
 }
 
 
@@ -743,8 +722,6 @@ input::placeholder{
   width: 100%;
   margin-bottom: 20px;
 }
-
-
 
 h2{
   font-size: 16px;
@@ -767,15 +744,6 @@ a{
   padding-right: 5px;
 }
 
-
-
-
-
-
-
-.bgw{
-  background-color: #fff;
-}
 
 .bgt{
 background-color: transparent;
@@ -1185,14 +1153,28 @@ box-shadow: none;
 .shop .content,
 .shop .content_review{
   max-width: 1000px;
-  margin: 15px auto 50px auto;
   background-color: #fff;
   padding: 30px 10%;
   border: 1px solid #eee;
 }
 
+
+
+.content_review h3{
+  font-size: 18px;
+}
+.content_review .myrating{
+  margin-top: 20px;
+}
+
 .content_review h4{
   font-size: 14px;
+  margin-right: 6px;
+}
+
+.content_review form,
+.content_review .submit{
+  display: inline;
 }
 /*コメント編集中モードのCSS*/
 .shop .clicked{
@@ -1222,11 +1204,15 @@ box-shadow: none;
 
 /*コメント編集中モードのCSS*/
 
-.shop .myrating{
-  margin-bottom: 20px;
+.shop .button{
+  margin-top: 20px;
 }
 .shop .myreview_display{
-  margin-top: 20px;
+  margin-top: 15px;
+  line-height: 2.0em;
+}
+.shop .edit .myreview_edit{
+  margin-top: 10px;
 }
 
 .shop .content .photo img{
@@ -1281,12 +1267,12 @@ box-shadow: none;
   line-height: 22px;
 }
 
-.shop table td{
+.shop .information table td{
   width: 70%;
 }
 
-.shop table th,
-.shop table td{
+.shop .information table th,
+.shop .information table td{
   padding: 20px 0;
 }
 
@@ -1487,6 +1473,121 @@ box-shadow: none;
 
 /* ▲ ▲ ▲ ▲ Shopページのフォローリスト ▲ ▲ ▲ ▲ */
 
+/* ▼ ▼ ▼ ▼ Shopページのレビューサイト ▼ ▼ ▼ ▼ */
+
+/* ▽ ▽ ヘッダーエリア ▽ ▽ */
+.shop .review .select{
+  width: 100%;
+}
+
+/**/
+.shop .review .select ul {
+  padding: 0;
+  border-bottom: solid 1px #888;
+}
+
+/*リンクが2つのため、横幅を2分割*/
+.shop .review .select ul li{
+  width: calc(100%/2);
+  text-align: center;
+  float: left;
+}
+
+/*選択しているリンクは下線を太くする*/
+.shop .review .select ul li.active{
+  border-bottom: solid 2px #888;
+}
+
+/*リンクを幅いっぱいにする*/
+.shop .review .select ul li a{
+  display: block;
+}
+
+/* △ △ ヘッダーエリア △ △ */
+/* ▽ ▽ レビューエリア ▽ ▽ */
+/*枠全体*/
+.shop .review .user_review{
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+/*縮小した場合は、レビュー欄を回り込みにする*/
+@media (max-width: 767px) {
+  .shop .review .user_review{
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+  }
+}
+
+/*アイコンエリアとフォローエリア（左側）のサイズ設定*/
+.shop .review .user_wrap{
+  flex: 0 0 300px;
+}
+
+/*レビューエリア（右側）の設定*/
+.shop .review .review_wrap{
+  flex: 1 1 100%;
+  background-color: #fafafa;
+  padding: 10px;
+  border: 1px solid #eee;
+}
+
+/*ユーザ情報をアイコンエリアとフォローエリアで横並びにする*/
+.shop .review .user_infor{
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-right: 20px;
+}
+
+/*アイコンエリア（一番左）の設定*/
+.shop .review .icon_area{
+  text-align: center;
+  flex: 0 0 80px;
+  padding-right: 20px;
+}
+
+/*アイコン画像のサイズ設定*/
+.shop .review .icon_area img{
+  width: 40px;
+}
+
+.shop .review .follow_area{
+  flex: 1 1 100%;
+}
+
+.shop .review .follow_area th{
+  font-weight: normal;
+  width: 90px;
+}
+
+/*フォローエリアの横線*/
+.shop .review .follow_area hr{
+  margin: 4px 0;
+}
+
+
+/*ratingとコメントの間の幅*/
+.shop .review .review_area .rating{ 
+  margin-bottom: 5px;
+}
+
+/*お気に入り度とratingを横並びにする*/
+.shop .review .review_area form{
+  display: inline;
+}
+
+/* △ △ レビューエリア △ △ */
+
+/* ▲ ▲ ▲ ▲ Shopページのレビューサイト ▲ ▲ ▲ ▲ */
+
 
 
 /* ▼ ▼ ▼ ▼ SearchとFollowページ ▼ ▼ ▼ ▼ */
@@ -1539,13 +1640,12 @@ box-shadow: none;
 .search .shop_infor,
 .user .shop_infor{
   background-color: #fff;
-  -webkit-flex: 0 0 calc(32% - 10px); /* 1マスのサイズ設定 */
-  -ms-flex: 0 0 calc(32% - 10px); /* 1マスのサイズ設定 */
-  -moz-flex: 0 0 calc(32% - 10px); /* 1マスのサイズ設定 */
-  flex: 0 0 calc(23% - 10px); /* 1マスのサイズ設定 */*/
-  max-width: -webkit-calc(32% - 10px); /* IE11バグ対応 */
-  max-width: calc(32% - 10px); /* IE11バグ対応 */
-  max-width: 23%;
+  -webkit-flex: 0 0 29%; /* 1マスのサイズ設定 */
+  -ms-flex: 0 0 29%; /* 1マスのサイズ設定 */
+  -moz-flex: 0 0 29%; /* 1マスのサイズ設定 */
+  flex: 0 0 29%; /* 1マスのサイズ設定 */*/
+  
+  max-width: 29%;
   margin-bottom: 30px;
 }
 
@@ -1564,9 +1664,7 @@ box-shadow: none;
 
 .search .shop_thumbnail,
 .user .shop_thumbnail{
-  display: table-cell;
   width: 100%;
-  height: 165px;
   text-align: center;
   vertical-align: middle;
   background-color: #F9F9F9;
@@ -1575,11 +1673,12 @@ box-shadow: none;
 
 .search .shop_detail,
 .user .shop_detail{
-  /*display: table-cell;*/
   width: 100%;
   text-align: left;
   vertical-align: top;
   padding:  10px 20px 20px 20px;
+      background-color: #fafafa;
+    border: 1px solid #eee;
 }
 
 
@@ -1880,15 +1979,12 @@ box-shadow: none;
 }
 
 
-.user .type li{
-  float: left;
-  /*cursor: pointer;*/
-}
 
 
 .user .type li{
   width: calc(100%/3);
   text-align: center;
+  float: left;
 }
 
 .user .type a{
@@ -1901,7 +1997,7 @@ box-shadow: none;
 
 
 .user .user_infor{
-  width: 350px;
+  width: 310px;
   margin: 0 auto 50px;
   display: flex;
 }
@@ -1918,7 +2014,7 @@ box-shadow: none;
 
 .user .user_infor ul{
   margin: 0;
-  padding-left: 30px;
+  padding-left: 15px;
 }
 
 .user .user_infor hr{
@@ -1990,7 +2086,7 @@ box-shadow: none;
   margin-bottom: 20px;
   resize: none;
   width: 100%;
-  height: 150px;
+  height: 200px;
   background: none;
   border: 0;
   border: solid 1px #999;
@@ -1998,10 +2094,11 @@ box-shadow: none;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  font-size:14px;
+  font-size:12px;
   -webkit-box-shadow: none;
   box-shadow: none;
-
+  color: #666;
+  line-height: 2.0em;
 }
 
 
@@ -2231,7 +2328,7 @@ box-shadow: none;
   color: #ff0000;
 }
 
-.shoprating .evaluation input[type='radio']:checked ~ label{
+.evaluation input[type='radio']:checked ~ label{
   color: #ffcc00;
 }
 
@@ -2279,14 +2376,6 @@ box-shadow: none;
     line-height: 1em;
 }
  
-/*sample*/
-/*.on{
-width:100%;
-display:inline-block;
-}
-textarea{
-width:100%;
-}*/
 
 .containera{
   margin-top: 20px;
@@ -2320,4 +2409,19 @@ width:100%;
   background-attachment: fixed;
   background-position: center center;
   background-size: 50px 50px;
+}
+
+.follow .contain{
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap; 
+}
+
+.follow .map_area{
+    flex: 0 0 75%;
+}
+
+.follow .list_area{
+  flex: 0 0 25%;
 }

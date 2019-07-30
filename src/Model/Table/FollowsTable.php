@@ -30,7 +30,12 @@ use Cake\Validation\Validator;
            'propertyName' => 'shops'
        ]);
 
-
+       $this->belongsTo('users',[
+           'joinType' => 'inner',
+           'foreignKey' => 'follow',
+           'bindingKey' => 'id',
+           'propertyName' => 'users'
+       ]);
 
     }
 

@@ -1,20 +1,18 @@
 <?php ?>
-
-<div class="contents follow container">
-	<div class="row">
-	<div class="col-md-10">
-		<div id="googlemap">
+<div class="contents follow">
+	<article class="contain">
+		<div class="map_area">
+			<div id="googlemap">
+			</div>
 		</div>
-	</div>
-	</li>
+		<div class="list_area">
+			<article class="shoplist">
+				<ul class="list-unstyled">
+					<li>
+					</li>
+				</ul>
+			</article>
+		</div>
 
-	<div class="col-md-2">
-		<article class="shoplist">
-		<ul class="list-unstyled">
-			<li>
-			</li>
-		</ul>
-		</article>
-	</div>
-</div>
+	</article>
 </div>

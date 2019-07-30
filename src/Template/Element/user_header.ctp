@@ -10,6 +10,7 @@
 					<?php if($address) echo '<div class="address">' . $address . '</div>'; ?>	
 				</div>
 <?php
+//ログインユーザ自身の場合はフォローボタンを非表示
 if($login_id <> $user_id){
 	echo "<div class='follow'>";
 	echo "<p>";
@@ -28,23 +29,22 @@ if($login_id <> $user_id){
 			<div class="switch">
 				<ul class="search_tab clearfix">
 					<li <?php if($type === 'shop') echo "class='active'"; ?>>
-						<?= $this->Html->link(__('お気に入りショップ<br />'.$count['follow_shops'].'店'), ['controller' => 'Users', 'action' => '/',$user_name],['escape' => false]); ?>
+						<?= $this->Html->link(__('お気に入り<br />'.$count['follow_shops'].'店'), ['controller' => 'Users', 'action' => '/',$user_name],['escape' => false]); ?>
 					</li>
+					<?php if($count['follow_users'] > 0) : ?>
+						<li <?php if($type === 'user') echo "class='active'"; ?>>
+							<?= $this->Html->link(__('フォロー<br />'.$count['follow_users'].'人'), ['controller' => 'Users', 'action' => 'followUsers',$user_name],['escape' => false]); ?>				
+					<?php else: ?>
+						<li>フォローユーザ<br />0人
+					<?php endif; ?>
 
-				<?php if($count['follow_users'] > 0) : ?>
-					<li <?php if($type === 'user') echo "class='active'"; ?>>
-						<?= $this->Html->link(__('フォローユーザ<br />'.$count['follow_users'].'人'), ['controller' => 'Users', 'action' => 'followUsers',$user_name],['escape' => false]); ?>				
-				<?php else: ?>
-					<li>フォローユーザ<br />0人
-				<?php endif; ?>
-
-					</li>
-				<?php if($count['followers'] > 0) : ?>
-					<li <?php if($type === 'follower') echo "class='active'"; ?>>							
-						<?= $this->Html->link(__('フォロワー<br />'.$count['followers'].'人'), ['controller' => 'Users', 'action' => 'followers',$user_name],['escape' => false]); ?>
-				<?php else: ?>
-					<li>フォロワー<br />0人
-				<?php endif; ?>
+						</li>
+					<?php if($count['followers'] > 0) : ?>
+						<li <?php if($type === 'follower') echo "class='active'"; ?>>							
+							<?= $this->Html->link(__('フォロワー<br />'.$count['followers'].'人'), ['controller' => 'Users', 'action' => 'followers',$user_name],['escape' => false]); ?>
+					<?php else: ?>
+						<li>フォロワー<br />0人
+					<?php endif; ?>
 					</li>
 				</ul>
 			</div>
