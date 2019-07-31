@@ -10,7 +10,7 @@ echo $this->Form->create('Searches',['url' => ['action' => 'index'],'inputDefaul
 echo $this->Form->control('word', array(
 	'type' => 'text',
 	'maxlength' => false,
-	'placeholder' => 'Free word , #',
+	'placeholder' => 'キーワード',
 	'class' => 'search_box_line',
 	'id' => 'ac_word',
 	'label' => false
@@ -22,7 +22,7 @@ echo $this->Form->control('word', array(
 
 //ショップタイプ
 echo $this->Form->control('type', array(
-	'options' => $typename,
+	// 'options' => $typename,
     'empty' => 'Shop type',
     'class' => 'search_box_select',
 	'id' => 'login_form_select',
@@ -38,7 +38,7 @@ echo $this->Form->control('type', array(
 echo $this->Form->control('area' , array(
 	'type' => 'text',
 	'maxlength' => false,
-	'placeholder' => 'Area',
+	'placeholder' => 'エリア',
     'class' => 'search_box_line',
 	'id' => 'login_form_txt',
 	'label' => false

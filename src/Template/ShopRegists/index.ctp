@@ -1,185 +1,150 @@
 <?php ?>
-
-
-
-
 <div class="contents regist">
-    <article class="contain">
+    <article class="contain-white">
+    <div class="contain_inner">
 			<div class="form">
+        <fieldset class="basic">
+          <legend><?= "基本情報" ?></legend>
+          <hr/ >
+          <?= $this->Form->create('',['class'=>'next','url' => ['controller' => 'ShopRegists', 'action' => 'checkshopname'],'templates' => $template]); ?>
+          <dl><div class='shopname'><div class='require'></div></div>
+            <?= $this->Form->control('shopname', ['label' => 'ショップ名（必須)','name'=>'shopname','value'=>$shopname]); ?></dl>
+            <dl><?= $this->Form->control('branch', ['label' => '支店名','value'=>$branch,'placeholder' => '栄支店']) ?></dl>
+          
+          <dl><div class='kana'><div class='require'></div></div>
+            <?= //フリガナ（必須項目のため、空欄の場合はcontrollerからフラグを受け取る）
+                $this->Form->control('kana', ['label' => 'フリガナ（必須)','name'=>'kana','value'=>$kana]); ?>
+            </dl>
 
-<!-- 
-<div class="containera">
-  <div class="panel panel-default">
-    <div class="panel-body">
-
-
-      <div class="row">
-        <div class="col-md-4 text-center">
-        <div id="upload-demo" style="width:150px"></div>
-        </div>
-        <div class="col-md-4" style="padding-top:100px;">
-        <strong>Select Image:</strong>
-        <br/>
-        <button class="vanilla-rotate">Rotate</button>
-        <input type="file" id="upload">
-        <br/>
-        <button class="btn btn-success upload-result">Upload Image</button>
-        </div>
-        <div id="upload-demo-i"></div>
-      </div>
-
-
-    </div>
-  </div>
-</div> -->
-
-
-
+            <dl>
+              <div class='shoptype'><div class='require'></div></div>
+              <?= //ショップタイプ一覧
+              $this->Form->control('shoptype',
+                ['options' => $typename,
+                  'empty' => '選択してください',
+                  'class' => 'search_box_select',
+                  'id' => 'login_form_select',
+                  'label' => 'ショップタイプ（必須）',
+                  'type' => 'select',
+                  'default' => $shoptype,
+                ]); ?>    
+            </dl>
+        </fieldset>
+        <fieldset class="address">
+          <legend><?= "住所・電話番号" ?></legend>
+          <hr/ >
+            <dl>
+              <div class='pref'><div class='require'></div></div>
+            <?= //住所の県一覧
+              $this->Form->control('pref',
+                ['options' => $pref_list,
+                  'empty' => '選択してください',
+                  'class' => 'search_box_select',
+                  'id' => 'login_form_select',
+                  'label' => '県名（必須）',
+                  'type' => 'select',
+                  'default' => $pref,
+              ]); ?>
+            </dl>
+          <dl>
+            <div class='address'><div class='require'></div>
+            <?php  if($this->request->getQuery('error') == 1) echo "住所が間違っています。";  ?>
+          </div>
+            <?= $this->Form->control('address', ['label' => '市区町村・番地(必須)','name'=>'address','value'=>$address]); ?>
+          </dl>
+          <dl>
+            <?= $this->Form->control('building', ['label' => 'ビル名・階数','value'=>$building]); ?>
+          </dl>
+        </fieldset>
+        <fieldset class="open_hour">
+          <label>営業時間</label>
+          <hr />
+              <dl>
+                <dt>営業時間1</dt>
+                <dd><?= $this->element('open_hour',['count'=>1]) ?>
+                <button id='add_open_hour' class='add_open_hour button1 <?= $flgDisplay[1]['button'] ?>'>営業時間を追加する</button></dd>
+              </dl>
+              <dl class='open_hour2 <?= $flgDisplay[2]['open_hour'] ?>'>
+                <dt>営業時間2</dt>
+                <dd><?= $this->element('open_hour',['count'=>2]) ?>
+                <button id='add_open_hour' class='add_open_hour button2 <?= $flgDisplay[2]['button'] ?>'>営業時間を追加する</button></dd>
+                </dd>
+              </dl>
+              <dl class='open_hour3 <?= $flgDisplay[3]['open_hour'] ?>'>
+                <dt>営業時間3</dt>
+                <dd><?= $this->element('open_hour',['count'=>3]) ?></dd>
+              </dl>
+              <dl class='business_hour_detail'>
+                <dt>営業時間詳細</dt>
+                <dd>
+                <?= $this->Form->control('business_hour_detail', [
+                'placeholder' => '詳細情報を記入して下さい（例）第3月曜は休業日',
+                'rows' => 3,
+                'label' => false,
+                'id' => 'input_review',
+                'value' => $business_hour_detail,
+                'maxlength' => 1500,
+              ]
+             );
+             ?></dd></dl>
+        </fieldset>
         <fieldset>
-          <legend><?= "" ?></legend>
+              <dl><?= $this->Form->control('phone_number', ['label' => '電話番号（ハイフンあり）','value'=>$phone_number , 'placeholder' => '052-123-4567']) ?></dl>
+              <dl><?= $this->Form->control('parking', ['label' => '駐車場','placeholder' => 'あり／なし or 10台','value'=>$parking]) ?></dl>
+              <dl><?= $this->Form->control('homepage', ['label' => 'ホームページ','placeholder' => 'https://fave-jp.info','value'=>$homepage]) ?></dl>
+              <dl><?= $this->Form->control('introduction', ['label' => '紹介','value'=>$introduction]) ?></dl>
 
-          <?php
-            echo $this->Form->create('',['class'=>'next','url' => ['controller' => 'ShopRegists', 'action' => 'checkshopname']]);
-            
-            echo "<div class='shopname'><div class='require'></div></div>";
-            echo $this->Form->control('shopname', ['label' => 'ショップ名（必須)','name'=>'shopname','value'=>$shopname]);
-
-            echo $this->Form->control('branch', ['label' => '支店名']);
-
-            //フリガナ（必須項目のため、空欄の場合はcontrollerからフラグを受け取る）
-            echo "<div class='kana'><div class='require'></div></div>";
-            echo $this->Form->control('kana', ['label' => 'フリガナ（必須)','name'=>'kana','value'=>$kana]);
-            
-            echo $this->Form->button(__('進む'));
-            echo $this->Form->end();
-          ?>
+          <?= $this->Form->button(__('進む')); ?>
+          <?= $this->Form->end(); ?>
           
         </fieldset>
+      </div>
       </div>
     </article>
 </div>
   
-
-
 <script type="text/javascript">
-    
-$(".next").submit(function(){
-  var chkForm = true;
-  if ($("input[name='shopname']").val() == ''){
-      $('.shopname .require').text("*必須項目です"); 
-      chkForm = false;
-  }else{
-      $('.shopname .require').text(''); 
-  }
-
-  if ($("input[name='kana']").val() == ''){
-      $('.kana .require').text("*必須項目です"); 
-      chkForm = false;
-  }else{
-      $('.kana .require').text(''); 
-  }
-
-  var str = $("input[name='kana']").val();
-  if(!str.match(/^[ァ-ヶー　]*$/)){  
-    $('.kana .require').text("*全角カタカタで入力下さい"); 
-    chkForm = false;
-  }
-
-  return chkForm;
-});
-
-
-// croppieの設定
-
-$uploadCrop = $('#upload-demo').croppie({
-    enableExif: true,
-    viewport: {
-        width: 200,
-        height: 150,
-        type: 'square'
-    },
-    boundary: {
-        width: 250,
-        height: 200
-    },
-    showZoom: false,
-    enableOrientation: true
-});
-
-
-  $('.vanilla-rotate').on('click', function(ev) {
-      $uploadCrop.croppie('rotate', '-90');
-  });
-
-
-$('#upload').on('change', function () { 
-  var reader = new FileReader();
-    reader.onload = function (e) {
-      $uploadCrop.croppie('bind', {
-        url: e.target.result
-      }).then(function(){
-        console.log('jQuery bind complete');
-      });
-      
-    }
-    reader.readAsDataURL(this.files[0]);
-});
- var csrf = $('input[name=_csrfToken]').val();
-
-$('.upload-result').on('click', function (ev) {
-  $uploadCrop.croppie('result', {
-    type: 'canvas',
-    size: { width: 800, height: 600 }
-  }).then(function (resp) {
-    $.ajax({
-      url: "/ajax/shopimage",
-      type: "POST",
-      data: {"image":resp},
-      beforeSend: function(xhr){
-        xhr.setRequestHeader('X-CSRF-Token', csrf);
-      },
-      success: function (data) {
-      },
-      error: function (data, status, errors){
+  $(".next").submit(function(){
+    var chkForm = true;
+    var check_require = function(type,tag){
+      if ($(type+"[name="+tag+"]").val() == ''){
+        $('.'+tag+' .require').text("*必須項目です"); 
+        chkForm = false;
+      }else{
+        $('.'+tag+' .require').text(''); 
       }
-    });
+    }
+    
+    check_tag = ['shopname','kana','address'];
+    check_tag.forEach(function(tag){
+      check_require('input',tag)
+    })
+    
+    check_tag = ['pref','shoptype'];
+    check_tag.forEach(function(tag){
+      check_require('select',tag)
+    })
+
+    var str = $("input[name='kana']").val();
+    if(!str.match(/^[ァ-ヶー　]*$/)){  
+      $('.kana .require').text("*全角カタカタで入力下さい"); 
+      chkForm = false;
+    }
+    return chkForm;
   });
-});
 
 
-// croppieの設定
 
-// cropperの設定
-
-  $(function(){
-        // 初期設定
-  var options =
-  {
-    aspectRatio: 16 / 9,
-    viewMode:1,
-    rotatable:true,
-    crop: function(e) {
-          cropData = $('#select-image').cropper("getData");
-          $("#upload-image-x").val(Math.floor(cropData.x));
-          $("#upload-image-y").val(Math.floor(cropData.y));
-          $("#upload-image-w").val(Math.floor(cropData.width));
-          $("#upload-image-h").val(Math.floor(cropData.height));
-    },
-    zoomable:false,
-    minCropBoxWidth:162,
-    minCropBoxHeight:162,
-    rotate:90,
-  }
-
-        // 初期設定をセットする
-  $('#select-image').cropper(options);
-
-  $("#profile-image").change(function(){
-                // ファイル選択変更時に、選択した画像をCropperに設定する
-    $('#select-image').cropper('replace', URL.createObjectURL(this.files[0]));
+    //「営業時間を追加する」ボタン
+  $(".button1").on("click",function(){
+    $('.open_hour2').removeClass('hide'); //お気に入り登録画面の表示
+    $('.button1').addClass('hide'); //お気に入り登録画面の表示
+    return false
   });
-});
 
-  // cropperの設定
-
+  $(".button2").on("click",function(){
+    $('.open_hour3').removeClass('hide'); //お気に入り登録画面の表示
+    $('.button2').addClass('hide'); //お気に入り登録画面の表示
+    return false
+  });
 </script>

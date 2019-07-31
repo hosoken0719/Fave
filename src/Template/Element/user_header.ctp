@@ -23,6 +23,9 @@ if($login_id <> $user_id){
 				
 			</div>
 		</div>
+		        </div>
+    </article>
+    <article class="contain">
 
 		<div class="type">
 

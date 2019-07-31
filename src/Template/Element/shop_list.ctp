@@ -17,12 +17,10 @@
                 <div class="rating">
                     <?= $this->element('rating',['rating'=>$shop->rating,'shop_id'=>$shop->shop_id,'enable'=>0]); ?>
                 </div>
-            </div>
             <?php if($isFollowed === 1){
                 echo 'フォロー済み';
-                }else{
-                    echo 'NG';
                 }
             ?>
+            </div>
         </div>
 <?php endforeach; ?>

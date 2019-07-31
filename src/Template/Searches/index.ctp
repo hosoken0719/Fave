@@ -1,17 +1,17 @@
 <?php ?>
 <div class="contents search">
-	<article class="contain">
+	<article class="contain-white">
 		<div class="search_box shop">
 			<div class="switch">
 				<ul class="search_tab clearfix">
-					<li class="active">ショップ</li>
+					<li class="active">お店</li>
 					<li>ユーザ</li>
 				</ul>
 			</div>
 			<div class="category">
 				<ul class="show_category shops block">
 					<li>
-					<?php echo $this->element('search_box'); ?>
+					<?php echo $this->element('search_box_shop'); ?>
 					</li>
 				</ul>
 				<ul class="user">

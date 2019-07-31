@@ -24,18 +24,154 @@ class ShopRegistsController extends AppController {
 	    $ShopTable = $this->getTableLocator()->get('shops');
 	    $shoptypes = $this->getTableLocator()->get('shoptypes');
 
-	    $shopname = '';
-	    $kana = '';
+	//初期値設定
+	    //他のページから戻った場合
 	    if($this->request->is('post')){
 	    	$shopname = $this->session->read('shop.shopname');
+	    	$branch = $this->session->read('shop.branch');
 	    	$kana = $this->session->read('shop.kana');
-
+	    	$shoptype = $this->session->read('shop.shoptype');
+	    	$pref = $this->session->read('shop.pref');
+	    	$address = $this->session->read('shop.address');
+	    	$building = $this->session->read('shop.building');
+	    	$phone_number = $this->session->read('shop.phone_number');
+	    	$business_hour_detail = $this->session->read('shop.business_hour_detail');
+	    	$homepage = $this->session->read('shop.homepage');
+	    	$introduction = $this->session->read('shop.introduction');
+	    	$parking = $this->session->read('shop.parking');
+	    //初めてアクセスした場合は、前回のセッションを削除する
 		}else{
 			$this->session->delete('shop');
+			$shopname = '';
+		    $kana = '';
+	    	$shopname = '';
+	    	$branch = '';
+	    	$kana = '';
+	    	$shoptype = '';
+	    	$pref = '';
+	    	$address = '';
+	    	$building = '';
+	    	$business_hour_detail = '';
+	    	$phone_number = '';
+	    	$parking = '';
+	    	$homepage = '';
+	    	$introduction = '';
+		}
+		$this->set(compact('shopname','branch','kana','shoptype','pref','address','building','phone_number','business_hour_detail','parking','homepage','introduction'));
+	//初期値設定
+
+	//selectbox表示設定
+		//*ショップタイプ一覧の取得
+		$ShoptypeTable = TableRegistry::get('shoptypes');
+		$this->set('typename',$ShoptypeTable->find('list'));
+
+		//*県一覧の取得
+		$PrefTable = TableRegistry::get('prefecture');
+		$this->set('pref_list',$PrefTable->find('list')->where(['enable' => 1]));
+	//selectbox表示設定
+
+		$week_en = $this->Businesshour->getWeekDayEn();
+		$week_ja = $this->Businesshour->getWeekDayJa();
+	    //他のページから戻った場合
+	    // if($this->request->is('post')){
+			for($pattern = 1; $pattern <= 3; $pattern++){
+			//曜日のセット
+				//openの曜日は$week[$week_en_add]にopenを代入する
+				//曜日が一つでもopenの場合は、フラグを立てる
+				$flgDisplay[$pattern]['button'] = '';//営業時間を追加するボタンの表示
+				$flgDisplay[$pattern]['open_hour'] = 'hide';//2つ目、3つ目の営業時間をデフォルト表示するか判定
+				for($count_week = 0; $count_week <= 6; $count_week++ ){
+					$week_en_add = $week_en[$count_week]; //後ろの行を見やすくするために代入
+					if($this->readSessionValue('week'.$pattern.'_'.$week_en_add) === 'open'){
+						$week[$week_en_add][$pattern] = 'open'; //営業曜日にopenを代入する
+						$flgDisplay[$pattern-1]['button'] = 'hide';//2つ目、3つ目の営業時間を表示するか判定
+						$flgDisplay[$pattern]['open_hour'] = '';//2つ目、3つ目の営業時間をデフォルト表示するか判定
+					}
+					else{
+						$week[$week_en_add][$pattern] = 'close';//営業曜日にcloseを代入する
+					}
+				}
+				//営業時間を代入する
+				$default_hour['open'][$pattern] = $this->readSessionValue("week".$pattern."_start");
+				$default_hour['close'][$pattern] = $this->readSessionValue("week".$pattern."_end");
+			}
+			//営業時間のセット（使う）
+			for ($select_time = 0; $select_time <= 47; $select_time++) {
+				$open_hour_tmp = date("H:i", strtotime("00:00 +". $select_time * 30 ." minute"));
+				$open_hour_list[$open_hour_tmp] = $open_hour_tmp; //時間をセット
+			}
+
+		//曜日のセット
+		$week_en = $this->Businesshour->getWeekDayEn();
+		$week_ja = $this->Businesshour->getWeekDayJa();
+
+		$week_value = [];
+		$week_value_tmp = [];
+		for($pattern = 1; $pattern <= 3; $pattern++){
+		//曜日のチェック。各曜日は$week_en[$count_week].$countで表示される				
+			for($count_week = 0; $count_week <= 6; $count_week++ ){
+				$week_en_add = $week_en[$count_week];
+				//3つの表示分を$week_value[曜日][1から3]配列にcheckを入れる
+				$week_value[$week_en_add][$pattern] = $this->ShopRegist->setOpenClose($week[$week_en_add][$pattern]);
+			}
 		}
 
-		$this->set(compact('shopname'));
-		$this->set(compact('kana'));
+		$this->set(compact('week_en','week_ja','week_value','select_time','select_time_s','select_time_e','flgDisplay','open_hour_list','default_hour','week_value_tmp'));
+	//営業時間の表示設定
+
+	//inputとselectboxのtemplate
+ 	$template = [
+ 		'label' => '<dt{{attrs}}>{{text}}</dt>',
+ 		'input' => '<dd><input type="{{type}}" name="{{name}}"{{attrs}}></dd>',
+ 		'select' => "<dd class='selectbox'><select name='{{name}}'{{attrs}}>{{content}}</select></dd>",
+ 	];
+
+	$this->set(compact('template'));
+
+	}
+
+
+	public function mapcheck()
+	{
+
+		$this->writeSessionValueByPost();
+
+		//geocoding用
+	    $PrefTable = $this->getTableLocator()->get('prefecture');
+	    $pref_name = $PrefTable->find()->where(['id' => $this->readSessionValue('pref')])->first(); //都道府県名はidで受け取るため、DBから名前を取得する。(変数名は$pref_name->name)
+		$address = $this->readSessionValue('address');
+		$building = $this->readSessionValue('building');
+
+
+		$this->set('address',$pref_name->name.$address);
+		//addresscheckで修正するの可能性があるため、改めて上書き
+		// $this->session->write(['shop.address' => $pref.$address]);
+
+		//初めてこのページを表示した場合
+		if(is_null($this->readSessionValue('lat'))){
+			if(!$latlng = $this->ShopRegist->geocoding($pref_name->name.$address)){
+				//Geocodingに失敗した場合、住所入力に戻す。
+				return $this->redirect(['action'=>'index','?'=>['error'=>'1']]);
+			}
+		//他のページから戻ってきた場合
+		}else{
+			$latlng = [
+				'lat' => $this->readSessionValue('lat'),
+				'lng' => $this->readSessionValue('lng')
+			];
+		}
+
+		//java_scriptに渡す変数
+		$map_default_center = $latlng['lat'] . ',' .$latlng['lng'];
+		$this->set('lat',$latlng['lat']);
+		$this->set('lng',$latlng['lng']);
+		$gestureHandling = "gestureHandling: 'greedy'";
+		$map_zoom = 18;
+
+		// $map_default_center = null;
+		$this->set(compact('map_default_center','gestureHandling','map_zoom'));
+
+	    
 	}
 
 
@@ -48,9 +184,9 @@ class ShopRegistsController extends AppController {
 			
 		    $ShopTable = $this->getTableLocator()->get('shops');
 		    $shoptypes = $this->getTableLocator()->get('shoptypes');
-
 			$shopname_kana = $this->request->getdata('kana');
 
+			//カタカナで登録済み重複チェック
 			$shopDatas = $ShopTable->find()
 			->where(['kana LIKE'=> '%'.$shopname_kana.'%'])
 			->join([
@@ -63,25 +199,22 @@ class ShopRegistsController extends AppController {
 				'shopname' => 'shopname',
 				'shop_accountname' => 'accountname',
 				'pref' => 'pref',
-				'city' => 'city',
-				'ward' => 'ward',
-				'town' => 'town',
+				'address' => 'address',
 				'buolding' => 'building',
 				'typename' => 'shoptypes.typename'
-
 			])
 			->all();
 
 			//重複がなければ次のページにredirect
 			if($shopDatas->isempty()){
-				return $this->redirect(['action'=>'option1']);
+				return $this->redirect(['action'=>'mapcheck']);
 			}else{
 
 			//重複があれば確認ページを表示
 				$duplex_shops = array();	
 	            foreach($shopDatas as $data){
 					array_push($duplex_shops,
-	                $data->shopname .' ( ' . $data->typename . ' / ' .$data->pref.$data->city.$data->ward.$data->town.$data->building . ')');
+	                $data->shopname .' ( ' . $data->typename . ' / ' .$data->pref.$data->address.$data->building . ')');
 	           	}
 				$this->set(compact('duplex_shops'));
 	        }
@@ -170,46 +303,7 @@ class ShopRegistsController extends AppController {
 
 
 
-	public function mapcheck()
-	{
 
-		$this->writeSessionValueByPost();
-
-		//geocoding用
-		$pref = $this->readSessionValue('pref');
-		$city = $this->readSessionValue('city');
-		$town = $this->readSessionValue('town');
-		// $building = $this->readSessionValue('building');
-
-		//addresscheckで修正するの可能性があるため、改めて上書き
-		$this->session->write(['shop.address' => $pref.$city.$town]);
-
-
-		if(is_null($this->readSessionValue('lat'))){
-			if(!$latlng = $this->ShopRegist->geocoding($pref.$city.$town)){
-				//Geocodingに失敗した場合、住所入力に戻す。
-				return $this->redirect(['action'=>'option1','?'=>['error'=>'1']]);
-			}
-		}else{
-			$latlng = [
-				'lat' => $this->readSessionValue('lat'),
-				'lng' => $this->readSessionValue('lng')
-			];
-		}
-
-		$map_default_center = $latlng['lat'] . ',' .$latlng['lng'];
-
-		$this->set('lat',$latlng['lat']);
-		$this->set('lng',$latlng['lng']);
-
-		$gestureHandling = "gestureHandling: 'greedy'";
-		$map_zoom = 18;
-
-		// $map_default_center = null;
-		$this->set(compact('map_default_center','gestureHandling','map_zoom'));
-
-	    
-	}
 
 
 //営業時間などの基本情報

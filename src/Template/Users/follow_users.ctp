@@ -1,8 +1,9 @@
 <?php //②フォローユーザ?>
 <div class="contents user">
-    <article class="contain">
+    <article class="contain-white">
          <div class="contain_inner">
             <?php echo $this->element('user_header', ["type" => "user"]); ?>
+
             <div class="user_flame">
                 <?php
                 //フォローしているユーザを先に表示
@@ -16,6 +17,6 @@
                 endforeach;
                 ?>
             </div>
-        </div>
+            
     </article>
 </div>

@@ -8,6 +8,7 @@
 
     <fieldset>
        <legend><?= '地図確認' ?></legend>
+       <?= $address ?>
       <p class="notice">お店の位置が間違っている場合は、ピンを移動して下さい</p>
       <div id="googlemap">
       </div>
@@ -19,7 +20,7 @@
         echo $this->Form->button(__('進む'));
         echo $this->Form->end();
 
-        echo $this->Form->create('',['class'=>'prev' , 'url' => ['action' => 'addresscheck']]);
+        echo $this->Form->create('',['class'=>'prev' , 'url' => ['action' => 'index']]);
         echo $this->Form->button('戻る',['class'=>'back']);
         echo $this->Form->end();
       ?>

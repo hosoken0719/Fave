@@ -17,7 +17,7 @@
     echo "<li>{$data}</li>";
     endforeach;
     echo "</ul>";
-    echo $this->Form->create('',['url' => ['controller' => 'ShopRegists', 'action' => 'option1']]);
+    echo $this->Form->create('',['url' => ['controller' => 'ShopRegists', 'action' => 'mapcheck']]);
     echo $this->Form->button(__('登録を続ける'));
             echo $this->Form->end();
 

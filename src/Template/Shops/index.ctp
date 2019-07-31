@@ -1,6 +1,6 @@
 <?php ?>
 <div class="contents shop">
-    <article class="contain">
+    <article class="contain-white">
 		<div class="contain_inner">
 			<div class="information">
 				<div class="shop_header">
@@ -143,9 +143,9 @@
 	</article>
 
 	<?php if($ShopFollowData['rating'] > 0): ?>
-	<article class="content_review">
+	<article class="contain-white content_review">
 	<?php else: ?>
-	<article class="contain content_review hide">
+	<article class="contain-white review hide">
 	<?php endif; ?>
 	    
 		<div class="contain_inner">
@@ -198,9 +198,7 @@
 				</div>
 			</div>
 		</div>
-
 	</article>
-
 </div>
 
 

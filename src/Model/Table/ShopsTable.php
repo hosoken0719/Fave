@@ -23,6 +23,13 @@ class ShopsTable extends Table
            'bindingKey' => 'id',
            'propertyName' => 'shoptypes'
        ]);
+
+      $this->belongsTo('prefecture',[
+           'joinType' => 'LEFT',
+           'foreignKey' => 'pref',
+           'bindingKey' => 'id',
+           'propertyName' => 'pref'
+       ]);
     }
 
 }

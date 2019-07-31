@@ -1,8 +1,9 @@
 <?php //③フォロワー?>
 <div class="contents user">
-    <article class="contain">
+    <article class="contain-white">
             <div class="contain_inner">
             <?php echo $this->element('user_header', ["type" => "follower"]); ?>
+
             <div class="user_flame">
                 <?php
                 //フォローしているユーザを先に表示
@@ -15,7 +16,6 @@
                     echo $this->element('user_summary', ["user_data" => $FollowerIn]);
                 endforeach;
                 ?>
-            </div>
             </div>
     </article>
 </div>

@@ -32,12 +32,9 @@ input:-webkit-autofill{
 }
 
 /*iphoneで丸角になるのをリセット*/
-input[type="text"],
-input[type="password"],
-input[type="password-confirm"],
-input[type="email"],
-input[type="submit"],
-textarea  {
+input,
+textarea,
+select {
   -webkit-appearance: none;
   border-radius: 0;
 }
@@ -75,14 +72,13 @@ main{
   overflow:hidden;
 }
 
-
-
-
-@media (max-width: 767px)  {
-  .contain_inner{
-    padding: 5px 5%;
-  }
+.bg-white{
+  background-color: #fff;
 }
+
+
+
+
 /*▼▽▼▽▼▽ヘッダーの設定▼▽▼▽▼▽*/
 
 
@@ -225,26 +221,30 @@ body > .main{
 .header_inner{
   max-width: 1000px;
   margin: 0 auto;
-  padding: 0 10px;
-
 }
-.contain{
+
+.contain,
+.contain-white{
   max-width: 1000px;
-  margin: 0 auto;
+  margin: 15px auto 30px;
+}
+.contain-white{
   background-color: #fff;
   border: 1px solid #eee;
 }
 
 .contain_inner{
-  padding: 5px 10%;
+  padding: 20px 10%;
 }
 
 @media (max-width: 767px)  {
   .main{
     padding-top: 5px;
   }
+  .contain_inner{
+    padding: 5px 5%;
+  }
 }
-
 #top .content{
   width: 100%;
   padding: 100px 0 40px 0;
@@ -688,15 +688,15 @@ input::placeholder{
 /* ▼ ▼ ▼ ▼ 各ページに跨る設定 ▼ ▼ ▼ ▼ */
 
 @media (max-width: 767px)  {
-    input[type=text],
-    textarea {
+  input,
+  textarea{
     font-size: 16px !important;
     transform: scale(0.8) !important;
     transform-origin: left;
-
   }
 
   .regist input,
+  .regist textarea,
   .shop textarea{
     width: 120% !important;
   }
@@ -713,7 +713,7 @@ input::placeholder{
 
 .contents{
   width: 100%;
-    margin-top: 15px;
+  margin-top: 30px;
 }
 
 
@@ -748,6 +748,7 @@ a{
 .bgt{
 background-color: transparent;
 }
+
 
 .fluid-box{  
 width: 100vw;
@@ -1150,14 +1151,6 @@ box-shadow: none;
 }
 
 
-.shop .content,
-.shop .content_review{
-  max-width: 1000px;
-  background-color: #fff;
-  padding: 30px 10%;
-  border: 1px solid #eee;
-}
-
 
 
 .content_review h3{
@@ -1226,46 +1219,107 @@ box-shadow: none;
   vertical-align: top;
 }
 
-.shop .shop_detail h2,{
+.shop .shop_detail h2{
   font-size: 30px;
   color: #0f0f0f;
   display: inline-block;
 }
-
-
-
 
 @media (max-width: 767px) {
   .shop .content{
   padding: 0 3%;
   }
 }
-.shop dl{
+
+.shop dl,
+.regist dl{
   padding: 13px 0;
-  border-top: 1px solid #e7e7e7;
   margin: 0;
 }
-.shop dt{
+.shop dl{
+  border-top: 1px solid #e7e7e7;
+}
+
+.regist dl{
+  padding: 25px 0;
+}
+
+.shop dt,
+.regist dt{
   display: inline-block;
-  width: 30%;
+  width: 29%;
   vertical-align: top;
   color: #666;
   font-weight: normal;
   line-height: 27px;
-  /*border-bottom: 1px solid #e7e7e7;*/
 }
 
-@media (max-width: 767px) {
-  .shop dt{
-    display: block;
-  }
-}
-
-.shop dd{
+.shop dd,
+.regist dd{
   display: inline-block;
   margin: 0;
   line-height: 22px;
+  width: 70%;
 }
+
+.regist .basic dd.selectbox,
+.regist .address dd.selectbox{
+  width: 50%;
+}
+
+.regist .open_hour dd.selectbox{
+  width: 100%;
+}
+
+
+.regist legend{
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+.regist .bussinesshour{
+  margin-bottom: 10px;
+}
+.regist button.add_open_hour{
+  background-color: transparent;
+  color: inherit;
+  font-size: inherit;
+  /*text-align: left;*/
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  margin: 0;
+}
+
+@media (max-width: 767px) {
+  .regist dl{
+    padding: 10px 0;
+  }
+
+  .shop dt,
+  .regist dt{
+    display: block;
+    width: 100%;
+  }
+
+  .shop dd,
+  .regist dd{
+    width: 100%;
+  }
+  
+  .regist .basic dd.selectbox,
+  .regist .address dd.selectbox{
+    width: 80%;
+  }
+
+  .regist .open_hour dd.selectbox{
+    width: 100%;
+  }
+
+  .regist legend{
+    font-size: 16px;
+  }
+}
+
 
 .shop .information table td{
   width: 70%;
@@ -1647,18 +1701,19 @@ box-shadow: none;
   
   max-width: 29%;
   margin-bottom: 30px;
+    background-color: #F4F4F4;
 }
 
 .user .shop_flame::before{
   content:"";
   display: block;
-  width:23%;
+  width:29%;
   order:1;
 }
 .user .shop_flame::after{
   content:"";
   display: block;
-  width:23%;
+  width:29%;
   order:1;
 }
 
@@ -1677,8 +1732,7 @@ box-shadow: none;
   text-align: left;
   vertical-align: top;
   padding:  10px 20px 20px 20px;
-      background-color: #fafafa;
-    border: 1px solid #eee;
+  background-color: #fff;
 }
 
 
@@ -1907,6 +1961,15 @@ box-shadow: none;
 
 }
 
+
+.user .header-bg {
+  background-image: url("画像のパス");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+}
+
 .user .userlist{
   max-width: 1000px;
   margin: 0 auto;
@@ -1954,7 +2017,7 @@ box-shadow: none;
 }
 
 .user article {
-  margin-bottom: 150px;
+  /*margin-bottom: 150px;*/
 }
 
 .user article .icon{
@@ -1969,7 +2032,7 @@ box-shadow: none;
 .user .shops li{
   float:left;
   width: 33%;
-  height: 80px;
+  /*height: 80px;*/
 }
 
 
@@ -1997,9 +2060,20 @@ box-shadow: none;
 
 
 .user .user_infor{
-  width: 310px;
-  margin: 0 auto 50px;
+  flex: 0 0 33%;
+  margin-bottom: 50px;
   display: flex;
+}
+@media (max-width: 830px)  {
+  .user .user_infor{
+    flex: 0 0 50%;
+  }
+}
+
+@media (max-width: 580px) {
+  .user .user_infor{
+    flex: 0 0 100%;
+  }
 }
 
 .user .user_infor .icon_area{
@@ -2080,13 +2154,9 @@ box-shadow: none;
   /*display: block;*/
   font-size: 14px;
 }
-
-.regist input,
 .shop textarea{
-  margin-bottom: 20px;
   resize: none;
   width: 100%;
-  height: 200px;
   background: none;
   border: 0;
   border: solid 1px #999;
@@ -2101,9 +2171,84 @@ box-shadow: none;
   line-height: 2.0em;
 }
 
+.regist input,
+.regist textarea{
+  resize: none;
+  width: 100%;
+  background-color: #f0f0f0;
+  border: 0;
+  outline: 0px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  font-size:12px;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  color: #666;
+  line-height: 1.0em;
+  letter-spacing: .18em;
+  padding: 10px 18px;
+}
 
-.regist .form{
-  padding: 10px 30px;
+
+
+.shop textarea{
+  height: 200px;
+}
+
+.regist select{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 100%;
+    font-size: 11px;
+    letter-spacing: .18em;
+    border-style: none;
+    background-color: #f0f0f0;
+    line-height: 21px;
+    padding: 10px 18px;
+    padding-right: 24px;
+    border-radius: 0;
+    box-sizing: border-box;
+    position: relative;
+    color: #666;
+}
+@media (max-width: 767px)  {
+  .regist select{
+    font-size: 16px;
+  }
+}
+.regist .selectbox {
+  position: relative;
+}
+.regist .selectbox::after {
+    background-image: url(/img/select_arr_bottom.svg);
+    margin-top: 5px;
+}
+.regist .selectbox::before {
+    background-image: url(/img/select_arr_top.svg);
+    margin-top: -5px;
+}
+
+.regist .selectbox::before,
+.regist .selectbox::after {
+    content: "";
+    position: absolute;
+    width: 6px;
+    height: 4px;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    background-repeat: no-repeat;
+    background-size: 6px 4px;
+    z-index: 200;
+}
+
+
+/*セレクトボックスの矢印を消す（IE11バグ対応）*/
+select::-ms-expand {
+  display: none;
 }
 
 .regist ul{
@@ -2135,9 +2280,9 @@ box-shadow: none;
   width: 30px;
   height: 30px;
   padding: 5px 5px 2px 5px;
+  margin-right: 5px;
   text-align: center; line-height: 1.0;
-  border-radius: 15px;
-  background: #ddd;
+  background: #F0F0F0;
   cursor: pointer;
 }
 
@@ -2168,7 +2313,7 @@ box-shadow: none;
 }
 
 .regist .bussinesshour ul{
-  margin: 10px 0 30px 0;
+  margin: 0;
   padding: 0;
   display: flex;
   align-items: center;

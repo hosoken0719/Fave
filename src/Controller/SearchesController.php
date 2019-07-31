@@ -39,8 +39,7 @@ class SearchesController extends AppController{
 		        	'user_id' => 'shops.user_id',
 		        	'shop_id' => 'shops.id',
 		        	'pref' => 'shops.pref',
-		        	'city' => 'shops.city',
-		        	'ward' => 'shops.ward',
+		        	'address' => 'shops.address',
 		        	'lat' => 'shops.lat',
 		        	'lng' => 'shops.lng',
 		        	'typename' => 'shoptypes.typename'
