@@ -1,33 +1,33 @@
 <?php ?>
-<?php 
-echo $this->Form->create('Searches',['url' => ['action' => 'index'],'inputDefaults'=>['label'=>false,'div'=>false]]); 
+<?php
+echo $this->Form->create('Searches',['type' => 'get','url' => ['action' => 'index'],'inputDefaults'=>['label'=>false,'div'=>false]]);
 ?>
 
-		<div class="element input">
+		<!-- <div class="element input"> -->
 <?php
 
 //キーワード
-echo $this->Form->control('word', array(
-	'type' => 'text',
-	'maxlength' => false,
-	'placeholder' => 'キーワード',
-	'class' => 'search_box_line',
-	'id' => 'ac_word',
-	'label' => false
-));
+//echo $this->Form->control('word', [
+// 	'type' => 'text',
+// 	'maxlength' => false,
+// 	'placeholder' => 'キーワード',
+// 	'class' => 'search_box_line',
+// 	'id' => 'ac_word',
+// 	'label' => false
+// ]);
 ?>
-		</div>
+		<!-- </div> -->
 		<div class="element input">
 <?php
 
 //ショップタイプ
-echo $this->Form->control('type', array(
-	// 'options' => $typename,
-    'empty' => 'Shop type',
+echo $this->Form->control('shoptype', [
+	'options' => $typename,
+    'empty' => '選択してください',
     'class' => 'search_box_select',
 	'id' => 'login_form_select',
-	'label' => false
-));
+	'label' => 'ショップタイプ'
+]);
 
 ?>
 		</div>
@@ -35,25 +35,25 @@ echo $this->Form->control('type', array(
 <?php
 
 //エリア
-echo $this->Form->control('area' , array(
+echo $this->Form->control('area' , [
 	'type' => 'text',
 	'maxlength' => false,
-	'placeholder' => 'エリア',
+	'placeholder' => '住所 例)名古屋市',
     'class' => 'search_box_line',
 	'id' => 'login_form_txt',
-	'label' => false
-));
+	'label' => '住所'
+]);
 ?>
 
 		</div>
 		<div class="element button">
-<?php 
-echo $this->Form->submit('検索',array('class'=>'search_btn','name'=>'search_button'));
+<?php
+	echo $this->Form->submit('検索',['class'=>'search_btn']);
 ?>
-	
+
 		</div>
 
-<?php 
+<?php
 // echo $this->Form->submit('地図',array('class'=>'btn btn-default','name'=>'map'));
 echo $this->Form->end();
 ?>

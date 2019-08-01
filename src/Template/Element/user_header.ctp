@@ -5,26 +5,27 @@
 			</div>
 			<div class="detail">
 				<div class="user_name">
-					<p><?= $nickname; ?></p>
-					<?php if($sex) echo '<div class="sex">' . $sex . '</div>'; ?>
-					<?php if($address) echo '<div class="address">' . $address . '</div>'; ?>	
+					<h1><?= $nickname; ?>
+					<?php //ログインユーザ自身の場合はフォローボタンを非表示
+					if($login_id <> $user_id): ?>
+						<span class='follow'>
+						<?php echo $this->Form->create('Follow');
+						echo $this->Form->submit($follow_status['text'],['id'=>'button'.$user_id ,'class'=>'follow_button inline '.$follow_status['tag'],'data-user'=>$user_id , 'data-button'=>'button'.$user_id,'div'=>false ]);
+						echo $this->Form->end(); ?>
+						</span></h1>
+		        </div>
+		        <div>
+					<?php endif; ?>
+					<?php if($sex) echo "<div class='sex'>{$sex}</div>"; ?>
+					<?php if($address) echo "<div class='address'>{$address}</div>"; ?>
 				</div>
-<?php
-//ログインユーザ自身の場合はフォローボタンを非表示
-if($login_id <> $user_id){
-	echo "<div class='follow'>";
-	echo "<p>";
-	echo $this->Form->create('Follow'); 
-	echo $this->Form->submit($follow_txt,['id'=>'button'.$user_id  ,'class'=>'follow_button','data-user'=>$user_id , 'data-button'=>'button'.$user_id ]);
-	echo $this->Form->end();
-	echo "</p></div>";
-}
-	?>
-				
+
+
 			</div>
 		</div>
-		        </div>
     </article>
+
+<div class="loading hide"></div>
     <article class="contain">
 
 		<div class="type">
@@ -36,14 +37,14 @@ if($login_id <> $user_id){
 					</li>
 					<?php if($count['follow_users'] > 0) : ?>
 						<li <?php if($type === 'user') echo "class='active'"; ?>>
-							<?= $this->Html->link(__('フォロー<br />'.$count['follow_users'].'人'), ['controller' => 'Users', 'action' => 'followUsers',$user_name],['escape' => false]); ?>				
+							<?= $this->Html->link(__('フォロー<br />'.$count['follow_users'].'人'), ['controller' => 'Users', 'action' => 'followUsers',$user_name],['escape' => false]); ?>
 					<?php else: ?>
 						<li>フォローユーザ<br />0人
 					<?php endif; ?>
 
 						</li>
 					<?php if($count['followers'] > 0) : ?>
-						<li <?php if($type === 'follower') echo "class='active'"; ?>>							
+						<li <?php if($type === 'follower') echo "class='active'"; ?>>
 							<?= $this->Html->link(__('フォロワー<br />'.$count['followers'].'人'), ['controller' => 'Users', 'action' => 'followers',$user_name],['escape' => false]); ?>
 					<?php else: ?>
 						<li>フォロワー<br />0人

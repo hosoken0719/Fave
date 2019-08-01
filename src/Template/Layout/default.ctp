@@ -2,7 +2,7 @@
 <html>
   <head>
     <?php echo $this->Html->charset(); ?>
-     
+
      <title><?php if(!empty($title)){echo $title;}else{echo "Fave - まだ、知らないお店へ";} ?></title>
      <meta name="description" content="<?php if(!empty($description)){echo $description;}else{echo "お店探しのためのSNS";} ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0", content="width=device-width" />
@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-
+<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.2/croppie.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.2/croppie.min.css">
     <?= $this->Html->script('swiper.min.js'); ?>
@@ -58,8 +58,8 @@ $(function() {
             <div id="header-link">
               <div class="header-link-item home_button left"><a href="/">ホーム</a></div>
               <div class="header-link-item left"><?= $this->Html->link(__('お気に入り'), ['controller' => 'Follows', 'action' => 'index']) ?></div>
-              <div class="header-link-item left"><?= $this->Html->link(__('検索'), ['controller' => 'Searches', 'action' => 'index']) ?></div>
-              <div class="header-link-item left"><?= $this->Html->link(__('投稿'), ['controller' => 'ShopRegists', 'action' => 'index']) ?></div>
+              <div class="header-link-item left"><?= $this->Html->link(__('探す'), ['controller' => 'Searches', 'action' => 'index']) ?></div>
+              <div class="header-link-item left"><?= $this->Html->link(__('お店登録'), ['controller' => 'ShopRegists', 'action' => 'index']) ?></div>
               <div class="header-link-item right"><?= $this->Html->link(__('アカウント'), ['controller' => 'Accounts', 'action' => 'index']) ?></div>
             </div>
           </nav>

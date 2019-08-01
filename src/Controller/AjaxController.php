@@ -169,7 +169,7 @@ class AjaxController extends AppController
 		$this->set('_serialize','result');
     }
 
-
+//ショップ画像をフォルダに保存する
     public function shopimage(){
 		 if ($this->request->is('ajax')) {
 
@@ -180,10 +180,10 @@ class AjaxController extends AppController
 
 				$data = base64_decode($image_array_2[1]);
 
-				$imagename = time().'.jpeg';
+				$imagename = time().'.png';
 				$shop_id = $this->request->getData("shop_id");
-
 				$path = SHOPPHOTO_UPLOADDIR.'/photo_shop/'.$shop_id.'/';
+
 				//ショップのディレクトリ有無を確認して、無ければ新規作成
 				if(!file_exists($path)){
 					mkdir($path,0755);
@@ -191,60 +191,60 @@ class AjaxController extends AppController
 				}
 				file_put_contents($path.$imagename,$data);
 
-				$this->resize($shop_id,$path,$imagename,360,480);
+				$this->resize($shop_id,$path,$imagename,360,480,'max');
+				$this->resize($shop_id,$path,$imagename,288,384,'middle');
+				$this->resize($shop_id,$path,$imagename,108,144,'min');
 		}
     }
 
+	//GDを使用しているはず
+	private function resize($shop_id,$path,$imagename,$h,$w,$prefix){
+
+		// 加工したいファイルを指定
+		$file = $path.$imagename;
+
+		// 加工前の画像の情報を取得
+		list($original_w, $original_h, $type) = getimagesize($file);
+
+		// 加工前のファイルをフォーマット別に読み出す（この他にも対応可能なフォーマット有り）
+		switch ($type) {
+		    case IMAGETYPE_JPEG:
+		        $original_image = imagecreatefromjpeg($file);
+		        break;
+		    case IMAGETYPE_PNG:
+		        $original_image = imagecreatefrompng($file);
+		        break;
+		    case IMAGETYPE_GIF:
+		        $original_image = imagecreatefromgif($file);
+		        break;
+		    default:
+		        throw new RuntimeException('対応していないファイル形式です。: ', $type);
+		}
+
+		// 新しく描画するキャンバスを作成
+		$canvas = imagecreatetruecolor($w, $h);
+		imagecopyresampled($canvas, $original_image, 0,0,0,0, $w, $h, $original_w, $original_h);
+
+		$resize_path = $path.'thumbnail/'.$prefix.'_'.$imagename; // 保存先を指定
+
+		switch ($type) {
+		    case IMAGETYPE_JPEG:
+		        imagejpeg($canvas, $resize_path);
+		        break;
+		    case IMAGETYPE_PNG:
+		        imagepng($canvas, $resize_path, 9);
+		        break;
+		    case IMAGETYPE_GIF:
+		        imagegif($canvas, $resize_path);
+		        break;
+		}
+
+		// 読み出したファイルは消去
+		imagedestroy($original_image);
+		imagedestroy($canvas);
 
 
-private function resize($shop_id,$path,$imagename,$h,$w){
-
-
-	// 加工したいファイルを指定
-	$file = $path.$imagename;
-
-	// 加工前の画像の情報を取得
-	list($original_w, $original_h, $type) = getimagesize($file);
-
-	// 加工前のファイルをフォーマット別に読み出す（この他にも対応可能なフォーマット有り）
-	switch ($type) {
-	    case IMAGETYPE_JPEG:
-	        $original_image = imagecreatefromjpeg($file);
-	        break;
-	    case IMAGETYPE_PNG:
-	        $original_image = imagecreatefrompng($file);
-	        break;
-	    case IMAGETYPE_GIF:
-	        $original_image = imagecreatefromgif($file);
-	        break;
-	    default:
-	        throw new RuntimeException('対応していないファイル形式です。: ', $type);
 	}
-
-	// 新しく描画するキャンバスを作成
-	$canvas = imagecreatetruecolor($w, $h);
-	imagecopyresampled($canvas, $original_image, 0,0,0,0, $w, $h, $original_w, $original_h);
-
-	$resize_path = $path.'thumbnail/min_'.$imagename; // 保存先を指定
-
-	switch ($type) {
-	    case IMAGETYPE_JPEG:
-	        imagejpeg($canvas, $resize_path);
-	        break;
-	    case IMAGETYPE_PNG:
-	        imagepng($canvas, $resize_path, 9);
-	        break;
-	    case IMAGETYPE_GIF:
-	        imagegif($canvas, $resize_path);
-	        break;
-	}
-
-	// 読み出したファイルは消去
-	imagedestroy($original_image);
-	imagedestroy($canvas);
-
-
-}
 
 
 

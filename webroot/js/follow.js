@@ -29,9 +29,9 @@ $(function() {
 
 // ユーザをフォローする
 $(function() {
-
-
     $(document).on('click', '.follow_button', function(){
+        var time=new Date().getTime();
+
         event.preventDefault();
         $.ajax({
             type: 'GET',
@@ -41,20 +41,26 @@ $(function() {
                 button: $(this).attr('data-button'),
             },
             dataType: 'json',
-
+            beforeSend: function(xhr){
+                $('.loading').removeClass('hide');//loading画像
+            }
         })
         .then(
             function(data) {
                 var response = JSON.parse(data);
                 if(response.result == 'follow'){
                     document.getElementById('button'+response.button).value='フォロー中';
+                    $('.follow_button').removeClass('follow');
+                    $('.follow_button').addClass('followed');
+                    $('.loading').addClass('hide')
                 }else if(response.result == 'followed'){
                     document.getElementById('button'+response.button).value='フォローする';
+                    $('.follow_button').addClass('follow');
+                    $('.follow_button').removeClass('followed');
+                    $('.loading').addClass('hide')
                 }
             },
             function(data) {
-                // var response = JSON.parse(data);
-                // alert(response);
                 alert('失敗しました。一度画面を更新してください');
             }
         )
@@ -70,7 +76,8 @@ $(function() {
 // お店をお気に入りに追加する
 $(function() {
     $(document).on('click', '.favorite_button', function(){
-     const csrf = $('input[name=_csrfToken]').val();
+        var time=new Date().getTime();
+        const csrf = $('input[name=_csrfToken]').val();
         event.preventDefault();
         $.ajax({
             type: 'POST',
@@ -82,8 +89,8 @@ $(function() {
             },
             dataType: 'json',
             beforeSend: function(xhr){
-            $('.loading').removeClass('hide');//loading画像
-            xhr.setRequestHeader('X-CSRF-Token', csrf);
+                $('.loading').removeClass('hide');//loading画像
+                xhr.setRequestHeader('X-CSRF-Token', csrf);
             }
         })
         .then(
@@ -96,7 +103,12 @@ $(function() {
             }
         ).then(//always
             function() {
-                $('.loading').addClass('hide');
+                var now = new Date().getTime();
+                      if (now-time<=1000) {
+                        setTimeout(function(){$('.loading').addClass('hide')},1000);
+                    }else{
+                        $('.loading').addClass('hide');
+                    }
             }
         )
     })
@@ -104,6 +116,7 @@ $(function() {
 
 $(function() {
     $(document).on('click', '.delete_favorite', function(){
+        var time=new Date().getTime();
         event.preventDefault();
         $.ajax({
             type: 'GET',
@@ -112,7 +125,7 @@ $(function() {
                 shop: $(this).attr('data-shop'),
             },
             dataType: 'json',
-                        //loading画像
+            //loading画像
             beforeSend: function(){
             $('.loading').removeClass('hide');
           }
@@ -128,7 +141,12 @@ $(function() {
             }
         ).then(//always
             function() {
-                $('.loading').addClass('hide');
+                var now = new Date().getTime();
+                      if (now-time<=1000) {
+                        setTimeout(function(){$('.loading').addClass('hide')},1000);
+                    }else{
+                        $('.loading').addClass('hide');
+                    }
             }
         )
     })

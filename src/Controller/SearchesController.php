@@ -26,10 +26,11 @@ class SearchesController extends AppController{
 	    //*ショップタイプの取得
 		$this->set('typename',$ShoptypeTable->find('list'));
 
-		if($this->request->is('post')){
+		//URLの全パラメータを取得
+		$parameter = $this->request->getQueryParams();
 
-			//検索ボタンが押された場合
-			if($this->request->getData('search_button')){
+		//検索窓か検索結果を表示する判定フラグ
+		$result_flg = 0; //0は検索窓を表示
 
 				$shopDatas = $ShopTable->find()
 				->where(['shops.status' => '1'])
@@ -46,71 +47,34 @@ class SearchesController extends AppController{
 					]
 				);
 
-				//ハッシュタグかキーワードがある場合は検索条件に追加する
-				if($this->request->getData('word')){
-					//ハッシュタグの場合
-					if(substr($this->request->getData('word'), 0, 1) == '#'){
-					
-						//タグテーブルから検索値があればidを取得
-						if($tag_id = $TagTable->find()
-							->where(['tag' => $this->request->getData('word')])
-							->select(['tag_id' => 'id'])
-							->first())
-						{
-							//タグidから該当のuser_idを取得
-							$user_ids = $UserTagTable->find()
-							->where(['tag_id' => $tag_id->tag_id])
-							->select(['user_id' => 'user_id']);
-						
-							//user_idからshopを検索する
-							$user_id_array = array();
-							foreach ($user_ids as $user_id):
-								array_push($user_id_array , $user_id->user_id);
-							endforeach;
-							$shopDatas
-							->where(['shops.user_id IN' => $user_id_array]);
-						}else{
-							//idを取得できなかった場合（タグテーブルに検索値がない場合）は検索結果が出ないようにダミーで0を代入する。
-							$shopDatas
-							->where(['shops.user_id' => '0']);
-						}
-
-					//キーワードの場合
-					}else{
-						$word = $this->request->getData('word');
-						$shopDatas
-						->where([
-							'OR' => [
-								['shops.shopname LIKE' => '%'.$word.'%'],
-								['shops.introduction LIKE' => '%'.$word.'%']
-							]
-						]);
-					}
-				}
+					// ->where([
+					// 		'OR' => [
+					// 			['shops.shopname LIKE' => '%'.$parameter['word'].'%']
+					// 		]
+					// 	]);
 
 				//ショップタイプの指定がある場合は検索条件に追加する
-				if($this->request->getData('type')){
-					$shopDatas
-					->where(['shops.shoptype' => $this->request->getData('type')]);
+				if(!empty($parameter['shoptype'])){
+					$shopDatas->where(['shops.shoptype' => $parameter['shoptype']]);
+					$result_flg = 1; //検索結果を表示するためのフラグを代入
 				}
 
 				//エリアの指定がある場合は検索条件に追加する
-				if($this->request->getData('area')){
+				if(!empty($parameter['area'])){
 
-					$area = $this->request->getData('area');
+					$area = $parameter['area'];
 				    $shopDatas
 					->where([
 						'OR' => [
 							['shops.pref LIKE' => '%'.$area.'%'],
-							['shops.city LIKE' => '%'.$area.'%'],
-							['shops.ward LIKE' => '%'.$area.'%'],
-							['shops.town LIKE' => '%'.$area.'%'],
+							['shops.address LIKE' => '%'.$area.'%'],
 							['shops.building LIKE' => '%'.$area.'%']
 						]
 					]);
+					$result_flg = 1; //検索結果を表示するためのフラグを代入
 				}
 
-			    
+
 			    //Follow済み($followed)
 			    $followers = $FollowTable->find()
 			    ->where(['follow' => $this->Auth->user('id')])
@@ -139,25 +103,23 @@ class SearchesController extends AppController{
 
 						}
 					endforeach;
-				
+
 					$map_default_center = '35.1770949,137.0165602';
 
 
 				//ズームの値を設定	
 					$map_zoom = 11;
-					$locate_json = json_encode($map_shops); 
+					$locate_json = json_encode($map_shops);
 
-				//スマホの2本指操作を解除	
+				//スマホの2本指操作を解除
 					$gestureHandling = "gestureHandling: 'greedy'";
 
 					$this->set('title','検索結果 | Fave');
-					$this->set(compact('title','rating','map_zoom','gestureHandling','map_default_center','locate_json','followed','followers','shopDatas'));
+					$this->set(compact('title','rating','map_zoom','gestureHandling','map_default_center','locate_json','followed','followers','shopDatas','result_flg'));
 
-			}
-		}
-		else{
+
 					$this->set('title','検索 | Fave');
-		}
+
 			// elseif(isset($this->request->getData['Follow'])){
 			// //Followボタンを押した時にフォロー済みにする
 			//     if($this->request->is('post')){

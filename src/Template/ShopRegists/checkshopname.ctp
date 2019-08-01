@@ -1,33 +1,43 @@
 <?php ?>
 
 <div class="contents regist">
-	<div class="col-sm-12">
-		<article class="content">
-			<div class="shop_detail">
+    <article class="contain-white">
+    <div class="contain_inner">
+            <div class="form confirm">
 
 
-<?php
 
 
-    echo "<div class=duplex_shops>";
-    echo "<p>類似するお店が見つかりました。</p>";
-    echo "<p>重複しているかどうかをご確認の上、登録を続けてください。</p>"; 
-    echo "<ul>";
-    foreach($duplex_shops as $data):
-    echo "<li>{$data}</li>";
-    endforeach;
-    echo "</ul>";
-    echo $this->Form->create('',['url' => ['controller' => 'ShopRegists', 'action' => 'mapcheck']]);
-    echo $this->Form->button(__('登録を続ける'));
-            echo $this->Form->end();
 
-    echo    $this->Form->create('',['class'=>'prev' , 'url' => ['action' => 'index']]);
-    echo     $this->Form->button(__('戻る'));
-            echo $this->Form->end();
-    echo $this->Html->link('キャンセル',['controller' => 'ShopRegists', 'action' => '/']);
-    echo "</div><hr>";
-?>
+
+    <div class=duplex_shops>
+        <legend>類似するお店が見つかりました</legend>
+        <p>重複しているかどうかをご確認の上、登録を続けてください。</p>
+        <ul>
+            <?php 
+            foreach($duplex_shops as $id => $data):
+                echo "<li>";
+                echo $this->Html->link($data, 
+                    ['controller' => 'shops',
+                    'action' => $shop_id[$id]],
+                    ['target' => '_blank']);
+                echo "</li>";
+            endforeach;
+            ?>
+        </ul>
+        <?php
+        echo $this->Form->create('',['url' => ['action' => 'confirm']]);
+        echo $this->Form->button(__('登録を続ける'));
+        echo $this->Form->end();
+        ?>
+        <?php
+        echo $this->Form->create('',['class'=>'prev' , 'url' => ['action' => 'index']]);
+        echo $this->Form->button('戻る',['class'=>'back']);
+        echo $this->Form->end();
+        ?>
+    </div>
+
+</div>
 </div>
 </article>
-</div>
 </div>

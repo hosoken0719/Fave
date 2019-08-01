@@ -17,6 +17,7 @@ class ShopsController extends AppController {
     }
 
 	public function index(){
+
 		
 	    $ShoptypeTable = TableRegistry::get('shoptypes');
 	    $FollowTable = TableRegistry::get('follows');
@@ -34,10 +35,11 @@ class ShopsController extends AppController {
 		if(!empty($photo_list)){
 			$photoShop_fullpath = max($photo_list); //最新写真のみ抽出
 			$photoShop_array = explode('/',$photoShop_fullpath); //サーバパスの取得となるため、最後のファイル名だけを取得
-			$photoShop = "https://fave-jp.info/img/photo_shop/" . $shopData->shop_id . "/" . end($photoShop_array);
+			$photoShop = "https://fave-jp.info/img/photo_shop/" . $shopData->shop_id . "/thumbnail/max_" . end($photoShop_array);
 		}else{
 			$photoShop = null;
 		}
+
  	// ハッシュタグにリンクをつける
 		// if(!is_null($shopData->tag)){
 		//     $saved_hashtag_separates = explode(' ',$shopData->tag);
@@ -124,8 +126,10 @@ class ShopsController extends AppController {
 		$map_zoom = 14;
 		$locate_json = json_encode($map_shops); 
 
+	//スマホの2本指操作を解除	
+		$gestureHandling = "gestureHandling: 'greedy'";
 		$title = $shopData->shopname . ' | Fave';
-		$this->set(compact('title','map_zoom','map_default_center','locate_json'));//locate_jsonはmain.ctpで受け取り
+		$this->set(compact('title','map_zoom','map_default_center','locate_json','gestureHandling'));//locate_jsonはmain.ctpで受け取り
 
 	}
 
@@ -214,12 +218,13 @@ class ShopsController extends AppController {
 			'user_id' => 'Shops.user_id',
 			'shop_id' => 'Shops.id',
 			'shop_accountname' => 'Shops.accountname',
+			'shop_business_hour_detail' => 'Shops.business_hour_detail',
 			'introduction' => 'Shops.introduction',
 			'pref' => 'pref',
 			'city' => 'address',
 			'buolding' => 'building',
 			'parking' => 'parking',
-			'tel' => 'tel',
+			'phone_number' => 'phone_number',
 			'homepage' => 'homepage',
 			// 'tag' => 'Users.tag',
 			'lat' => 'Shops.lat',

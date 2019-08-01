@@ -69,8 +69,7 @@ class FollowsController extends AppController{
 			'shopname' => 'Shop.shopname',
 			'shop_id' => 'Shop.id',
 			'pref' => 'Shop.pref',
-			'city' => 'Shop.city',
-			'ward' => 'Shop.ward',
+			'address' => 'Shop.address',
 			'Shop_accountname' => 'Shop.accountname',
 			'lat' => 'Shop.lat',
 			'lng' => 'Shop.lng',
@@ -94,7 +93,7 @@ class FollowsController extends AppController{
 				'shoptype' => $shop->typename,
 				'shop_id' => $shop->shop_id,
 				'account' => $shop->Shop_accountname,
-				'shopaddress' => $shop->pref.$shop->city.$shop->ward,
+				'shopaddress' => $shop->pref.$shop->address,
 				'photo' => $this->FollowComp->getFollowShopPhotos($shop->shop_id)
 			);
 			array_push($map_shops,$locate);

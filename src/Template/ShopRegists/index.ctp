@@ -5,10 +5,9 @@
 			<div class="form">
         <fieldset class="basic">
           <legend><?= "基本情報" ?></legend>
-          <hr/ >
           <?= $this->Form->create('',['class'=>'next','url' => ['controller' => 'ShopRegists', 'action' => 'checkshopname'],'templates' => $template]); ?>
           <dl><div class='shopname'><div class='require'></div></div>
-            <?= $this->Form->control('shopname', ['label' => 'ショップ名（必須)','name'=>'shopname','value'=>$shopname]); ?></dl>
+            <?= $this->Form->control('shopname', ['label' => "ショップ名（必須)",'name'=>'shopname','value'=>$shopname]); ?></dl>
             <dl><?= $this->Form->control('branch', ['label' => '支店名','value'=>$branch,'placeholder' => '栄支店']) ?></dl>
           
           <dl><div class='kana'><div class='require'></div></div>
@@ -29,10 +28,21 @@
                   'default' => $shoptype,
                 ]); ?>    
             </dl>
+            <dl>
+              <?= //ショップタイプ一覧
+              $this->Form->control('shoptype2',
+                ['options' => $typename,
+                  'empty' => '選択してください',
+                  'class' => 'search_box_select',
+                  'id' => 'login_form_select',
+                  'label' => 'ショップタイプ2',
+                  'type' => 'select',
+                  'default' => $shoptype2,
+                ]); ?>    
+            </dl>
         </fieldset>
         <fieldset class="address">
-          <legend><?= "住所・電話番号" ?></legend>
-          <hr/ >
+          <legend><?= "住所" ?></legend>
             <dl>
               <div class='pref'><div class='require'></div></div>
             <?= //住所の県一覧
@@ -57,8 +67,7 @@
           </dl>
         </fieldset>
         <fieldset class="open_hour">
-          <label>営業時間</label>
-          <hr />
+          <legend>営業時間</legend>
               <dl>
                 <dt>営業時間1</dt>
                 <dd><?= $this->element('open_hour',['count'=>1]) ?>
@@ -75,7 +84,7 @@
                 <dd><?= $this->element('open_hour',['count'=>3]) ?></dd>
               </dl>
               <dl class='business_hour_detail'>
-                <dt>営業時間詳細</dt>
+                <dt>営業時間備考</dt>
                 <dd>
                 <?= $this->Form->control('business_hour_detail', [
                 'placeholder' => '詳細情報を記入して下さい（例）第3月曜は休業日',
@@ -84,16 +93,15 @@
                 'id' => 'input_review',
                 'value' => $business_hour_detail,
                 'maxlength' => 1500,
-              ]
-             );
-             ?></dd></dl>
+                ]);
+                ?>
+                </dd></dl>
         </fieldset>
         <fieldset>
+          <legend>詳細情報</legend>
               <dl><?= $this->Form->control('phone_number', ['label' => '電話番号（ハイフンあり）','value'=>$phone_number , 'placeholder' => '052-123-4567']) ?></dl>
               <dl><?= $this->Form->control('parking', ['label' => '駐車場','placeholder' => 'あり／なし or 10台','value'=>$parking]) ?></dl>
               <dl><?= $this->Form->control('homepage', ['label' => 'ホームページ','placeholder' => 'https://fave-jp.info','value'=>$homepage]) ?></dl>
-              <dl><?= $this->Form->control('introduction', ['label' => '紹介','value'=>$introduction]) ?></dl>
-
           <?= $this->Form->button(__('進む')); ?>
           <?= $this->Form->end(); ?>
           
@@ -133,6 +141,8 @@
     return chkForm;
   });
 
+
+$("dt:contains('必須')").addClass('text-danger');
 
 
     //「営業時間を追加する」ボタン

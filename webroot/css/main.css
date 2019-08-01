@@ -34,7 +34,8 @@ input:-webkit-autofill{
 /*iphoneで丸角になるのをリセット*/
 input,
 textarea,
-select {
+select,
+button {
   -webkit-appearance: none;
   border-radius: 0;
 }
@@ -59,7 +60,7 @@ select {
 }
 
 .inline{
-  display: inline;
+  display: inline !important;
 }
 
 *:focus { /*chromeの青い線を消す */
@@ -242,7 +243,7 @@ body > .main{
     padding-top: 5px;
   }
   .contain_inner{
-    padding: 5px 5%;
+    padding: 5px 5% 15px;
   }
 }
 #top .content{
@@ -513,14 +514,24 @@ body > .main{
   margin-bottom: 30px;
 }
 
+.button_wrap{
+  width: 100%;
+}
+
 .users button,
 .regist button,
-.shop .display_favorite_button{
+.shop .display_favorite_button,
+.shop .favorite_button,
+.shop .edit_favorite,
+.shop .delete_favorite,
+.user form input.follow,
+.user form input.followed{
   height: 40px;
-  width: 100%;
-  display: inline-block;
-  margin-top: 25px;
-  background-color: #888;
+  width: 70%;
+  /*display: inline-block;*/
+  display: block;
+  margin: 25px auto 0;
+  background-color: #4c4c4c;
   border: none;
   color: #fff;
   text-align: center;
@@ -530,10 +541,49 @@ body > .main{
   cursor: pointer;
 }
 
+.regist button.back,
+.shop .delete_favorite,
+.user form input.followed{
+  background-color: #fff;
+  border: 1px solid #888;
+  color: #888;
+}
+
+.user form input.follow,
+.user form input.followed{
+  margin: 0;
+  width: 125px;
+  height: 25px;
+  text-align: center;
+}
+
 
 .users .link{
   margin-top: 10px;
 }
+
+
+.regist input,
+.regist textarea,
+.shop textarea,
+.shop .content_review.edit form{
+  resize: none;
+  width: 100%;
+  background-color: #f0f0f0;
+  border: 0;
+  outline: 0px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  font-size:12px;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  color: #666;
+  line-height: 1.0em;
+  letter-spacing: .18em;
+  padding: 10px 18px;
+}
+
 
 /*△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲LOGIN△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲*/
 
@@ -1090,7 +1140,7 @@ box-shadow: none;
 
  .btn{
   display: inline-block;
-  margin: 30px auto 0 auto;
+  /*margin: 30px auto 0 auto;*/
   /*margin: 45px 40px 40px;*/
   padding: 5px 10px;
   border: 1px solid #bbb;
@@ -1100,6 +1150,17 @@ box-shadow: none;
   text-decoration: none;
   line-height: 1;
   font-size: 12px;
+  width: 30%;
+  margin-right: 20px;
+  height: 30px;  -webkit-appearance: none;
+  border-radius: 0;
+}
+
+.modal-body .button {
+  text-align: center;
+}
+.modal-body .button form{
+  display: inline;
 }
 
 .col-sm-3 .btn{
@@ -1184,7 +1245,7 @@ box-shadow: none;
 }
 
 .content_review.edit .evaluation label{
-  font-size: 24px;
+  font-size: 16px;
 }
 /*登録ボタンの表示*/
 .content_review.edit .myreview_edit{
@@ -1201,7 +1262,6 @@ box-shadow: none;
   margin-top: 20px;
 }
 .shop .myreview_display{
-  margin-top: 15px;
   line-height: 2.0em;
 }
 .shop .edit .myreview_edit{
@@ -1236,8 +1296,15 @@ box-shadow: none;
   padding: 13px 0;
   margin: 0;
 }
-.shop dl{
+.shop dl,
+.regist .confirm dl{
   border-top: 1px solid #e7e7e7;
+}
+
+/*最初の行は線を消す(first-childはなぜか効かなかった）*/
+.shop dl:first-of-type,
+.regist .confirm dl:first-of-type {
+  border-top: none;
 }
 
 .regist dl{
@@ -1271,15 +1338,21 @@ box-shadow: none;
   width: 100%;
 }
 
+.regist fieldset{
+  margin-bottom: 25px;
+}
 
+.shop legend,
 .regist legend{
   margin-top: 10px;
-  font-size: 18px;
+  font-size: 16px;
+  border-bottom: 1px solid #707070;
 }
 
 .regist .bussinesshour{
   margin-bottom: 10px;
 }
+
 .regist button.add_open_hour{
   background-color: transparent;
   color: inherit;
@@ -1694,12 +1767,12 @@ box-shadow: none;
 .search .shop_infor,
 .user .shop_infor{
   background-color: #fff;
-  -webkit-flex: 0 0 29%; /* 1マスのサイズ設定 */
-  -ms-flex: 0 0 29%; /* 1マスのサイズ設定 */
-  -moz-flex: 0 0 29%; /* 1マスのサイズ設定 */
-  flex: 0 0 29%; /* 1マスのサイズ設定 */*/
+  -webkit-flex: 0 0 28%; /* 1マスのサイズ設定 */
+  -ms-flex: 0 0 28%; /* 1マスのサイズ設定 */
+  -moz-flex: 0 0 28%; /* 1マスのサイズ設定 */
+  flex: 0 0 28%; /* 1マスのサイズ設定 */*/
   
-  max-width: 29%;
+  max-width: 28%;
   margin-bottom: 30px;
     background-color: #F4F4F4;
 }
@@ -1850,7 +1923,7 @@ box-shadow: none;
 #googlemap{
   margin:0;
   padding: 0;
-  height: 700px;
+  height: 70vh;
   width: 100%;
 }
 
@@ -1976,11 +2049,31 @@ box-shadow: none;
 }
 
 .user .header{
-  width: 600px;
-  margin: 0 auto 50px;
+  max-width: 600px;
+  margin: 0 auto 0;
   display: flex;
 }
 
+.user .header h1{
+  font-size: 30px;
+  display: inline;
+    margin: 0;
+}
+
+
+@media (max-width: 767px)  {
+  .user .header h1{
+    display: block;
+  }
+}
+
+.user .header form{
+  display: inline;
+}
+
+.user .submit{
+  display: inline;
+}
 .user .header .icon_area{
   display: flex;
   justify-content: center;
@@ -1997,9 +2090,7 @@ box-shadow: none;
   margin-left: 20px;
 }
 
-.user .header .user_name{
-  font-size: 35px;
-}
+
 
 .user .header .account_name{
   font-size: 20px;
@@ -2154,41 +2245,9 @@ box-shadow: none;
   /*display: block;*/
   font-size: 14px;
 }
-.shop textarea{
-  resize: none;
-  width: 100%;
-  background: none;
-  border: 0;
-  border: solid 1px #999;
-  outline: 0px;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  font-size:12px;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  color: #666;
-  line-height: 2.0em;
-}
 
-.regist input,
-.regist textarea{
-  resize: none;
-  width: 100%;
-  background-color: #f0f0f0;
-  border: 0;
-  outline: 0px;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  font-size:12px;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  color: #666;
-  line-height: 1.0em;
-  letter-spacing: .18em;
-  padding: 10px 18px;
-}
+
+
 
 
 
@@ -2373,12 +2432,6 @@ select::-ms-expand {
   margin-bottom: 10px;
 }
 
-.regist button.back{
-  background-color: #fff;
-  border: 1px solid #888;
-  color: #888;
-}
-
 .regist table{
   width: 100%;
   margin: 20px 0;
@@ -2554,6 +2607,7 @@ select::-ms-expand {
   background-attachment: fixed;
   background-position: center center;
   background-size: 50px 50px;
+  z-index: 999;
 }
 
 .follow .contain{
