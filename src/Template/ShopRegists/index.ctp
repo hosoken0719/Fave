@@ -9,7 +9,7 @@
           <dl><div class='shopname'><div class='require'></div></div>
             <?= $this->Form->control('shopname', ['label' => "ショップ名（必須)",'name'=>'shopname','value'=>$shopname]); ?></dl>
             <dl><?= $this->Form->control('branch', ['label' => '支店名','value'=>$branch,'placeholder' => '栄支店']) ?></dl>
-          
+
           <dl><div class='kana'><div class='require'></div></div>
             <?= //フリガナ（必須項目のため、空欄の場合はcontrollerからフラグを受け取る）
                 $this->Form->control('kana', ['label' => 'フリガナ（必須)','name'=>'kana','value'=>$kana]); ?>
@@ -26,7 +26,7 @@
                   'label' => 'ショップタイプ（必須）',
                   'type' => 'select',
                   'default' => $shoptype,
-                ]); ?>    
+                ]); ?>
             </dl>
             <dl>
               <?= //ショップタイプ一覧
@@ -38,7 +38,7 @@
                   'label' => 'ショップタイプ2',
                   'type' => 'select',
                   'default' => $shoptype2,
-                ]); ?>    
+                ]); ?>
             </dl>
         </fieldset>
         <fieldset class="address">
@@ -104,13 +104,13 @@
               <dl><?= $this->Form->control('homepage', ['label' => 'ホームページ','placeholder' => 'https://fave-jp.info','value'=>$homepage]) ?></dl>
           <?= $this->Form->button(__('進む')); ?>
           <?= $this->Form->end(); ?>
-          
+
         </fieldset>
       </div>
       </div>
     </article>
 </div>
-  
+
 <script type="text/javascript">
   $(".next").submit(function(){
     var chkForm = true;

@@ -9,7 +9,7 @@ use Cake\Validation\Validator;
 
 class ShopsTable extends Table
 {
-    
+
     public function initialize(array $config){
     	parent::initialize($config);
 
@@ -24,7 +24,7 @@ class ShopsTable extends Table
            'propertyName' => 'shoptypes'
        ]);
 
-      $this->belongsTo('prefecture',[
+      $this->belongsTo('prefectures',[
            'joinType' => 'LEFT',
            'foreignKey' => 'pref',
            'bindingKey' => 'id',

@@ -29,44 +29,16 @@ class UsersController extends AppController
     if (!$this->Auth->user()) {
     // 非ログイン
       $this->viewBuilder()->setLayout('top'); //レイアウトのテンプレートをdefaultからtopに変更
+        //inputとselectboxのtemplate
+
       $this->render('top'); //viewファイルをindexからtopに変更
+
     } else {
     // ログイン
 
 
       $UserTable = TableRegistry::get('users');
       $FollowsTable = TableRegistry::get('follows');
-
-      //非表示ボタンを押した場合
-      if($this->request->is('post')){
-      //フォローする場合(非表示にするクエリではない場合)
-
-
-      //非表示にする場合
-
-        // //現在の非表示リストの取り出し
-        //   $hide = $UserTable->Find('all', array('conditions' => array('id' => $this->Auth->user('id')),'fields'=>'hide'));
-        //   $hide = array_shift($hide); //配列の階層が一つ深いため取り出し
-
-        // //空の場合はカンマなし
-        //   if(empty($hide['User']['hide'])){
-        //     $insert_hide = $this->request->data['User']['hide'];
-        //   }
-        // //追記の場合はカンマ区切り
-        //   else{
-        //     $insert_hide = $hide['User']['hide'] . ','. $this->request->data['User']['hide'];
-        //   }
-
-        // //更新の条件を作成
-        //   $data = array(
-        //     'hide' => "'" . $insert_hide . "'",
-        //   );
-
-        // //クエリの発行
-        //   $option =  array('id' => $this->Auth->user('id'));
-        //   $this->User->updateALL($data ,$option);
-      }
-
 
 
     //*自分がフォローしているユーザを取得
@@ -82,15 +54,6 @@ class UsersController extends AppController
             array_push($follower , $data->follower);
         }
 
-        //*非表示リストの作成
-        //*現在の非表示リストの取り出し
-        // $hide = $UserTable->find()->where(['id' => $this->Auth->user('id')])->select(['hide'])->first();;
-        // $hideArray = explode(',',$hide->hide);  //配列に代入
-        // $hideList = array_merge($follower,$hideArray);  //既にフォローしているユーザと、非表示指定のユーザは表示しない
-        // $hideList[] = $this->Auth->user('id'); // 自分も表示しない
-        // $hideList = array_unique($hideList);  //重複削除
-        // $hideList = array_values($hideList);  //配列番号(index)を振り直し
-        // $hideList = array_filter($hideList);  //空白の配列を削除
 
     //*$followerがfollowしているユーザ($favorite)
         $favoriteDatas = $FollowsTable->Find()
@@ -134,6 +97,16 @@ class UsersController extends AppController
             'update' => 'follows.created',
         ])
         ->order(['follows.created' => 'DESC']);
+
+              //*ショップタイプの取得
+      $ShoptypeTable = TableRegistry::get('shoptypes');
+    $this->set('typename',$ShoptypeTable->find('list'));
+          $template = [
+            'label' => '<div{{attrs}}>{{text}}</div>',
+            'input' => '<div class="inputbox"><input type="{{type}}" name="{{name}}"{{attrs}}></div>',
+            'select' => "<div class='selectbox'><select name='{{name}}'{{attrs}}>{{content}}</select></div>",
+          ];
+        $this->set(compact('template'));
 
         $this->set('title','Fave');
         $this->set(compact('favoriteDatas'));

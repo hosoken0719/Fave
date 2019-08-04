@@ -34,12 +34,12 @@ class SearchesController extends AppController{
 
 				$shopDatas = $ShopTable->find()
 				->where(['shops.status' => '1'])
-				->contain(['shoptypes'])
+				->contain(['shoptypes','prefectures'])
 		        ->select([
 		        	'shopname' => 'shops.shopname',
 		        	'user_id' => 'shops.user_id',
 		        	'shop_id' => 'shops.id',
-		        	'pref' => 'shops.pref',
+		        	'pref' => 'prefectures.name',
 		        	'address' => 'shops.address',
 		        	'lat' => 'shops.lat',
 		        	'lng' => 'shops.lng',
@@ -55,8 +55,11 @@ class SearchesController extends AppController{
 
 				//ショップタイプの指定がある場合は検索条件に追加する
 				if(!empty($parameter['shoptype'])){
+					$shoptype = $parameter['shoptype'];
 					$shopDatas->where(['shops.shoptype' => $parameter['shoptype']]);
 					$result_flg = 1; //検索結果を表示するためのフラグを代入
+				}else{
+					$shoptype = "";
 				}
 
 				//エリアの指定がある場合は検索条件に追加する
@@ -66,14 +69,17 @@ class SearchesController extends AppController{
 				    $shopDatas
 					->where([
 						'OR' => [
-							['shops.pref LIKE' => '%'.$area.'%'],
+							['prefectures.name LIKE' => '%'.$area.'%'],
 							['shops.address LIKE' => '%'.$area.'%'],
 							['shops.building LIKE' => '%'.$area.'%']
 						]
 					]);
 					$result_flg = 1; //検索結果を表示するためのフラグを代入
+				}else{
+					$area = "";
 				}
 
+				$this->set(compact('shoptype','area'));
 
 			    //Follow済み($followed)
 			    $followers = $FollowTable->find()
@@ -120,19 +126,14 @@ class SearchesController extends AppController{
 
 					$this->set('title','検索 | Fave');
 
-			// elseif(isset($this->request->getData['Follow'])){
-			// //Followボタンを押した時にフォロー済みにする
-			//     if($this->request->is('post')){
-			//     		$this->Follow->save($this->request->getData);
-			//     }
+	//inputとselectboxのtemplate
+ 	$template = [
+ 		'label' => '<div{{attrs}}>{{text}}</div>',
+ 		'input' => '<div class="inputbox"><input type="{{type}}" name="{{name}}"{{attrs}}></div>',
+ 		'select' => "<div class='selectbox'><select name='{{name}}'{{attrs}}>{{content}}</select></div>",
+ 	];
 
-			//     $followed = array();
-			//     foreach($followData as $data){
-			//     	array_push($followed , $data['Follow']['follower']);
-			//     }
-
-			// }
-		// }
+	$this->set(compact('template'));
 	}
 
 

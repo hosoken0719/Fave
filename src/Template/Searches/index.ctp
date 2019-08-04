@@ -2,8 +2,7 @@
 <div class="contents search">
 
 <?php if(!$result_flg): //検索ボタンが押された場合?>
-
-	<article class="contain-white">
+    <article class="contain-white">
 		<div class="search_box">
 			<div class="switch">
 				<ul class="search_tab clearfix">
@@ -22,14 +21,11 @@
 						<div class="element">
 						<?php
 						//キーワード
-						echo $this->Form->control('word', array(
-							'type' => 'text',
+						echo $this->Form->control('word', [
 							'maxlength' => false,
-							'placeholder' => 'User Name',
-							'class' => 'search_box_line',
-							'id' => 'ac_user',
-							'label' => false
-						));?>
+							'placeholder' => '',
+							'label' => 'ユーザ名'
+						]);?>
 						</div>
 					</li>
 				</ul>
@@ -38,8 +34,46 @@
 	</article>
 <?php else: ?>
 
-	<div class="search_result shop">
-		<article>
+	<div class="search_result">
+		<article class="contain-white">
+		<div class="contain_inner">
+			<div class="element_wrap">
+
+				<?= $this->Form->create('Searches',['type' => 'get','url' => ['action' => 'index'],'inputDefaults'=>['label'=>false,'div'=>false],'templates' => $template]);?>
+				<div class="input_wrap">
+					<div class="element">
+					<?php
+						//ショップタイプ
+						echo $this->Form->control('shoptype', [
+							'options' => $typename,
+						    'empty' => '選択してください',
+							'label' => 'ショップタイプ',
+							'default' => $shoptype
+						]);
+
+						?>
+					</div>
+					<div class="element ">
+						<?php
+						//エリア
+						echo $this->Form->control('area' , [
+							'maxlength' => false,
+							'placeholder' => '例)名古屋市',
+							'label' => '住所',
+							'default' => $area
+						]);
+						?>
+					</div>
+				</div>
+				<div class="button_wrap">
+					<div class="element">
+						<?php
+							echo $this->Form->button('検索',['class'=>'search_btn']);
+						?>
+					</div>
+				</div>
+				<?= $this->Form->end(); ?>
+			</div>
 			<div class="switch">
 				<ul class="display_tab clearfix">
 					<li class="active">リスト表示</li>
@@ -47,55 +81,12 @@
 				</ul>
 			</div>
 
+			<hr />
 			<div class="result">
 				<ul class="show_result">
 					<li>
 						<div class="shop_flame">
-				<?php
-				$i = 0;
-				foreach($shopDatas as $shopData) :
-					$i = $i + 1;
-				    //ショップの写真パスを取得
-		            $dir = SHOPPHOTO_UPLOADDIR . '/photo_shop/' . $shopData->shop_id .'/';
-		            $photo_list = glob($dir . '*.png');
-		            $photoShop = null;
-		            if(!empty($photo_list)){
-		                $photoShop_fullpath = max($photo_list); //最新写真のみ抽出
-		                $photoShop_array = explode('/',$photoShop_fullpath); //サーバパスの取得となるため、最後のファイル名だけを取得
-		                $photoShop = "https://fave-jp.info/img/photo_shop/" . $shopData->shop_id . "/thumbnail/middle_" . end($photoShop_array);
-		            }
-
-					?>
-
-
-							<div class="shop_infor">
-								<div class="shop_thumbnail">
-									<?php if(!empty($photoShop)): ?>
-									<?= $this->Html->link(
-										$this->Html->image($photoShop,array("class" => "trimming img-fluid")),
-			                            array('controller' => 'shops', 'action' => '/'. $shopData->shop_id),
-			                            array('escape' => false));
-			                        ?>
-									<?php else: ?>
-									<?php endif; ?>
-
-								</div>
-								<div class="shop_detail">
-									<div class="name">
-								 	 	<h2>
-								 	 		<?php echo $this->Html->link($shopData->shopname, array('controller' => 'shops', 'action' => '/'. $shopData->shop_id)); ?>
-										</h2>
-										<?= h($shopData->typename) ?>
-										<div>
-											<?= h($shopData->pref.$shopData->city.$shopData->ward) ?>
-										</div>
-									</div>
-									<div class="rating">
-										<?= $this->element('rating',['rating'=>$rating[$shopData->shop_id],'shop_id'=>$shopData->shop_id,'enable'=>0]); ?>
-									</div>
-								</div>
-						 	</div>
-	<?php endforeach; ?>
+							<?= $this->element('shop_list',['Query' => $shopDatas]); ?>
 						</div>
 					</li>
 				</ul>
@@ -106,6 +97,7 @@
 					</li>
 				</ul>
 			</div>
+		</div>
 		</article>
 	</div>
 </div>

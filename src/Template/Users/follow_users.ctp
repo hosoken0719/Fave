@@ -1,7 +1,7 @@
 <?php //②フォローユーザ?>
 <div class="contents user">
     <article class="contain-white">
-         <div class="contain_inner">
+        <div class="contain_inner">
             <?php echo $this->element('user_header', ["type" => "user"]); ?>
 
             <div class="user_flame">
@@ -17,6 +17,6 @@
                 endforeach;
                 ?>
             </div>
-            
+        </div>
     </article>
 </div>

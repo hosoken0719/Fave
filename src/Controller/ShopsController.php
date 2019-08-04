@@ -18,7 +18,7 @@ class ShopsController extends AppController {
 
 	public function index(){
 
-		
+
 	    $ShoptypeTable = TableRegistry::get('shoptypes');
 	    $FollowTable = TableRegistry::get('follows');
 	    $UserTagTable = TableRegistry::get('users_tags');
@@ -66,7 +66,7 @@ class ShopsController extends AppController {
 		$FollowerUser['follower_shop'] = $this->request->getParam('shop_id');
 		$this->set('countShopFollowMyUser',$this->FollowComp->getShopCountMyFollowUser($FollowerUser));
 		$this->set('avgShopFollowMyUser',$this->FollowComp->getShopRatingMyFollowUser($FollowerUser));
-		
+
         //フォローユーザを取得
         $followUserDatas = $this->FollowComp->getShopFollowUserDatas($shopData->shop_id);
 	//営業時間
@@ -89,7 +89,7 @@ class ShopsController extends AppController {
     	$myrating = $this->FollowComp->isShopFollow($checkFollow);
 		$this->set(compact('FollowerUser','photoShop','shopData','hashtag','myrating','followShopDatas','followUserDatas','followerShopDatas','followerUserDatas','shop_data_summary','shop_icon','countFollower'));	//ショップ写真
 
-        
+
 
 //googlemap関連の処理
 	// 該当ショップの位置を地図に代入
@@ -105,7 +105,7 @@ class ShopsController extends AppController {
 
 	//地図のセンターを設定
 		$map_default_center = $shopData->lat. ',' . $shopData->lng;
-		
+
 		// $shops = array_merge($followList,$followerList);  //フォロー、フォローワーリストの結合
 		// $shops = array_unique($shops, SORT_REGULAR);  //重複削除
 		// $shops = array_values($shops);  //配列番号(index)を振り直し
@@ -124,9 +124,9 @@ class ShopsController extends AppController {
 
 	//ズームの値を設定	
 		$map_zoom = 14;
-		$locate_json = json_encode($map_shops); 
+		$locate_json = json_encode($map_shops);
 
-	//スマホの2本指操作を解除	
+	//スマホの2本指操作を解除
 		$gestureHandling = "gestureHandling: 'greedy'";
 		$title = $shopData->shopname . ' | Fave';
 		$this->set(compact('title','map_zoom','map_default_center','locate_json','gestureHandling'));//locate_jsonはmain.ctpで受け取り
@@ -181,19 +181,19 @@ class ShopsController extends AppController {
 
 //favoritedFollowとfavoritedAllの共通処理
 	private function setCommonValue(){
-    
+
 	    $this->loadComponent('FollowComp'); // コンポーネントの読み込み
-	    
+
 	    // ユーザIDを取得
 	    $login_user_id = $this->Auth->user('id');
-	    
+
 	    //ログインユーザがフォローしているショップを取得
 	    $LoginUserFollow['follower_shop'] = $this->FollowComp->getLoginUserFollowShopArray($login_user_id);
 	    //誰もフォローしていない場合、ダミーを代入
 	    if(empty($LoginUserFollow['follower_shop'])){
 	      $LoginUserFollow['follower_shop'] = 0;
 	    }
-	   
+
 	    $LoginUserFollow['follower_user'] = $this->FollowComp->getLoginUserFollowUserArray($login_user_id);
 
 	    $this->set(compact('LoginUserFollow','login_user_id'));
@@ -212,7 +212,7 @@ class ShopsController extends AppController {
     		'Shops.id' => $shop_id,
 			'Shops.status' => '1'
 		])
-		->contain(['shoptypes'])
+		->contain(['shoptypes','prefectures'])
 		->select([
 			'shopname' => 'shopname',
 			'user_id' => 'Shops.user_id',
@@ -220,7 +220,7 @@ class ShopsController extends AppController {
 			'shop_accountname' => 'Shops.accountname',
 			'shop_business_hour_detail' => 'Shops.business_hour_detail',
 			'introduction' => 'Shops.introduction',
-			'pref' => 'pref',
+			'pref' => 'prefectures.name',
 			'city' => 'address',
 			'buolding' => 'building',
 			'parking' => 'parking',

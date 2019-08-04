@@ -20,7 +20,7 @@ class ShopRegistsController extends AppController {
 
 
 	public function index(){
- 
+
 	    $ShopTable = $this->getTableLocator()->get('shops');
 	    $shoptypes = $this->getTableLocator()->get('shoptypes');
 
@@ -68,12 +68,12 @@ class ShopRegistsController extends AppController {
 		$this->set('typename',$ShoptypeTable->find('list'));
 
 		//*県一覧の取得
-		$PrefTable = TableRegistry::get('prefecture');
+		$PrefTable = TableRegistry::get('prefectures');
 		$this->set('pref_list',$PrefTable->find('list')->where(['enable' => 1]));
 
 		$week_en = $this->Businesshour->getWeekDayEn();
 		$week_ja = $this->Businesshour->getWeekDayJa();
-	
+
 	//曜日と時間の設定
 		for($pattern = 1; $pattern <= 3; $pattern++){
 			//openの曜日は$week[$week_en_add]にopenを代入する
@@ -108,7 +108,7 @@ class ShopRegistsController extends AppController {
 		$week_value = [];
 		$week_value_tmp = [];
 		for($pattern = 1; $pattern <= 3; $pattern++){
-		//曜日のチェック。各曜日は$week_en[$count_week].$countで表示される				
+		//曜日のチェック。各曜日は$week_en[$count_week].$countで表示される
 			for($count_week = 0; $count_week <= 6; $count_week++ ){
 				$week_en_add = $week_en[$count_week];
 				//3つの表示分を$week_value[曜日][1から3]配列にcheckを入れる
@@ -139,7 +139,7 @@ class ShopRegistsController extends AppController {
 		if($this->request->is('post')){
 
 			$this->writeSessionValueByPost();
-			
+
 		    $ShopTable = $this->getTableLocator()->get('shops');
 		    $shoptypes = $this->getTableLocator()->get('shoptypes');
 			$shopname_kana = $this->request->getdata('kana');
@@ -165,7 +165,7 @@ class ShopRegistsController extends AppController {
 			}else{
 
 			//重複があれば確認ページを表示
-				$duplex_shops = array();	
+				$duplex_shops = array();
 	            foreach($shopDatas as $data){
 					$duplex_shops[] =  $data->shopname .' ( ' . $data->typename . ' / ' .$data->pref.$data->address.$data->building . ')';
 					$shop_id[] = $data->shop_id;
@@ -186,7 +186,7 @@ class ShopRegistsController extends AppController {
 			return $this->redirect(['controller' => 'ShopRegists', 'action' => '/']);
 		}
 
-		$this->writeSessionValueByPost();	
+		$this->writeSessionValueByPost();
 		$registDatas = $this->readSessionValue();
 
 	//Postデータを営業時間・営業日・それ以外に分別して配列に格納
@@ -209,7 +209,7 @@ class ShopRegistsController extends AppController {
 
 	//住所からgeocodingで緯度経度を取得
 		//準備
-	    $PrefTable = $this->getTableLocator()->get('prefecture');
+	    $PrefTable = $this->getTableLocator()->get('prefectures');
 	    $pref_name = $PrefTable->find()->where(['id' => $this->readSessionValue('pref')])->first(); //都道府県名はidで受け取るため、DBから名前を取得する。(変数名は$pref_name->name)
 		$address = $this->readSessionValue('address');
 		$this->set('address_full',$pref_name->name.$address);
@@ -231,7 +231,7 @@ class ShopRegistsController extends AppController {
 		$gestureHandling = "gestureHandling: 'greedy'";
 		$map_zoom = 18;
 
-		$this->set(compact('map_default_center','gestureHandling','map_zoom'));   
+		$this->set(compact('map_default_center','gestureHandling','map_zoom'));
 	}
 
 

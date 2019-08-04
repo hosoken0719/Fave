@@ -175,12 +175,12 @@ class FollowCompComponent extends Component {
         ->where([
             'follow' => $id,
         ])
-        ->contain(['shops' => ['shoptypes']])
+        ->contain(['shops' => ['shoptypes','prefectures']])
         ->select([
             'shopname' => 'shops.shopname',
             'user_id' => 'shops.user_id',
             'shop_id' => 'shops.id',
-            'pref' => 'shops.pref',
+            'pref' => 'prefectures.name',
             'addres' => 'shops.address',
             'lat' => 'shops.lat',
             'lng' => 'shops.lng',

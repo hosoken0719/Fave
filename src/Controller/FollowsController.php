@@ -23,57 +23,29 @@ class FollowsController extends AppController{
 		//unFollowボタンを押した時にフォローを解除する
 		if($this->request->is('post')){
 
-			$option = 
+			$option =
 				array('follow' => $this->Auth->user('id'),
 					'follower' => $this->request->data['Follow']['follower']);
-			
+
 			$this->Follow->deleteALL($option ,false);
 		}
 
 	//フォロー一覧の抽出
-
-
 	$followData = $this->Follows->find()
 		->where([
 			'follow' => $this->Auth->user('id')
-			]
-		)
-		->join([
-			'table' => 'shops',
-			'alias' => 'Shop',
-			'type' => 'inner',
-			'conditions' => array(
-				'AND' => array(
-					'Follows.follower_shop = Shop.id',
-					'Shop.status = 1',
-				)
-			),
-			]
-		)
-		->join([
-			'table' => 'shoptypes',
-			'alias' => 'Shoptype',
-			'type' => 'LEFT',
-			'conditions'  => 'Shop.shoptype = Shoptype.id'
-			]
-		)
-		->join([
-			'table' => 'users',
-			'alias' => 'User',
-			'type' => 'LEFT',
-			'conditions'  => 'Follows.follower_shop = User.id'
-			]
-		)
+		])
+        ->contain(['shops' => ['shoptypes','prefectures']])
 	    ->select([
 			'id' => 'Follows.follower_shop',
-			'shopname' => 'Shop.shopname',
-			'shop_id' => 'Shop.id',
-			'pref' => 'Shop.pref',
-			'address' => 'Shop.address',
-			'Shop_accountname' => 'Shop.accountname',
-			'lat' => 'Shop.lat',
-			'lng' => 'Shop.lng',
-			'typename' => 'Shoptype.typename'
+			'shopname' => 'shops.shopname',
+			'shop_id' => 'shops.id',
+			'pref' => 'prefectures.name',
+			'address' => 'shops.address',
+			'Shop_accountname' => 'shops.accountname',
+			'lat' => 'shops.lat',
+			'lng' => 'shops.lng',
+			'typename' => 'shoptypes.typename'
 	]);
 
 

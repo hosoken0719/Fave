@@ -1,7 +1,5 @@
 <?php ?>
-<?php
-echo $this->Form->create('Searches',['type' => 'get','url' => ['action' => 'index'],'inputDefaults'=>['label'=>false,'div'=>false]]);
-?>
+<?= $this->Form->create('Searches',['type' => 'get','url' => ['action' => 'index'],'inputDefaults'=>['label'=>false,'div'=>false],'templates' => $template]);?>
 
 		<!-- <div class="element input"> -->
 <?php
@@ -19,28 +17,21 @@ echo $this->Form->create('Searches',['type' => 'get','url' => ['action' => 'inde
 		<!-- </div> -->
 		<div class="element input">
 <?php
-
 //ショップタイプ
 echo $this->Form->control('shoptype', [
 	'options' => $typename,
     'empty' => '選択してください',
-    'class' => 'search_box_select',
-	'id' => 'login_form_select',
-	'label' => 'ショップタイプ'
+	'label' => 'ショップタイプ',
 ]);
 
 ?>
 		</div>
 		<div class="element input">
 <?php
-
 //エリア
 echo $this->Form->control('area' , [
-	'type' => 'text',
 	'maxlength' => false,
-	'placeholder' => '住所 例)名古屋市',
-    'class' => 'search_box_line',
-	'id' => 'login_form_txt',
+	'placeholder' => '例)名古屋市',
 	'label' => '住所'
 ]);
 ?>
@@ -48,7 +39,7 @@ echo $this->Form->control('area' , [
 		</div>
 		<div class="element button">
 <?php
-	echo $this->Form->submit('検索',['class'=>'search_btn']);
+	echo $this->Form->button('検索',['class'=>'search_btn']);
 ?>
 
 		</div>

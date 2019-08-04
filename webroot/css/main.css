@@ -148,7 +148,7 @@ header {
 
 
 .header_inner .right{
-  margin-left: auto; 
+  margin-left: auto;
 }
 
 .header_inner .home_button{
@@ -187,7 +187,7 @@ header {
   .header_inner .right{
     margin: auto;
   }
-  
+
   .header-link-item{
      display: -webkit-box;
      display: -ms-flexbox;
@@ -259,7 +259,7 @@ body > .main{
 }
 
 #top .main .top-copy_ja{
-  font-size: 30px; 
+  font-size: 30px;
   margin: 0;
 }
 
@@ -397,12 +397,12 @@ body > .main{
   #top .img{
     height: 180px;
   }
-  
+
   #top .how_to h2 {
     font-size: 20px;
     margin-top: 100px;
   }
-  
+
   #top section{
      width: 90vw;
      margin: 0 auto;
@@ -413,7 +413,7 @@ body > .main{
   #top .how_to {
     padding: 20px 5px;
   }
-  
+
   .top-copy_comment{
     padding: 0 15px;
   }
@@ -429,7 +429,7 @@ body > .main{
     font-size:12px;
     margin-bottom: 35px;
   }
-  
+
   .top-copy_comment p{
     font-size: 13px;
   }
@@ -525,7 +525,8 @@ body > .main{
 .shop .edit_favorite,
 .shop .delete_favorite,
 .user form input.follow,
-.user form input.followed{
+.user form input.followed,
+.search button{
   height: 40px;
   width: 70%;
   /*display: inline-block;*/
@@ -566,7 +567,9 @@ body > .main{
 .regist input,
 .regist textarea,
 .shop textarea,
-.shop .content_review.edit form{
+.shop .content_review.edit form,
+.search select,
+.search input{
   resize: none;
   width: 100%;
   background-color: #f0f0f0;
@@ -579,10 +582,12 @@ body > .main{
   -webkit-box-shadow: none;
   box-shadow: none;
   color: #666;
-  line-height: 1.0em;
+  line-height: 21px;
   letter-spacing: .18em;
   padding: 10px 18px;
 }
+
+
 
 
 /*△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲LOGIN△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲△▲*/
@@ -639,7 +644,7 @@ li{
 
 .search .search_box .switch ul{
   padding: 0;
-  border-bottom :solid 1px #888;
+  border-bottom :solid 1px #707070;
 }
 
 .search .switch .search_tab li{
@@ -654,7 +659,7 @@ li{
 }
 
 .search .switch .search_tab li.active{
-  border-bottom :solid 2px #888;
+  border-bottom :solid 2px #707070;
 }
 
 
@@ -736,6 +741,10 @@ input::placeholder{
 }
 
 /* ▼ ▼ ▼ ▼ 各ページに跨る設定 ▼ ▼ ▼ ▼ */
+.contents{
+  width: 100%;
+  margin-top: 30px;
+}
 
 @media (max-width: 767px)  {
   input,
@@ -747,12 +756,14 @@ input::placeholder{
 
   .regist input,
   .regist textarea,
-  .shop textarea{
+  .shop textarea,
+  .search input{
     width: 120% !important;
   }
 
   .contents{
     padding: 5px;
+    margin-top: 0px;
   }
 
   #modal-content{
@@ -761,10 +772,6 @@ input::placeholder{
 
 }
 
-.contents{
-  width: 100%;
-  margin-top: 30px;
-}
 
 
 .regist #googlemap{
@@ -971,89 +978,31 @@ display: -webkit-box;
   position: static;
 }
 
-.search .search_box p{
-  text-align: center;
-}
 
 
-.search .search_box .user{
-  width: 100%;
-}
-
-.search .block{
-  display: table;
-  background-color: #fff;
-  border-collapse:collapse;
-}
 
 
-.search .element{
-  width: 100%;
-  vertical-align: top;
+.search label{
+  display: block;
   text-align: left;
-  border: 1px solid #eee;
+  margin: 0;
 }
 
-.search .shops .element{
-  display: table-cell;
-}
-
-.search #login_form_select,
-.search #login_form_txt,
-.search #ac_word,
-.search #ac_user,
 .form_txt{
   height: 40px;
   width: 100%;
   font-size: 12px;
 }
 
-.search .shop .input{
-  width: 212px;
-  padding: 0 5px;
-}
-
-.search .user .input{
-  width: 100%;
-  padding: 0 5px;
-}
-
-.search .button{
-  width: 39px;
-}
-
- .search .search_btn{
-  height: 40px;
-  width: 39px;
-  display: inline-block;
-  /*margin: 45px 40px 40px;*/
-  background-color: #888;
-  border: none;
-  color: #fff;
-  text-align: center;
-  text-decoration: none;
-  font-size: 12px;
-  margin: 0;
-  border-radius: 0;
-  cursor: pointer;
-}
 
 
-.search ::-webkit-input-placeholder {
-  color: #ccc;
-}
-.search ::-moz-placeholder {
-  color: #ccc; opacity: 1;
-}
-.search :-ms-input-placeholder {
-  color: #ccc;
-}
+
 
 @media (max-width: 767px)  {
-  .search .block{
-    display: block;
-    background-color: transparent;
+  .search .element{
+    margin-bottom: 10px;
   }
+
 
   .search .shops .element{
     display: block;
@@ -1078,40 +1027,6 @@ display: -webkit-box;
   .col-sm-12 .search_box{
     width: 90%;
   }
-}
-.search input[type="text"],
-.search select{
-background: none;
-border: 0px;
-outline: 0px;
--webkit-appearance: none;
--moz-appearance: none;
-appearance: none;
-font-size:16px;
--webkit-box-shadow: none;
-box-shadow: none;
-}
-
-.search .search_box_select{
-  color: 000;
-}
-
-@media (max-width: 767px)  {
-  .search input[type="text"],
-  .search select{
-    display: block;
-    width: 80%;
-
-  }
-}
-
-.search_box p{
-  /*text-align: center;*/
-  font-size: 14px;
-}
-
-.search_box .submit{
-  text-align: center;
 }
 
 .top #login_form_select,
@@ -1303,7 +1218,7 @@ box-shadow: none;
 
 /*最初の行は線を消す(first-childはなぜか効かなかった）*/
 .shop dl:first-of-type,
-.regist .confirm dl:first-of-type {
+.regist .confirm dl:first-of-type
   border-top: none;
 }
 
@@ -1378,9 +1293,10 @@ box-shadow: none;
   .regist dd{
     width: 100%;
   }
-  
+
   .regist .basic dd.selectbox,
-  .regist .address dd.selectbox{
+  .regist .address dd.selectbox
+  .search .selectbox{
     width: 80%;
   }
 
@@ -1610,7 +1526,7 @@ box-shadow: none;
 /**/
 .shop .review .select ul {
   padding: 0;
-  border-bottom: solid 1px #888;
+  border-bottom: solid 1px #707070;
 }
 
 /*リンクが2つのため、横幅を2分割*/
@@ -1622,7 +1538,7 @@ box-shadow: none;
 
 /*選択しているリンクは下線を太くする*/
 .shop .review .select ul li.active{
-  border-bottom: solid 2px #888;
+  border-bottom: solid 2px #707070;
 }
 
 /*リンクを幅いっぱいにする*/
@@ -1764,17 +1680,24 @@ box-shadow: none;
   flex-wrap: wrap;
   justify-content: space-between;
 }
+
+
+@media (max-width: 767px) {
+  .search .shop_flame,
+  .user .user_flame,
+  .user .shop_flame{
+    display: block;
+  }
+}
 .search .shop_infor,
-.user .shop_infor{
+.user .shop_infor,
+.user .user_infor{
   background-color: #fff;
-  -webkit-flex: 0 0 28%; /* 1マスのサイズ設定 */
-  -ms-flex: 0 0 28%; /* 1マスのサイズ設定 */
-  -moz-flex: 0 0 28%; /* 1マスのサイズ設定 */
-  flex: 0 0 28%; /* 1マスのサイズ設定 */*/
-  
-  max-width: 28%;
-  margin-bottom: 30px;
-    background-color: #F4F4F4;
+  -webkit-flex: 0 0 45%; /* 1マスのサイズ設定 */
+  -ms-flex: 0 0 45%; /* 1マスのサイズ設定 */
+  -moz-flex: 0 0 45%; /* 1マスのサイズ設定 */
+  flex: 0 0 45%; /* 1マスのサイズ設定 */*/
+  max-width: 45%;
 }
 
 .user .shop_flame::before{
@@ -1809,17 +1732,48 @@ box-shadow: none;
 }
 
 
-.search .col-sm-9{
-  padding-right: 60px;
+
+.search dl,
+.user dl{
+  padding: 20px 0;
+  border-bottom: 1px solid #e7e7e7;
+  margin: 0;
 }
 
-@media (max-width: 767px)  {
-  .search .col-sm-9{
-    padding-right: 15px;
+.search dt,
+.user dt{
+  display: inline-block;
+  vertical-align: top;
+  max-width: 130px;
+  margin-right: 20px;
+}
+
+@media (max-width: 767px) {
+  .search dt,
+  .user dt{
+    max-width: 100px;
+    margin-right: 10px;
   }
 }
+.user .user_flame dt{
+  margin: 0;
+}
+
+.search dd,
+.user dd{
+  vertical-align: top;
+  display: inline-block;
+  max-width: calc(100% - 155px);
+}
+
+.user .user_flame dd{
+  max-width: calc(100% - 55px);
+}
 
 
+.search hr{
+  border-color: #707070;
+}
 /*レスポンシブ対応*/
 @media (max-width: 767px) {
   .follow .shop_infor{
@@ -1836,7 +1790,8 @@ box-shadow: none;
 
 /*レスポンシブ対応*/
 @media (max-width: 480px) {
-  .search .shop_infor{
+  .search .shop_infor,
+  .user .shop_infor{
     flex: 0 0 calc(100% - 10px);
     max-width: 100%; /* IE11バグ対応 */
   }
@@ -2008,7 +1963,6 @@ box-shadow: none;
     color: #fff;
     cursor: auto;
   }
-   
 
   .search .category ul, 
   .search .result ul, 
@@ -2049,10 +2003,26 @@ box-shadow: none;
 }
 
 .user .header{
-  max-width: 600px;
-  margin: 0 auto 0;
-  display: flex;
+  display: table;
+  width: inherit;
+  margin: 0 0 20px 10%;
 }
+.user .header .icon_area{
+  display: table-cell;
+  justify-content: center;
+  align-items: center;
+  min-width: 100px;
+  min-height: 100px;
+  width: 150px;
+  height: 150px;
+  background-color: #f9f9f9;
+}
+
+.user .header .detail{
+  display: table-cell;
+  padding-left: 20px;
+}
+
 
 .user .header h1{
   font-size: 30px;
@@ -2065,6 +2035,14 @@ box-shadow: none;
   .user .header h1{
     display: block;
   }
+
+  .user .header{
+    margin: 0 0 10px 0;
+  }
+
+  .user .header .detail{
+    padding-left: 10px;
+  }
 }
 
 .user .header form{
@@ -2074,22 +2052,6 @@ box-shadow: none;
 .user .submit{
   display: inline;
 }
-.user .header .icon_area{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-width: 100px;
-  min-height: 100px;
-  width: 150px;
-  height: 150px;
-  background-color: #f9f9f9;
-}
-
-
-.user .header .detail{
-  margin-left: 20px;
-}
-
 
 
 .user .header .account_name{
@@ -2115,11 +2077,6 @@ box-shadow: none;
   width: 50px;
 }
 
-.user .type{
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
 .user .shops li{
   float:left;
   width: 33%;
@@ -2129,7 +2086,7 @@ box-shadow: none;
 
 .user .type ul{
   padding: 0;
-  border-bottom :solid 1px #888;
+  border-bottom :solid 1px #707070;
 }
 
 
@@ -2146,20 +2103,10 @@ box-shadow: none;
 }
 
 .user .type li.active{
-  border-bottom :solid 2px #888;
+  border-bottom :solid 2px #707070;
 }
 
 
-.user .user_infor{
-  flex: 0 0 33%;
-  margin-bottom: 50px;
-  display: flex;
-}
-@media (max-width: 830px)  {
-  .user .user_infor{
-    flex: 0 0 50%;
-  }
-}
 
 @media (max-width: 580px) {
   .user .user_infor{
@@ -2169,7 +2116,7 @@ box-shadow: none;
 
 .user .user_infor .icon_area{
   text-align: center;
-  width: 60px;
+  width: 50px;
 }
 
 .user .user_infor .icon_area img{
@@ -2186,7 +2133,7 @@ box-shadow: none;
   margin: 4px 0;
 }
 .user .user_infor td{
-  padding-right: 5px;
+  padding-right: 20px;
 }
 
 .user .user_infor .sex{
@@ -2204,11 +2151,11 @@ box-shadow: none;
     width: 80%;
   }
 
-.user header .icon_area{
-  width: 100px;
-  height: 100px;
-  background-color: #f9f9f9;
-}
+  .user header .icon_area{
+    width: 100px;
+    height: 100px;
+    background-color: #f9f9f9;
+  }
 
   .user header .icon{
     flex: 0 1 50px;
@@ -2246,16 +2193,12 @@ box-shadow: none;
   font-size: 14px;
 }
 
-
-
-
-
-
 .shop textarea{
   height: 200px;
 }
 
-.regist select{
+.regist select,
+.search select{
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -2272,36 +2215,125 @@ box-shadow: none;
     position: relative;
     color: #666;
 }
+
+.search .element{
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+
+
+.search .search_result form{
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+.search .search_result .input_wrap{
+ display: table;
+ flex: 1 0 80%;
+ margin-bottom: 20px;
+}
+
+.search .search_result .button_wrap{
+  flex: 1 0 80px;
+}
+
+/*.search .search_result .element_wrap .element{*/
+.search .search_result .element_wrap .input_wrap .element{
+  display: table-cell;
+  width: 50%;
+  vertical-align: bottom;
+}
+
+
+.search .search_result select,
+.search .search_result input{
+  width: 100%;
+}
+
+
+.search .search_result .selectbox,
+.search .search_result .inputbox{
+  width: 90%;
+}
+
+@media (max-width: 767px) {
+  .search .search_result .input_wrap{
+
+  flex: 0 0 100%;
+}
+.search .search_result .button_wrap{
+  flex: 0 0 100%;
+}
+  .search .search_result .selectbox,
+.search .search_result .inputbox{
+  width: 90%;
+}
+.search .search_result button{
+  margin: 0;
+  width: 100%;
+}
+/*  .search .search_result .element_wrap{
+    display: flex;
+  }
+
+  .search .search_result .element_wrap .element{
+    display: block !important;
+    flex: 0 0 40%;
+    width: 100% !important;
+  }
+  .search .search_result select,
+  .search .search_result input{
+      width: 100%;
+  }
+  .search .search_result button{
+    margin-top: 5px;
+    width: 100%;
+  }*/
+}
+
+
+
 @media (max-width: 767px)  {
   .regist select{
     font-size: 16px;
   }
 }
-.regist .selectbox {
+
+.regist .selectbox,
+.search .selectbox,
+.search .inputbox {
   position: relative;
+  width: 100%;
 }
-.regist .selectbox::after {
-    background-image: url(/img/select_arr_bottom.svg);
-    margin-top: 5px;
+
+.regist .selectbox::after,
+.search .selectbox::after {
+  background-image: url(/img/select_arr_bottom.svg);
+  margin-top: 5px;
 }
-.regist .selectbox::before {
-    background-image: url(/img/select_arr_top.svg);
-    margin-top: -5px;
+.regist .selectbox::before,
+.search .selectbox::before {
+  background-image: url(/img/select_arr_top.svg);
+  margin-top: -5px;
 }
 
 .regist .selectbox::before,
-.regist .selectbox::after {
-    content: "";
-    position: absolute;
-    width: 6px;
-    height: 4px;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
-    -webkit-transform: translateY(-50%);
-    background-repeat: no-repeat;
-    background-size: 6px 4px;
-    z-index: 200;
+.regist .selectbox::after,
+.search .selectbox::before,
+.search .selectbox::after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 4px;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  background-repeat: no-repeat;
+  background-size: 6px 4px;
+  z-index: 200;
 }
 
 
@@ -2567,13 +2599,13 @@ select::-ms-expand {
 .on textarea:focus {
     outline: 0;
 }
- 
+
 .on .mirror {
     visibility: hidden;
     font-size: 100 %;
     line-height: 1em;
 }
- 
+
 
 .containera{
   margin-top: 20px;
