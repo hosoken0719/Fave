@@ -1,5 +1,5 @@
 <?php ?>
-<?= $this->Form->create('Searches',['type' => 'get','url' => ['action' => 'index'],'inputDefaults'=>['label'=>false,'div'=>false],'templates' => $template]);?>
+<?= $this->Form->create('Searches',['type' => 'get','url' => ['controller' => 'searches' , 'action' => 'index'],'inputDefaults'=>['label'=>false,'div'=>false],'templates' => $template]);?>
 
 		<!-- <div class="element input"> -->
 <?php

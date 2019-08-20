@@ -26,22 +26,23 @@ class UsersController extends AppController
   public function index()
   {
 
-    if (!$this->Auth->user()) {
-    // 非ログイン
-      $this->viewBuilder()->setLayout('top'); //レイアウトのテンプレートをdefaultからtopに変更
-        //inputとselectboxのtemplate
+    // if (!$this->Auth->user()) {
+    // // 非ログイン
+    //   $this->viewBuilder()->setLayout('top'); //レイアウトのテンプレートをdefaultからtopに変更
+    //     //inputとselectboxのtemplate
 
-      $this->render('top'); //viewファイルをindexからtopに変更
+    //   $this->render('top'); //viewファイルをindexからtopに変更
 
-    } else {
-    // ログイン
+    // } else {
+    // // ログイン
 
 
       $UserTable = TableRegistry::get('users');
       $FollowsTable = TableRegistry::get('follows');
 
-
-    //*自分がフォローしているユーザを取得
+      $ShoptypeTable = TableRegistry::get('shoptypes');
+      $this->set('typename',$ShoptypeTable->find('list'));
+      //*自分がフォローしているユーザを取得
       $followData = $FollowsTable->find()->where(['follow' => $this->Auth->user('id')]);
 
 
@@ -111,8 +112,15 @@ class UsersController extends AppController
         $this->set('title','Fave');
         $this->set(compact('favoriteDatas'));
 
-      }
-    }
+      } //inputとselectboxのtemplate
+  $template = [
+    'label' => '<div{{attrs}}>{{text}}</div>',
+    'input' => '<div class="inputbox"><input type="{{type}}" name="{{name}}"{{attrs}}></div>',
+    'select' => "<div class='selectbox'><select name='{{name}}'{{attrs}}>{{content}}</select></div>",
+  ];
+
+  $this->set(compact('template'));
+    // }
   }
 
   //①フォローショップ一覧を作成
@@ -131,10 +139,14 @@ class UsersController extends AppController
     //フォローショップ・フォローユーザ・フォロワーで共通の値を取得
     $user_infor = $this->setCommonValue();
 
-    //ログインユーザと共通のお店をフォローしているユーザを優先表示
-    $FollowedUsersIn= $this->FollowComp->getFollowerUserByID($user_infor['user_id'])->where(['follower_user IN' => $user_infor['LoginUserFollowShop']]);
-    $FollowedUsersNotIn= $this->FollowComp->getFollowerUserByID($user_infor['user_id'])->where(['NOT' => ['follower_user IN' => $user_infor['LoginUserFollowShop']]]);
-
+    // //ログインユーザと共通のお店をフォローしているユーザを優先表示
+    if(!empty($user_infor['LoginUserFollowShop'])){
+      $FollowedUsersIn= $this->FollowComp->getFollowerUserByID($user_infor['user_id'])->where(['follower_user IN' => $user_infor['LoginUserFollowShop']]);
+      $FollowedUsersNotIn= $this->FollowComp->getFollowerUserByID($user_infor['user_id'])->where(['NOT' => ['follower_user IN' => $user_infor['LoginUserFollowShop']]]);
+    }else{
+      $FollowedUsersIn = [];
+      $FollowedUsersNotIn= $this->FollowComp->getFollowerUserByID($user_infor['user_id']);
+    }
     $this->set(compact('FollowedUsersIn','FollowedUsersNotIn'));
   }
 

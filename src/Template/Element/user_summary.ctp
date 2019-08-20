@@ -22,10 +22,10 @@
                     <?= $user_data->address ?>
                 </div>
                 <hr />
-                <table>
-                    <tr><td>お気に入り</td><td><?= h($user_data->FollowShopCount) ?>店(共通:<?= ($user_data->FollowShopCommonCount) ?>店)</td></tr>
-                    <tr><td>フォロー</td><td><?= h($user_data->FollowUserCount) ?>人(共通:<?= h($user_data->FollowUserCommonCount) ?>人)</td></tr>
-                    <tr><td>フォロワー</td><td><?= h($user_data->FollowerUserCount) ?>人(共通:<?= h($user_data->FollowerUserCommonCount) ?>人)</td></tr>
+	                <table>
+	                    <tr><td>お気に入り</td><td><?= h($user_data->FollowShopCount) ?>店(共通:<?= h($user_data->FollowShopCommonCount) ?>店)</td></tr>
+	                    <tr><td>フォロー</td><td><?= h($user_data->FollowUserCount) ?>人(共通:<?= h($user_data->FollowUserCommonCount) ?>人)</td></tr>
+	                    <tr><td>フォロワー</td><td><?= h($user_data->FollowerUserCount) ?>人(共通:<?= h($user_data->FollowerUserCommonCount) ?>人)</td></tr>
                 </table>
             </dd>
         </dl>

@@ -40,6 +40,8 @@ button {
   border-radius: 0;
 }
 
+
+
 .cake-error:first-child{
   margin-top: 150px;
 }
@@ -2541,6 +2543,7 @@ select::-ms-expand {
   padding: 0px;
   font-size: 12px;
   margin: 0;
+  color: #d6d6d6;
 }
 .evaluation label .text{
   position: absolute;
@@ -2559,7 +2562,8 @@ select::-ms-expand {
 }
 
 .evaluation input[type='radio']:checked ~ label{
-  color: #ffcc00;
+  /*color: #ffcc00;*/
+  color: #c55e5e;
 }
 
 .shop .review_wrap{

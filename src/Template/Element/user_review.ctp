@@ -3,9 +3,8 @@
     $user_data->LoginUserId = $login_user_id; //ログインユーザID
     $user_data->FollowerId = $user_data->user_id; //表示するユーザID
     $user_data->FollowerShopId = $shopData->shop_id; //表示しているショップID
-    if(!empty($LoginUserFollow)){
-    	$user_data->LoginUserFollow = $LoginUserFollow;
-    }
+    $user_data->LoginUserFollow = $LoginUserFollow;
+    
 ?>
     <div class="user_review">
         <div class="user_wrap">
@@ -24,7 +23,7 @@
     } ?>
                     </div>
 
-                </div>       
+                </div>
                 <div class="follow_area">
                     <?= $this->Html->link(__($user_data->nickname), ['controller' => 'Users', 'action' => '/',$user_data->username,'div'=>false]); ?>
                     <div class="address">

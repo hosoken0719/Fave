@@ -63,7 +63,7 @@
 					<?php //echo nl2br(h($shopData->introduction)); ?>
 					<!-- <p><?php //echo $hashtag; ?></p> -->
 				<!-- </div> -->
-				<div class="infor">					
+				<div class="infor">
 					<dl>
 						<dt>住所</dt>
 						<dd> <?= h($shopData->pref.$shopData->city.$shopData->ward.$shopData->town.$shopData->building); ?></dd>
@@ -110,7 +110,7 @@
 								echo $this->Html->link($shopData->homepage, $shopData->homapage,array('target'=>'_blank'));
 							endif;?>
 						</dd>
-						
+
 					</dl>
 					<dl>
 						<dt>お気に入り登録者数</dt>
@@ -138,7 +138,7 @@
 					 	?>
 					</div>
 					<div class="button_wrap">
-					
+
 					<?php if($ShopFollowData['rating'] === 0){
 						echo $this->Form->button("お気に入りに登録する",['id'=>'display_favorite_button'  ,'class'=>'display_favorite_button ']);
 					}else{
@@ -156,7 +156,7 @@
 	<?php else: ?>
 	<article class="contain-white content_review hide">
 	<?php endif; ?>
-	    
+
 		<div class="contain_inner">
 		    <legend><h3>お気に入り登録</h3></legend>
 			<div class="review_area">
@@ -169,7 +169,7 @@
 					<dt>コメント</dt>
 					<dd>
 					<?= $this->Form->control('コメント', [
-					    'type' => 'textarea',   
+					    'type' => 'textarea',
 				        'templates' => [
 					        'inputContainer' => '{{content}}'
 					    ],

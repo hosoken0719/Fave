@@ -182,4 +182,4 @@
 
   </script>
 
-  <script src="https://maps.googleapis.com/maps/api/js?key=<?= GOOGLE_MAP_KEY ?>&callback=initialize" async defer></script> 
+  <script src="https://maps.googleapis.com/maps/api/js?key=<?= GOOGLE_MAP_KEY ?>&callback=initialize"  async defer></script> 

@@ -11,7 +11,7 @@ class FollowCompComponent extends Component {
   //ショップをフォローしているかの判定
      public function isShopFollow($id) {
         $FollowUsersTable = TableRegistry::get('follows');
-        
+
         $result = $FollowUsersTable->find()
         ->where([
             'follow' => $id['follow'],
@@ -28,7 +28,7 @@ class FollowCompComponent extends Component {
           $data['rating'] = $result->rating;
           $data['review'] = $result->review;
         }
-        
+
         return $data;
      }
 
@@ -83,10 +83,10 @@ class FollowCompComponent extends Component {
   //ショップの全フォロワーのレーティングの平均を取得
      public function getShopRatingByShopId($id) {
         $FollowUsersTable = TableRegistry::get('follows');
-        
+
         $sql = $FollowUsersTable->find();
         $result = $sql
-        ->where([ 
+        ->where([
             'follower_shop' => $id])
         ->select([
             'rating_avg' => $sql->func()->avg('rating')])
@@ -129,7 +129,7 @@ class FollowCompComponent extends Component {
   //ユーザをフォローしているか判定
      public function isUserFollow($id) {
         $FollowUsersTable = TableRegistry::get('follow_users');
-        
+
         $result = $FollowUsersTable->find()
         ->where([
             'follow' => $id['follow'],

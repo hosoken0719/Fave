@@ -263,7 +263,7 @@ class ShopRegistsController extends AppController {
 					foreach ($hour as $key => $value) {
 						$value['day']  = $this->Businesshour->changeNumbertoDay($day);
 						$value['shop_id'] = $shopEntity->id;
-			 					
+
 					  	$weekEntity = $BusinessHoursTable->newEntity();
 					  	$weekEntity = $BusinessHoursTable->patchEntity($weekEntity, $value);
 					  	$BusinessHoursTable->save($weekEntity);

@@ -56,7 +56,12 @@ class Follow extends Entity
     //ログインユーザと共通のフォローショップ数のカウント
     protected function _getFollowShopCommonCount(){
         $this->setTables();
-    	$follow_shop_common_count = $this->TableEntity['follows']->find()->where(['follow' => $this->FollowerId,'follower_shop IN' => $this->LoginUserFollow['follower_shop']])->count();
+        //ログインユーザのフォローがない場合は0を代入
+        if(!empty($this->LoginUserFollow['follower_shop'])){
+        	$follow_shop_common_count = $this->TableEntity['follows']->find()->where(['follow' => $this->FollowerId,'follower_shop IN' => $this->LoginUserFollow['follower_shop']])->count();
+        }else{
+            $follow_shop_common_count = 0;
+        }
     	return $follow_shop_common_count;
     }
 
@@ -70,8 +75,13 @@ class Follow extends Entity
     //ログインユーザと共通のフォローユーザー数のカウント
     protected function _getFollowUserCommonCount(){
         $this->setTables();
-    	$follow_user_common_count = $this->TableEntity['follow_users']->find()->where(['follow' => $this->FollowerId,'follower_user IN' => $this->LoginUserFollow['follower_user']])->count();
-     	return $follow_user_common_count;
+        //ログインユーザのフォローがない場合は0を代入
+        if(!empty($this->LoginUserFollow['follower_user'])){
+        	$follow_user_common_count = $this->TableEntity['follow_users']->find()->where(['follow' => $this->FollowerId,'follower_user IN' => $this->LoginUserFollow['follower_user']])->count();
+     	}else{
+            $follow_user_common_count = 0;
+        }
+        return $follow_user_common_count;
     }
 
     //フォロワー数のカウント
@@ -84,8 +94,13 @@ class Follow extends Entity
 	//ログインユーザと共通のフォロワー数のカウント
 	protected function _getFollowerUserCommonCount(){
         $this->setTables();
-        $follower_user_common_count = $this->TableEntity['follow_users']->find()->where(['follower_user' => $this->FollowerId,'follow IN' => $this->LoginUserFollow['follower_user']])->count();
-	    return $follower_user_common_count;
+        //ログインユーザのフォローがない場合は0を代入
+        if(!empty($this->LoginUserFollow['follower_user'])){
+            $follower_user_common_count = $this->TableEntity['follow_users']->find()->where(['follower_user' => $this->FollowerId,'follow IN' => $this->LoginUserFollow['follower_user']])->count();
+	    }else{
+            $follower_user_common_count = 0;
+        }
+        return $follower_user_common_count;
 	}
 
     //ユーザのレビュー情報を取得
@@ -98,7 +113,7 @@ class Follow extends Entity
     //フォローしているか
     protected function _getIsUserFollow(){
         $this->setTables();
-        
+
         $result = $this->TableEntity['follow_users']->find()->where(['follow' => $this->LoginUserId,'follower_user' => $this->FollowerId])->first();
         if($result == null){ //未フォロー
             return 0;

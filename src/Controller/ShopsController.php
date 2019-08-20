@@ -64,9 +64,14 @@ class ShopsController extends AppController {
 	//ショップフォロワーのうち、ログインユーザがフォローしているユーザ数
 		$FollowerUser['FollowedId'] = $this->FollowComp->getLoginUserFollowUserArray($this->Auth->user('id'));
 		$FollowerUser['follower_shop'] = $this->request->getParam('shop_id');
-		$this->set('countShopFollowMyUser',$this->FollowComp->getShopCountMyFollowUser($FollowerUser));
-		$this->set('avgShopFollowMyUser',$this->FollowComp->getShopRatingMyFollowUser($FollowerUser));
+		if(!empty($FollowerUser['FollowedId'])){
+			$this->set('countShopFollowMyUser',$this->FollowComp->getShopCountMyFollowUser($FollowerUser));
+			$this->set('avgShopFollowMyUser',$this->FollowComp->getShopRatingMyFollowUser($FollowerUser));
+		}else{
 
+			$this->set('countShopFollowMyUser',0);
+			$this->set('avgShopFollowMyUser',0);
+		}
         //フォローユーザを取得
         $followUserDatas = $this->FollowComp->getShopFollowUserDatas($shopData->shop_id);
 	//営業時間
@@ -87,6 +92,7 @@ class ShopsController extends AppController {
 		// 	//$followedフラグの変更（0=未フォロー、1>フォロー済み）
 		$checkFollow = ['follow'=>$this->Auth->user('id'),'follower_shop'=>$shopData->shop_id];
     	$myrating = $this->FollowComp->isShopFollow($checkFollow);
+
 		$this->set(compact('FollowerUser','photoShop','shopData','hashtag','myrating','followShopDatas','followUserDatas','followerShopDatas','followerUserDatas','shop_data_summary','shop_icon','countFollower'));	//ショップ写真
 
 
@@ -159,22 +165,34 @@ class ShopsController extends AppController {
 	//ショップ情報の抽出
     	$shopData = $this->getShopData($this->request->getParam('shop_id'));
 
-	//ショップ情報の抽出
+	//ログインユーザ情報の抽出
     	$user_infor = $this->setCommonValue();
 
-   	//ログインユーザを取得
+   	//ログインユーザのフォローユーザ情報を取得
     	$favoriteDatasLoginUser = $this->FollowComp->getShopFollowUserDatas($shopData['shop_id'])->where(['follow' => $user_infor['user_id']]);
 
+    //カウントの初期化
+    	$count['followed'] = 0;
+    	$count['all'] = 0;
+
    	//フォローユーザを取得
-    	$favoriteDatas = $this->FollowComp->getShopFollowUserDatas($shopData['shop_id'])->where(['follow IN' => $user_infor['LoginUserFollowerUser']]);
+    	if(!empty($user_infor['LoginUserFollowerUser'])){
+	    	$favoriteDatas = $this->FollowComp->getShopFollowUserDatas($shopData['shop_id'])->where(['follow IN' => $user_infor['LoginUserFollowerUser']]);
 
-   	//フォローしていないユーザを取得するが、ログインユーザは別のSQLで取得しているため対象外とする
-    	$LoginUserFollowerUserIncOwn = array_merge($user_infor['LoginUserFollowerUser'],[$user_infor['user_id']]); //ログインユーザを追加
-    	$favoriteDatasNotIn = $this->FollowComp->getShopFollowUserDatas($this->request->getParam('shop_id'))->where(['NOT' => ['follow IN' => $LoginUserFollowerUserIncOwn]]); 
+   		// //フォローしていないユーザを取得するが、ログインユーザは別のSQLで取得しているため対象外とする
+    		$LoginUserFollowerUserIncOwn = array_merge($user_infor['LoginUserFollowerUser'],[$user_infor['user_id']]); //ログインユーザを追加
+    		$favoriteDatasNotIn = $this->FollowComp->getShopFollowUserDatas($this->request->getParam('shop_id'))->where(['NOT' => ['follow IN' => $LoginUserFollowerUserIncOwn]]);
 
-   	//ヘッダーに表示するためのカウント
-    	$count['followed'] = $this->FollowComp->getShopFollowUserDatas($shopData['shop_id'])->where(['follow IN' => $user_infor['LoginUserFollowerUser']])->count();
-    	$count['all'] = $this->FollowComp->getShopFollowUserDatas($shopData['shop_id'])->count();
+       	//ヘッダーに表示するためのカウント
+    		$count['followed'] = $this->FollowComp->getShopFollowUserDatas($shopData['shop_id'])->where(['follow IN' => $user_infor['LoginUserFollowerUser']])->count();
+    	}else{//ログインユーザが誰もフォローしていない場合
+    		$favoriteDatasNotIn = [];
+    		$favoriteDatas = $this->FollowComp->getShopFollowUserDatas($shopData['shop_id'])->all();
+// debug($this->FollowComp->getShopFollowUserDatas($shopData['shop_id'])->sql());
+       	//ヘッダーに表示するためのカウント
+    	}
+    //全てのユーザのフォロー件数を取得
+   		$count['all'] = $this->FollowComp->getShopFollowUserDatas($shopData['shop_id'])->count();
 
     	$this->set(compact('favoriteDatas','favoriteDatasLoginUser','favoriteDatasNotIn','shopData','count'));
 	}
@@ -191,7 +209,7 @@ class ShopsController extends AppController {
 	    $LoginUserFollow['follower_shop'] = $this->FollowComp->getLoginUserFollowShopArray($login_user_id);
 	    //誰もフォローしていない場合、ダミーを代入
 	    if(empty($LoginUserFollow['follower_shop'])){
-	      $LoginUserFollow['follower_shop'] = 0;
+	      $LoginUserFollow['follower_shop'] = null;
 	    }
 
 	    $LoginUserFollow['follower_user'] = $this->FollowComp->getLoginUserFollowUserArray($login_user_id);

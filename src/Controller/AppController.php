@@ -16,6 +16,7 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Event\Event;
+
 /**
  * Application Controller
  *
@@ -36,54 +37,20 @@ class AppController extends Controller
      *
      * @return void
      */
-
-    public function beforeFilter(Event $event)
-    {
-        // $this->Auth->allow(['logout','add','auth']);
-
-        $this->Auth->allow();
-        $this->set('auth',$this->Auth->user() );
-    }
-
     public function initialize()
     {
         parent::initialize();
-
-        $this->loadComponent('CakeDC/Users.UsersAuth');
 
         $this->loadComponent('RequestHandler', [
             'enableBeforeRedirect' => false,
         ]);
         $this->loadComponent('Flash');
+        $this->loadComponent('CakeDC/Users.UsersAuth');
 
-        // $this->loadComponent('Auth', [
-        //     'loginAction' => [
-        //         'controller' => 'Users',
-        //         'action' => 'login'
-        //     ],
-        //     'loginRedirect' => [
-        //         'controller' => 'Tops',
-        //         'action' => 'index'
-        //     ],
-        //     'logoutRedirect' => [
-        //         'controller' => 'Users',
-        //         'action' => 'login'
-        //     ],
-        //     'authenticate' => [
-        //         'Form' => [
-        //             'fields' => ['username' => 'username', 'password' => 'password']
-        //         ]
-        //     ],
-        //     'authError' => 'ログインまたは登録して下さい。',
-        // ]);
         /*
          * Enable the following component for recommended CakePHP security settings.
          * see https://book.cakephp.org/3.0/en/controllers/components/security.html
          */
         //$this->loadComponent('Security');
-
     }
-
-
 }
-?>

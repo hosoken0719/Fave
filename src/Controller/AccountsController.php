@@ -11,42 +11,43 @@ use Cake\Http\Response;
 
 
 class AccountsController extends AppController{
-	
+
 	public function index(){
 
-		//ユーザ情報取得
-		$UserTable = $this->loadModel('Users');
-        $userData = $UserTable->get($this->Auth->user('id'));
+		if (!$this->Auth->user()) {
+			$this->redirect(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
+		}else{
+			//ユーザ情報取得
+			$UserTable = $this->loadModel('Users');
+	        $userData = $UserTable->get($this->Auth->user('id'));
 
-        // $userData = $UserTable->find()
-        // ->where(['id' => $this->Auth->user('id')])
-        // ->select([
-        // 	'id'=>'id',
-        // 	'username'=>'username',
-        // 	'address'=>'address',
-        // 	'introduction'=>'introduction',
-        // 	'email'=>'email'
-        // ])
-        // ->first();
-		//セレクトボックスのリストを取得
-		$SexTable =  $this->loadModel('sexs');
-		$sexList = $SexTable->find('list',['keyField'=>'id','valueField'=>'type'])->toArray();
+	        // $userData = $UserTable->find()
+	        // ->where(['id' => $this->Auth->user('id')])
+	        // ->select([
+	        // 	'id'=>'id',
+	        // 	'username'=>'username',
+	        // 	'address'=>'address',
+	        // 	'introduction'=>'introduction',
+	        // 	'email'=>'email'
+	        // ])
+	        // ->first();
+			//セレクトボックスのリストを取得
+			$SexTable =  $this->loadModel('sexs');
+			$sexList = $SexTable->find('list',['keyField'=>'id','valueField'=>'type'])->toArray();
 
-		$this->set(compact('userData','sexList'));
-        if (!$this->request->is(['patch', 'post', 'put'])) {
-            return;
-        }
-		//更新ボタンが押された場合
-        $userEntity = $UserTable->patchEntity($userData, $this->request->getData());
-        if ($UserTable->save($userEntity)) {
-            $this->Flash->success(__d('CakeDC/Users', 'The {0} has been saved'));
-        }else{
-	        // $this->Flash->error(__d('CakeDC/Users', 'The {0} could not be saved', $singular));
+			$this->set(compact('userData','sexList'));
+	        if (!$this->request->is(['patch', 'post', 'put'])) {
+	            return;
+	        }
+			//更新ボタンが押された場合
+	        $userEntity = $UserTable->patchEntity($userData, $this->request->getData());
+	        if ($UserTable->save($userEntity)) {
+	            $this->Flash->success(__d('CakeDC/Users', 'The {0} has been saved'));
+	        }else{
+		        // $this->Flash->error(__d('CakeDC/Users', 'The {0} could not be saved', $singular));
+			}
 		}
-
-
 	}
-
 
 
 
