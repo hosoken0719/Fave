@@ -1,7 +1,7 @@
 <?php ?>
 
 <div class="contents regist">
-    <article class="contain-white">
+    <article class="contain bg-white">
     <div class="contain_inner">
 			<div class="form confirm">
 

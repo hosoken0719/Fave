@@ -184,6 +184,7 @@ class FollowCompComponent extends Component {
             'addres' => 'shops.address',
             'lat' => 'shops.lat',
             'lng' => 'shops.lng',
+            'thumbnail' => 'shops.thumbnail',
             'typename' => 'shoptypes.typename',
             'rating' => 'follows.rating',
             'created' => 'follows.created'

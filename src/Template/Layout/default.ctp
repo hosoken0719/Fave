@@ -1,3 +1,7 @@
+<?php
+  $controller = $this->name;
+  $action = $this->request->getParam('action');
+?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -12,17 +16,15 @@
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.2/croppie.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.2/croppie.min.css">
+
     <?= $this->Html->script('swiper.min.js'); ?>
     <?= $this->Html->css('swiper.min.css'); ?>
     <?php //echo $this->Html->css('bootstrap.min.css'); ?>
     <?= $this->Html->css('main'); ?>
     <?= $this->Html->script('follow.js'); ?>
     <?= $this->Html->script('autocomplete.js'); ?>
-
-
 
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
 
@@ -60,7 +62,7 @@ $(function() {
               <div class="header-link-item left"><?= $this->Html->link(__('お気に入り'), ['controller' => 'Follows', 'action' => 'index']) ?></div>
               <div class="header-link-item left"><?= $this->Html->link(__('探す'), ['controller' => 'Searches', 'action' => 'index']) ?></div>
               <div class="header-link-item left"><?= $this->Html->link(__('お店登録'), ['controller' => 'ShopRegists', 'action' => 'index']) ?></div>
-              <div class="header-link-item right"><?= $this->Html->link(__('アカウント'), ['controller' => 'Accounts', 'action' => 'index']) ?></div>
+              <div class="header-link-item right"><?= $this->Html->link(__('アカウント'), ['controller' => 'Accounts', 'action' => 'index', '_full' => true]) ?></div>
             </div>
           </nav>
           <?php //endif; ?>

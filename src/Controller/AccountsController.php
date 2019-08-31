@@ -14,11 +14,13 @@ class AccountsController extends AppController{
 
 	public function index(){
 
-		if (!$this->Auth->user()) {
-			$this->redirect(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
-		}else{
+		// if (!$this->Auth->user()) {
+		// 	$this->redirect(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
+		// }else{
+
+
 			//ユーザ情報取得
-			$UserTable = $this->loadModel('Users');
+			$UserTable = $this->getTableLocator()->get('Users');
 	        $userData = $UserTable->get($this->Auth->user('id'));
 
 	        // $userData = $UserTable->find()
@@ -32,10 +34,22 @@ class AccountsController extends AppController{
 	        // ])
 	        // ->first();
 			//セレクトボックスのリストを取得
-			$SexTable =  $this->loadModel('sexs');
-			$sexList = $SexTable->find('list',['keyField'=>'id','valueField'=>'type'])->toArray();
-
+			// $SexTable =  $this->loadModel('sexs');
+			$SexTable = $this->getTableLocator()->get('sexs');
+			$sexList = $SexTable->find('list',['keyField'=>'id','valueField'=>'typename'])->toArray();
 			$this->set(compact('userData','sexList'));
+
+			//inputとselectboxのtemplate
+		 	$template = [
+		 		'label' => '<dt{{attrs}}>{{text}}</dt>',
+		 		'input' => "<dd class='d-block w-100'><input type='{{type}}' name='{{name}}'{{attrs}}></dd>",
+		 		'select' => "<dd class='selectbox d-block'><select name='{{name}}'{{attrs}}>{{content}}</select></dd>",
+		 		'textarea' => "<dd class='d-block w-100'><textarea type='{{type}}' name='{{name}}'{{attrs}}></textarea></dd>",
+		 	];
+
+			$this->set(compact('template'));
+
+
 	        if (!$this->request->is(['patch', 'post', 'put'])) {
 	            return;
 	        }
@@ -44,9 +58,11 @@ class AccountsController extends AppController{
 	        if ($UserTable->save($userEntity)) {
 	            $this->Flash->success(__d('CakeDC/Users', 'The {0} has been saved'));
 	        }else{
-		        // $this->Flash->error(__d('CakeDC/Users', 'The {0} could not be saved', $singular));
+		        //$this->Flash->error(__d('CakeDC/Users', 'The {0} could not be saved', $singular));
+		        $this->Flash->error(__d('CakeDC/Users', 'The {0} could not be saved'));
 			}
-		}
+		// }
+
 	}
 
 

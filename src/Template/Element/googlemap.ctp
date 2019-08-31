@@ -51,7 +51,7 @@
         };
 
         map = new google.maps.Map(document.getElementById("googlemap"), myOptions);
- 
+
         //イベント登録 地図の表示領域が変更されたらイベントを発生させる
         google.maps.event.addListener(map, 'idle', function(){
             setPointMarker();
@@ -62,23 +62,23 @@
     function getMapcenter() {
         //地図中央の緯度経度を取得
         var mapcenter = map.getCenter();
- 
+
         //テキストフィールドにセット
         document.getElementById("keido").value = mapcenter.lng();
         document.getElementById("ido").value = mapcenter.lat();
     }
- 
+
     // //地図の中央にマーカー
     // function setMarker() {
     //     var mapCenter = map.getCenter();
- 
+
     //     //マーカー削除
     //     MarkerClear();
- 
+
     //     //マーカー表示
     //     MarkerSet(mapCenter.lat(),mapCenter.lng(),'test');
     // }
-   
+
       //マーカー削除
       function MarkerClear() {
           //表示中のマーカーがあれば削除
@@ -103,7 +103,7 @@
               position: marker_position,
           };
           marker_ary[marker_num] = new google.maps.Marker(markerOpts);
-          
+
           //MAP内の吹き出し表示
           var text = '<a href=/shops/' + shop_id + '>' + shopname + '<br />' + shoptype + '</a>';
 
@@ -114,17 +114,17 @@
 
 
               google.maps.event.addListener(marker_ary[marker_num], "click", function(){
-   
+
                   //情報ウィンドウを開く
                   infoWnd.open(map, marker_ary[marker_num]);
                   //先に開いた情報ウィンドウがあれば、closeする
                   if (currentInfoWindow) {
                       currentInfoWindow.close();
                   }
-   
+
                   //情報ウィンドウを開く
                   infoWnd.open(map, marker_ary[marker_num]);
-   
+
                   //開いた情報ウィンドウを記録しておく
                   currentInfoWindow = infoWnd;
               });
@@ -134,7 +134,7 @@
         $('.follow .shoplist ul').empty();
           //マーカー削除
           // MarkerClear();
-       
+
           //地図の範囲内を取得
           var bounds = map.getBounds();
           map_ne_lat = bounds.getNorthEast().lat();
@@ -169,7 +169,8 @@
             //リストに対応するマーカー配列キーをセット
             var marker_num = marker_ary.length - 1;
             //右のリストHTML出力
-            $('.follow .shoplist ul').append("<li><div class='summary'><div class='icon'><img src='"+photo+"' class='img-circle img-responsive'></div><div class='infor'><span class='name'><p><a href='/shops/"+LocateId+"'>"+LocateShopname+"</a></p></span><span class='other'><p>"+LocateShoptype+"</p><p><a href='javascript:map_click("+marker_num+")'>"+shopaddress+"</a></p></span></div></li>");
+            // $('.follow .shoplist ul').append("<li><div class='summary'><div class='icon'><img src='"+photo+"' class='img-circle img-responsive'></div><div class='infor'><span class='name'><p><a href='/shops/"+LocateId+"'>"+LocateShopname+"</a></p></span><span class='other'><p>"+LocateShoptype+"</p><p><a href='javascript:map_click("+marker_num+")'>"+shopaddress+"</a></p></span></div></li>");
+            $('.follow .shoplist ul').append("<li><div class='summary'><div class='infor'><span class='name'><p><a href='/shops/"+LocateId+"'>"+LocateShopname+"</a></p></span><span class='other'><p>"+LocateShoptype+"</p><p><a href='javascript:map_click("+marker_num+")'>"+shopaddress+"</a></p></span></div></li><hr />");
         }
       }
 

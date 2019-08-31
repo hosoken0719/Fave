@@ -14,6 +14,7 @@ class ShopsController extends AppController {
 		parent::initialize();
 
 		$this->loadComponent('FollowComp'); // コンポーネントの読み込み
+		$this->loadComponent('ShopComp'); // コンポーネントの読み込み
     }
 
 	public function index(){
@@ -24,7 +25,7 @@ class ShopsController extends AppController {
 	    $UserTagTable = TableRegistry::get('users_tags');
 	    $TagTable = TableRegistry::get('tags');
 	    $UsersTable = TableRegistry::get('users');
-	    $this->loadComponent('FollowComp'); // コンポーネントの読み込み
+
 
 	//ショップ情報の抽出
     	$shopData = $this->getShopData($this->request->getParam('shop_id'));
@@ -39,6 +40,12 @@ class ShopsController extends AppController {
 		}else{
 			$photoShop = null;
 		}
+	//写真情報取得
+		$shop_photos = $this->ShopComp->getShopPhotos($shopData->shop_id);
+        $ShopPhotoTable = TableRegistry::getTableLocator()->get('shop_photos');
+        $shop_photos = $ShopPhotoTable->find()->where(['shop_id'=>$shopData->shop_id]);
+        $this->set('shop_photos',$shop_photos);
+
 
  	// ハッシュタグにリンクをつける
 		// if(!is_null($shopData->tag)){
@@ -81,15 +88,13 @@ class ShopsController extends AppController {
 		$businessHoursDatas = $BusinessHoursTable->Find()
 		->where(['business_hours.shop_id' =>  $this->request->getParam('shop_id')]);
 
-		$bussiness_days_hours = $this->Businesshour->setBussinessDaysHoursFromDB($businessHoursDatas);
+		list($bussiness_hours,$bussiness_hours_flg) = $this->Businesshour->setBussinessDaysHoursFromDB($businessHoursDatas);
 
-		$this->set('bussiness_hours',$bussiness_days_hours);
+
+		$this->set(compact('bussiness_hours','bussiness_hours_flg'));
 		$this->set('week_ja',$this->Businesshour->getWeekDayJa()); //日本語曜日名の取得
 
-
-
-
-		// 	//$followedフラグの変更（0=未フォロー、1>フォロー済み）
+	// 	//$followedフラグの変更（0=未フォロー、1>フォロー済み）
 		$checkFollow = ['follow'=>$this->Auth->user('id'),'follower_shop'=>$shopData->shop_id];
     	$myrating = $this->FollowComp->isShopFollow($checkFollow);
 
@@ -247,7 +252,9 @@ class ShopsController extends AppController {
 			// 'tag' => 'Users.tag',
 			'lat' => 'Shops.lat',
 			'lng' => 'Shops.lng',
-			'typename' => 'shoptypes.typename'
+			'typename' => 'shoptypes.typename',
+			'instagram' => 'Shops.instagram',
+			'thumbnail' => 'Shops.thumbnail',
 		])
 		->first();
 

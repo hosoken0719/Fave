@@ -1,6 +1,6 @@
 <?php //①フォローショップ?>
 <div class="contents user">
-    <article class="contain-white">
+    <article class="contain bg-white">
         <div class="contain_inner">
 			<?php echo $this->element('user_header' , ["type" => "shop"]); ?>
 			<div class="shop_flame">

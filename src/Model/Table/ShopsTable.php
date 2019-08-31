@@ -28,7 +28,7 @@ class ShopsTable extends Table
            'joinType' => 'LEFT',
            'foreignKey' => 'pref',
            'bindingKey' => 'id',
-           'propertyName' => 'pref'
+           // 'propertyName' => 'pref'
        ]);
     }
 

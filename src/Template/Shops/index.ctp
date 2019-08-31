@@ -1,6 +1,6 @@
 <?php ?>
 <div class="contents shop">
-    <article class="contain-white">
+    <article class="contain bg-white">
 		<div class="contain_inner">
 			<div class="information">
 				<div class="shop_header">
@@ -13,9 +13,9 @@
 						</div>
 					</div>
 					<div class="photo">
-						<?php if($photoShop <> null): ?>
-						<?= $this->Html->image($photoShop,array("class" => "img-fluid")); ?>
-						<?php else: ?>
+						<?php //if($photoShop <> null): ?>
+						<!-- <?= $this->Html->image($photoShop,array("class" => "img-fluid")); ?> -->
+						<?php //else: ?>
 						<div class="containera">
 							<div class="panel panel-default">
 								<div class="panel-heading">写真を投稿する</div>
@@ -26,7 +26,16 @@
 								</div>
 						    </div>
 						</div>
-						<?php endif; ?>
+						<?php //endif; ?>
+						<?php //$this->Html->image($shopData->thumbnail.'media?size=m'); ?>
+
+						<?php
+                        	foreach ($shop_photos as $shop_photo) {
+                        		echo '<p><br><br>';
+								echo $shop_photo->url;
+                        		echo '<p>';
+                        	}
+                        ?>
 
 					</div>
 					<?php if($countShopFollowMyUser > 0):
@@ -71,33 +80,51 @@
 					<dl>
 						<dt>営業時間</dt>
 			            <dd>
-			              <?php
-			                for($i = 0 ; $i <= 6 ; $i++) {
-			                  echo $week_ja[$i] . "曜日 : ";
-			                  $length = count($bussiness_hours[$i]);
-			                  $no = 0;
-			                  foreach ($bussiness_hours[$i] as $day) {
-			                    echo $day['open'] . "〜" . $day['close'];
-			                    if(++$no !== $length){
-			                      echo  " , ";
-			                    }
-			                  }
-			                  if($no === 0){
-			                    echo "定休日";
-			                  }
-			                  echo "<br />";
-			                }
+			            <?php
+							if($bussiness_hours_flg==1){
+								for($i = 0 ; $i <= 6 ; $i++) {
+									echo $week_ja[$i] . "曜日 : ";
+									$length = count($bussiness_hours[$i]);
+									$no = 0;
+									foreach ($bussiness_hours[$i] as $day) {
+										echo $day['open'] . "〜" . $day['close'];
+										if(++$no !== $length){
+											echo  " , ";
+										}
+									}
+									if($no === 0){
+										echo "定休日";
+									}
+									echo "<br />";
+								}
+							}else{
+								echo '-';
+							}
 			              ?>
 			            </dd>
 			        </dl>
 					<dl>
 						<dt>営業時間備考</dt>
-						<dd><?= nl2br(h($shopData->shop_business_hour_detail)); ?></dd>
+						<dd><?
+							if(!empty($shopData->shop_business_hour_detail)){
+								echo nl2br(h($shopData->shop_business_hour_detail));
+							}else{
+								echo '-';
+							}
+							?>
+						</dd>
 					</dl>
             		<!-- <p><?= h($shopData->holiday); ?></p> -->
 					<dl>
 						<dt>駐車場</dt>
-						<dd><?= h($shopData->parking); ?></dd>
+						<dd><?
+							if(!$shopData->parking === "0"){
+								echo h($shopData->parking);
+							}else{
+								echo 'なし';
+							}
+							?>
+						</dd>
 					</dl>
 					<dl>
 						<dt>電話番号</dt>
@@ -106,7 +133,7 @@
 					<dl>
 						<dt>HP</dt>
 						<dd>
-							<?php if(!empty($shopData->homapage)):
+							<?php if(!empty($shopData->homepage)):
 								echo $this->Html->link($shopData->homepage, $shopData->homapage,array('target'=>'_blank'));
 							endif;?>
 						</dd>
@@ -152,9 +179,9 @@
 	</article>
 
 	<?php if($ShopFollowData['rating'] > 0): ?>
-	<article class="contain-white content_review">
+		<article class="contain bg-white content_review">
 	<?php else: ?>
-	<article class="contain-white content_review hide">
+		<article class="contain bg-white content_review hide">
 	<?php endif; ?>
 
 		<div class="contain_inner">
@@ -162,7 +189,24 @@
 			<div class="review_area">
 				<dl class="myrating">
 					<dt>お気に入り度</dt>
-					<dd><?= $this->element('rating',['rating'=>$ShopFollowData['rating'],'shop_id'=>$shopData->shop_id,'enable'=>1,'name'=>'input_rating']); ?>
+					<dd>
+						<form type="get" action="#">
+							<div class="evaluation">
+								<input type="radio" name="input_rating" value="5"  id=star1 <?php if($ShopFollowData['rating']==5) echo " checked";  ?> disabled />
+								<label for="star1">&#9829;</label>
+								<input type="radio" name="input_rating" value="4"  id=star2 <?php if($ShopFollowData['rating']==4) echo " checked"; ?> disabled/>
+								<label for="star2">&#9829;</label>
+								<input type="radio" name="input_rating" value="3"  id=star3 <?php if($ShopFollowData['rating']==3) echo " checked"; ?> disabled/>
+								<label for="star3">&#9829;</label>
+								<input type="radio" name="input_rating" value="2"  id=star4 <?php if($ShopFollowData['rating']==2) echo " checked"; ?> disabled/>
+								<label for="star4">&#9829;</label>
+								<input type="radio" name="input_rating" value="1"  id=star5 <?php if($ShopFollowData['rating']==1) echo " checked"; ?> disabled/>
+								<label for="star5">&#9829;</label>
+								<input type="hidden" name="shop_id" value=<?= $shopData->shop_id ?>>
+								<input type="hidden" name="button" value="button" ?>
+							</div>
+						</form>
+
 					</dd>
 				</div>
 				<div class="myreview_edit hide">

@@ -2,7 +2,7 @@
 <div class="contents search">
 
 <?php if(!$result_flg): //検索ボタンが押された場合?>
-    <article class="contain-white">
+    <article class="contain bg-white">
 		<div class="search_box">
 			<div class="switch">
 				<ul class="search_tab clearfix">
@@ -35,7 +35,7 @@
 <?php else: ?>
 
 	<div class="search_result">
-		<article class="contain-white">
+		<article class="contain bg-white">
 		<div class="contain_inner">
 			<div class="element_wrap">
 

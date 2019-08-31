@@ -84,6 +84,7 @@ class BusinesshourComponent extends Component{
 			for($i = 0 ; $i <= 6 ; $i++){
 				$bussiness_days_hours[$i] = [];
 			}
+			$flg = 0;
 			//曜日配列に営業時間を代入
 			foreach ($businessHoursDatas as $businessHoursData) {
 				$day = $businessHoursData->day;
@@ -93,10 +94,12 @@ class BusinesshourComponent extends Component{
 				$count = count($bussiness_days_hours[$this->changeDaytoNumber($day)]);
 				$bussiness_days_hours[$this->changeDaytoNumber($day)][$count]["open"] = $open->i18nFormat('HH:mm');
 				$bussiness_days_hours[$this->changeDaytoNumber($day)][$count]["close"] = $close->i18nFormat('HH:mm');
+
+				$flg = 1;
 			}
 			//各曜日で開店時間の早い順番に並び替え
 			$bussiness_days_hours = $this->sortHoursForEachDay($bussiness_days_hours);
-			return $bussiness_days_hours;
+			return [$bussiness_days_hours,$flg];
 	}
 
 

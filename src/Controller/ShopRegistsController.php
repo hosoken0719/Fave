@@ -256,9 +256,10 @@ class ShopRegistsController extends AppController {
 	    	$shopEntity = $ShopTable->newEntity();
 	    	$shopEntity = $ShopTable->patchEntity($shopEntity, $basic_information);
 
+
 			//ショップ情報の登録が成功した場合、続けて営業時間の登録
-	    	if($ShopTable->save($shopEntity)){	
-				//営業日をDBに登録する
+	    	if($ShopTable->save($shopEntity)){
+		// 		//営業日をDBに登録する
 				foreach ($bussiness_days_hours as $day => $hour) {
 					foreach ($hour as $key => $value) {
 						$value['day']  = $this->Businesshour->changeNumbertoDay($day);
@@ -272,13 +273,13 @@ class ShopRegistsController extends AppController {
 			}
 		//セッション変数の削除
 			$this->session->delete('shop');
-		
+
 		//登録したショップページにリダイレクト
 			return $this->redirect(['controller' => 'shops', 'action' => '/' ,$shopEntity->id]);
 		}else{
 			return $this->redirect(['action'=>'index']);
      	}
-		
+
 	}
 
 //Postで取得した値を、先頭にshopを付けてセッション変数に登録

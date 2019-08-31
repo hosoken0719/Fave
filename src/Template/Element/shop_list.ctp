@@ -14,15 +14,16 @@ foreach($Query as $shopData) :
 <div class="shop_infor">
     <dl>
         <dt>
-            <?php if(!empty($photoShop)): ?>
+<!--             <?php if(!empty($photoShop)): ?>
             <?= $this->Html->link(
                 $this->Html->image($photoShop,array("class" => "trimming img-fluid")),
                 array('controller' => 'shops', 'action' => '/'. $shopData->shop_id),
                 array('escape' => false));
             ?>
             <?php else: ?>
-            <?php endif; ?>
+            <?php endif; ?> -->
 
+                        <!-- <?= $this->Html->image($shopData->thumbnail.'media?size=t',['class' => 'trimming img-fluid']); ?> -->
         </dt>
         <dd>
             <div class="name">

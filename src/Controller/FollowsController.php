@@ -49,6 +49,7 @@ class FollowsController extends AppController{
 					'Shop_accountname' => 'shops.accountname',
 					'lat' => 'shops.lat',
 					'lng' => 'shops.lng',
+					'thumbnail' => 'shops.thumbnail',
 					'typename' => 'shoptypes.typename'
 			]);
 
@@ -60,7 +61,6 @@ class FollowsController extends AppController{
 			foreach($followData as $shop){ //follow/followeにはショップ以外が含まれているが、地図には不要のため削除する
 
 				if(!is_null($shop->shopname)){
-
 					$locate = array(
 						'lat' => $shop->lat,
 						'lng' => $shop->lng,
@@ -70,7 +70,8 @@ class FollowsController extends AppController{
 						'shop_id' => $shop->shop_id,
 						'account' => $shop->Shop_accountname,
 						'shopaddress' => $shop->pref.$shop->address,
-						'photo' => $this->FollowComp->getFollowShopPhotos($shop->shop_id)
+						'photo' => $shop->thumbnail.'media?size=t',
+						// 'photo' => $this->FollowComp->getFollowShopPhotos($shop->shop_id)
 					);
 					array_push($map_shops,$locate);
 				}

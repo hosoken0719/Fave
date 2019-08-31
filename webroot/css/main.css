@@ -32,7 +32,7 @@ input:-webkit-autofill{
 }
 
 /*iphoneで丸角になるのをリセット*/
-input,
+input[type=text],
 textarea,
 select,
 button {
@@ -40,7 +40,27 @@ button {
   border-radius: 0;
 }
 
+select{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 100%;
+    font-size: 11px;
+    letter-spacing: .18em;
+    border-style: none;
+    background-color: #f0f0f0;
+    line-height: 21px;
+    padding: 10px 18px;
+    padding-right: 24px;
+    border-radius: 0;
+    box-sizing: border-box;
+    position: relative;
+    color: #666;
+}
 
+.users input{
+    -webkit-appearance: checkbox;
+}
 
 .cake-error:first-child{
   margin-top: 150px;
@@ -226,12 +246,15 @@ body > .main{
   margin: 0 auto;
 }
 
-.contain,
-.contain-white{
+.contain{
   max-width: 1000px;
   margin: 15px auto 30px;
 }
-.contain-white{
+.contain-small{
+  max-width: 500px;
+  margin: 15px auto 80px;
+}
+.bg-white{
   background-color: #fff;
   border: 1px solid #eee;
 }
@@ -477,15 +500,25 @@ body > .main{
   border: 1px solid #eee;
 }
 
-
-.users legend{
-  font-size: 20px;
-  text-align: center;
+.users .btn-facebook{
+  background-color: #3b5998;
+  color: #fff;
+}
+.users .btn{
+  border-radius: 0;
+  font-size: 12px;
+  width: 100%;
+  height: 40px;
+  padding: 10px 0;
 }
 
-.users label[for="password"],
-.users label[for="password-confirm"],
-.users label[for="email"]{
+.users.form legend{
+  font-size: 20px;
+  text-align: center;
+  border: 0;
+}
+
+.users label{
   display: block;
   margin-top: 30px;
 }
@@ -493,7 +526,7 @@ body > .main{
 .users label[for="username"]{
   display: block;
 }
-
+/*
 .users input[type="text"],
 .users input[type="password"],
 .users input[type="password-confirm"],
@@ -510,7 +543,7 @@ body > .main{
   font-size:16px;
   -webkit-box-shadow: none;
   box-shadow: none;
-}
+}*/
 
 .users fieldset{
   margin-bottom: 30px;
@@ -566,8 +599,11 @@ body > .main{
 }
 
 
-.regist input,
-.regist textarea,
+.users input[type=text],
+.users input[type=password],
+.users input[type=email],
+.form input[type=text],
+.form textarea,
 .shop textarea,
 .shop .content_review.edit form,
 .search select,
@@ -756,8 +792,8 @@ input::placeholder{
     transform-origin: left;
   }
 
-  .regist input,
-  .regist textarea,
+  .form input,
+  .form textarea,
   .shop textarea,
   .search input{
     width: 120% !important;
@@ -1057,20 +1093,6 @@ display: -webkit-box;
 
  .btn{
   display: inline-block;
-  /*margin: 30px auto 0 auto;*/
-  /*margin: 45px 40px 40px;*/
-  padding: 5px 10px;
-  border: 1px solid #bbb;
-  background: transparent;
-  color: #333;
-  text-align: center;
-  text-decoration: none;
-  line-height: 1;
-  font-size: 12px;
-  width: 30%;
-  margin-right: 20px;
-  height: 30px;  -webkit-appearance: none;
-  border-radius: 0;
 }
 
 .modal-body .button {
@@ -1209,7 +1231,7 @@ display: -webkit-box;
 }
 
 .shop dl,
-.regist dl{
+.form dl{
   padding: 13px 0;
   margin: 0;
 }
@@ -1224,30 +1246,31 @@ display: -webkit-box;
   border-top: none;
 }
 
-.regist dl{
+.form dl{
   padding: 25px 0;
 }
 
 .shop dt,
-.regist dt{
+.form dt{
   display: inline-block;
   width: 29%;
   vertical-align: top;
   color: #666;
   font-weight: normal;
   line-height: 27px;
+    color: #999;
 }
 
 .shop dd,
-.regist dd{
+.form dd{
   display: inline-block;
   margin: 0;
   line-height: 22px;
   width: 70%;
 }
 
-.regist .basic dd.selectbox,
-.regist .address dd.selectbox{
+.form dd.selectbox{
+/*.regist .address dd.selectbox{*/
   width: 50%;
 }
 
@@ -1255,12 +1278,12 @@ display: -webkit-box;
   width: 100%;
 }
 
-.regist fieldset{
+.form fieldset{
   margin-bottom: 25px;
 }
 
 .shop legend,
-.regist legend{
+.form legend{
   margin-top: 10px;
   font-size: 16px;
   border-bottom: 1px solid #707070;
@@ -1286,27 +1309,27 @@ display: -webkit-box;
   }
 
   .shop dt,
-  .regist dt{
+  .form dt{
     display: block;
     width: 100%;
   }
 
   .shop dd,
-  .regist dd{
+  .form dd{
     width: 100%;
+    padding-left: 10px;
   }
 
-  .regist .basic dd.selectbox,
-  .regist .address dd.selectbox
+  .form dd.selectbox,
   .search .selectbox{
     width: 80%;
   }
 
-  .regist .open_hour dd.selectbox{
+  .form .open_hour dd.selectbox{
     width: 100%;
   }
 
-  .regist legend{
+  .form legend{
     font-size: 16px;
   }
 }
@@ -1326,15 +1349,22 @@ display: -webkit-box;
 }
 
 
-
+.shop .photo{
+  margin: 0 auto;
+    width:414px !important;
+    max-width: 100% !important;
+    min-width: initial !important;
+}
 
 
 /*ショップ写真*/
-.shop .content .photo{
-  width: 80%;
-  margin-bottom: 15px;
-  margin: 0 auto;
+.shop .photo img{
+  width:100%;
+  max-width: 320px;
+  height: auto;
 }
+
+
 
 @media (max-width: 767px) {
   .shop .content .photo{
@@ -1765,7 +1795,7 @@ display: -webkit-box;
 .user dd{
   vertical-align: top;
   display: inline-block;
-  max-width: calc(100% - 155px);
+  /*max-width: calc(100% - 155px);*/
 }
 
 .user .user_flame dd{
@@ -2199,24 +2229,6 @@ display: -webkit-box;
   height: 200px;
 }
 
-.regist select,
-.search select{
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    width: 100%;
-    font-size: 11px;
-    letter-spacing: .18em;
-    border-style: none;
-    background-color: #f0f0f0;
-    line-height: 21px;
-    padding: 10px 18px;
-    padding-right: 24px;
-    border-radius: 0;
-    box-sizing: border-box;
-    position: relative;
-    color: #666;
-}
 
 .search .element{
   text-align: left;
@@ -2303,28 +2315,24 @@ display: -webkit-box;
   }
 }
 
-.regist .selectbox,
+.form .selectbox,
 .search .selectbox,
 .search .inputbox {
   position: relative;
   width: 100%;
 }
 
-.regist .selectbox::after,
-.search .selectbox::after {
+.selectbox::after {
   background-image: url(/img/select_arr_bottom.svg);
   margin-top: 5px;
 }
-.regist .selectbox::before,
-.search .selectbox::before {
+.selectbox::before{
   background-image: url(/img/select_arr_top.svg);
   margin-top: -5px;
 }
 
-.regist .selectbox::before,
-.regist .selectbox::after,
-.search .selectbox::before,
-.search .selectbox::after {
+.selectbox::before,
+.selectbox::after{
   content: "";
   position: absolute;
   width: 6px;
@@ -2525,8 +2533,8 @@ select::-ms-expand {
   display: inline-flex;
   flex-direction: row-reverse;
   justify-content: center;
-  margin-right: auto;
 }
+
 .evaluation input[type='radio']{
   display: none;
 }
@@ -2558,7 +2566,7 @@ select::-ms-expand {
 .shop .shop_detail .myrating .evaluation label:hover,
 .shop .shop_detail .myrating .evaluation label:hover ~ label,
 .myrating .evaluation input[type='radio']:checked ~ label{
-  color: #ff0000;
+  /*color: #ff0000;*/
 }
 
 .evaluation input[type='radio']:checked ~ label{

@@ -35,7 +35,7 @@ class ShopRegistComponent extends Component
 
 
 	public function setOpenClose($value)
-	{	
+	{
 		if($value === 'open'){
 			return 'checked';
 		}elseif($value === 'close'){
@@ -61,7 +61,7 @@ class ShopRegistComponent extends Component
 
 		$week_value = [];
 		for($pattern = 1; $pattern <= 3; $pattern++){
-		//曜日のチェック。各曜日は$week_en[$count_week].$countで表示される				
+		//曜日のチェック。各曜日は$week_en[$count_week].$countで表示される
 			for($count_week = 0; $count_week <= 6; $count_week++ ){
 				$week_en_add = $week_en[$count_week];
 				//3つの表示分を$week_value[曜日][1から3]配列にcheckを入れる

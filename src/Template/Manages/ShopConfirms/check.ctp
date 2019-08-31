@@ -1,11 +1,12 @@
-<?php ?>
+
+
 <div class="contents regist">
-    <article class="contain bg-white">
+    <article class="contain-white">
     <div class="contain_inner">
 			<div class="form">
         <fieldset class="basic">
           <legend><?= "基本情報" ?></legend>
-          <?= $this->Form->create('',['class'=>'next','url' => ['controller' => 'ShopRegists', 'action' => 'checkshopname'],'templates' => $template]); ?>
+          <?= $this->Form->create('',['class'=>'next','url' => ['action' => 'register'],'templates' => $template]); ?>
           <dl><div class='shopname'><div class='require'></div></div>
             <?= $this->Form->control('shopname', ['label' => "ショップ名（必須)",'name'=>'shopname','value'=>$shopname]); ?></dl>
             <dl><?= $this->Form->control('branch', ['label' => '支店名','value'=>$branch,'placeholder' => '栄支店']) ?></dl>
@@ -66,95 +67,50 @@
             <?= $this->Form->control('building', ['label' => 'ビル名・階数','value'=>$building]); ?>
           </dl>
         </fieldset>
-        <fieldset class="open_hour">
-          <legend>営業時間</legend>
-              <dl>
-                <dt>営業時間1</dt>
-                <dd><?= $this->element('open_hour',['count'=>1]) ?>
-                <button id='add_open_hour' class='add_open_hour button1 <?= $flgDisplay[1]['button'] ?>'>営業時間を追加する</button></dd>
-              </dl>
-              <dl class='open_hour2 <?= $flgDisplay[2]['open_hour'] ?>'>
-                <dt>営業時間2</dt>
-                <dd><?= $this->element('open_hour',['count'=>2]) ?>
-                <button id='add_open_hour' class='add_open_hour button2 <?= $flgDisplay[2]['button'] ?>'>営業時間を追加する</button></dd>
-                </dd>
-              </dl>
-              <dl class='open_hour3 <?= $flgDisplay[3]['open_hour'] ?>'>
-                <dt>営業時間3</dt>
-                <dd><?= $this->element('open_hour',['count'=>3]) ?></dd>
-              </dl>
-              <dl class='business_hour_detail'>
-                <dt>営業時間備考</dt>
-                <dd>
-                <?= $this->Form->control('business_hour_detail', [
-                'placeholder' => '詳細情報を記入して下さい（例）第3月曜は休業日',
-                'rows' => 3,
-                'label' => false,
-                'id' => 'input_review',
-                'value' => $business_hour_detail,
-                'maxlength' => 1500,
-                ]);
-                ?>
-                </dd></dl>
-        </fieldset>
+
         <fieldset>
           <legend>詳細情報</legend>
               <dl><?= $this->Form->control('phone_number', ['label' => '電話番号（ハイフンあり）','value'=>$phone_number , 'placeholder' => '052-123-4567']) ?></dl>
               <dl><?= $this->Form->control('parking', ['label' => '駐車場','placeholder' => 'あり／なし or 10台','value'=>$parking]) ?></dl>
               <dl><?= $this->Form->control('homepage', ['label' => 'ホームページ','placeholder' => 'https://fave-jp.info','value'=>$homepage]) ?></dl>
+        </fieldset>
+
+        <fieldset>
+          <legend>インスタグラム</legend>
+			<?= $this->Html->link($instagram, $instagram,array('target'=>'_blank')); ?>
+          <dl><?= $this->Form->control('instagram', ['label' => 'インスタグラム','value'=>$instagram]) ?></dl>
+          <dl><?= $this->Form->control('thumbnail', ['label' => 'サムネイル','value'=>$thumbnail]) ?></dl>
+
+          <?php
+          	$i = 1;
+          	foreach ($shop_photos as $key => $shop_photo) {
+          		echo '<dl>';
+          		echo $this->Form->control('shop_photo'.$i, ['label' => '写真'.$i,'value'=>$shop_photo->url]);
+          		echo '</dl>';
+          		$i++;
+   			}
+   			for ($i; $i <= 3; $i++) {
+          		echo '<dl>';
+          		echo $this->Form->control('shop_photo'.$i, ['label' => '写真'.$i]);
+          		echo '</dl>';
+   			}
+          ?>
+            <?= $this->Form->control('confirm', ['type' => 'checkbox','label' => '確認済みにする','checked'=>true]); ?>
+		</fieldset>
+        <fieldset>
+
+          <?= $this->Form->hidden('shop_id' ,['value'=> $shop_id ]) ; ?>
           <?= $this->Form->button(__('進む')); ?>
           <?= $this->Form->end(); ?>
+          <?php
+	        echo $this->Form->create('',['class'=>'prev' , 'url' => ['action' => 'index']]);
+	        echo $this->Form->button('戻る',['class'=>'back']);
+	        echo $this->Form->end();
+	      ?>
+
 
         </fieldset>
       </div>
       </div>
     </article>
 </div>
-
-<script type="text/javascript">
-  $(".next").submit(function(){
-    var chkForm = true;
-    var check_require = function(type,tag){
-      if ($(type+"[name="+tag+"]").val() == ''){
-        $('.'+tag+' .require').text("*必須項目です"); 
-        chkForm = false;
-      }else{
-        $('.'+tag+' .require').text(''); 
-      }
-    }
-    
-    check_tag = ['shopname','kana','address'];
-    check_tag.forEach(function(tag){
-      check_require('input',tag)
-    })
-    
-    check_tag = ['pref','shoptype'];
-    check_tag.forEach(function(tag){
-      check_require('select',tag)
-    })
-
-    var str = $("input[name='kana']").val();
-    if(!str.match(/^[ァ-ヶー　]*$/)){  
-      $('.kana .require').text("*全角カタカタで入力下さい"); 
-      chkForm = false;
-    }
-    return chkForm;
-  });
-
-
-$("dt:contains('必須')").addClass('text-danger');
-
-
-    //「営業時間を追加する」ボタン
-  $(".button1").on("click",function(){
-    $('.open_hour2').removeClass('hide'); //お気に入り登録画面の表示
-    $('.button1').addClass('hide'); //お気に入り登録画面の表示
-    return false
-  });
-
-  $(".button2").on("click",function(){
-    $('.open_hour3').removeClass('hide'); //お気に入り登録画面の表示
-    $('.button2').addClass('hide'); //お気に入り登録画面の表示
-    return false
-  });
-</script>

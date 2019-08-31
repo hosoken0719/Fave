@@ -1,6 +1,6 @@
 <?php ?>
 	<div class="contents shop">
-		<article class="contain-white">
+		<article class="contain bg-white">
 			<div class="contain_inner">
 				<div class="review">
 					<?php

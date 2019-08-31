@@ -43,7 +43,8 @@ class SearchesController extends AppController{
 		        	'address' => 'shops.address',
 		        	'lat' => 'shops.lat',
 		        	'lng' => 'shops.lng',
-		        	'typename' => 'shoptypes.typename'
+		        	'typename' => 'shoptypes.typename',
+		        	'thumbnail' => 'shops.thumbnail'
 					]
 				);
 

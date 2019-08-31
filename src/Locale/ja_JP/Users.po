@@ -785,7 +785,7 @@ msgstr "更新日時"
 
 #: View/Helper/UserHelper.php:45
 msgid "Sign in with"
-msgstr "以下でサインインします。"
+msgstr ""
 
 #: View/Helper/UserHelper.php:48
 msgid "fa fa-{0}"
