@@ -9,7 +9,7 @@
         <dl>
             <dt class="icon_area">
                 <div class="icon">
-                    <?php echo $this->Html->image('icon_user',['alt'=> 'User']); ?>
+                    <?php echo $this->Html->image($user_data->avatar,['alt'=> 'User']); ?>
                 </div>
                 <div class="sex">
                     <?php if($user_data->sex_id === "1" or $user_data->sex_id === "2") echo $user_data->sex_typename;  ?>
@@ -27,6 +27,7 @@
 	                    <tr><td>フォロー</td><td><?= h($user_data->FollowUserCount) ?>人(共通:<?= h($user_data->FollowUserCommonCount) ?>人)</td></tr>
 	                    <tr><td>フォロワー</td><td><?= h($user_data->FollowerUserCount) ?>人(共通:<?= h($user_data->FollowerUserCommonCount) ?>人)</td></tr>
                 </table>
+                
             </dd>
         </dl>
     </div>

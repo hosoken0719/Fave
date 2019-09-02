@@ -1,13 +1,13 @@
 <?php
 foreach($Query as $shopData) :
     //ショップの写真パスを取得
-    $dir = SHOPPHOTO_UPLOADDIR . '/photo_shop/' . $shopData->shop_id .'/';
+    $dir = PHOTO_UPLOADDIR . '/shop_photos/' . $shopData->shop_id .'/';
     $photo_list = glob($dir . '*.png');
     $photoShop = null;
     if(!empty($photo_list)){
         $photoShop_fullpath = max($photo_list); //最新写真のみ抽出
         $photoShop_array = explode('/',$photoShop_fullpath); //サーバパスの取得となるため、最後のファイル名だけを取得
-        $photoShop = "https://fave-jp.info/img/photo_shop/" . $shopData->shop_id . "/thumbnail/min_" . end($photoShop_array);
+        $photoShop = "https://fave-jp.info/img/shop_photos/" . $shopData->shop_id . "/thumbnail/min_" . end($photoShop_array);
     }
 ?>
 

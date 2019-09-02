@@ -12,56 +12,57 @@ use Cake\Http\Response;
 
 class AccountsController extends AppController{
 
+    public function initialize()
+    {
+		parent::initialize();
+		$this->loadComponent('UserComp'); // コンポーネントの読み込み
+    }
+
 	public function index(){
 
-		// if (!$this->Auth->user()) {
-		// 	$this->redirect(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
-		// }else{
+		//ユーザ情報取得
+		$UserTable = $this->getTableLocator()->get('Users');
+        $userData = $UserTable->get($this->Auth->user('id'));
 
+		$SexTable = $this->getTableLocator()->get('sexs');
+		$sexList = $SexTable->find('list',['keyField'=>'id','valueField'=>'typename'])->toArray();
+		$this->set(compact('userData','sexList'));
 
-			//ユーザ情報取得
-			$UserTable = $this->getTableLocator()->get('Users');
-	        $userData = $UserTable->get($this->Auth->user('id'));
+		//inputとselectboxのtemplate
+	 	$template = [
+	 		'label' => '<dt{{attrs}}>{{text}}</dt>',
+	 		'input' => "<dd class='d-block w-100'><input type='{{type}}' name='{{name}}'{{attrs}}></dd>",
+	 		'select' => "<dd class='selectbox d-block'><select name='{{name}}'{{attrs}}>{{content}}</select></dd>",
+	 		'textarea' => "<dd class='d-block w-100'><textarea type='{{type}}' name='{{name}}'{{attrs}}></textarea></dd>",
+	 	];
 
-	        // $userData = $UserTable->find()
-	        // ->where(['id' => $this->Auth->user('id')])
-	        // ->select([
-	        // 	'id'=>'id',
-	        // 	'username'=>'username',
-	        // 	'address'=>'address',
-	        // 	'introduction'=>'introduction',
-	        // 	'email'=>'email'
-	        // ])
-	        // ->first();
-			//セレクトボックスのリストを取得
-			// $SexTable =  $this->loadModel('sexs');
-			$SexTable = $this->getTableLocator()->get('sexs');
-			$sexList = $SexTable->find('list',['keyField'=>'id','valueField'=>'typename'])->toArray();
-			$this->set(compact('userData','sexList'));
+		$this->set(compact('template'));
 
-			//inputとselectboxのtemplate
-		 	$template = [
-		 		'label' => '<dt{{attrs}}>{{text}}</dt>',
-		 		'input' => "<dd class='d-block w-100'><input type='{{type}}' name='{{name}}'{{attrs}}></dd>",
-		 		'select' => "<dd class='selectbox d-block'><select name='{{name}}'{{attrs}}>{{content}}</select></dd>",
-		 		'textarea' => "<dd class='d-block w-100'><textarea type='{{type}}' name='{{name}}'{{attrs}}></textarea></dd>",
-		 	];
+		$avatar_path = $this->UserComp->getAvatar($userData->id);
+		$this->set('avatar',$avatar_path);
+    	// if(file_exists(PHOTO_UPLOADDIR.'/user_photos/'.$userData->id.'.png')){
+     //    	$this->set('avatar','/img/user_photos/thumbnail/max_'.$userData->id.'.png');
+     //    }else{
+     //    	$UsersTable = TableRegistry::get('Users');
+     //    	$avatar = $UsersTable->find()->contain(['social_accounts'])->where(['Users.id' => $this->Auth->user('id')])->select(['avatars' => 'social_accounts.avatar'])->first();
+     //    	if(Empty($avatar->avatars)){
+	    //     	$this->set('avatar',null);
+     //    	}else{
+     //    		$this->set('avatar',$avatar->avatars);
+     //    	}
+     //    }
 
-			$this->set(compact('template'));
-
-
-	        if (!$this->request->is(['patch', 'post', 'put'])) {
-	            return;
-	        }
-			//更新ボタンが押された場合
-	        $userEntity = $UserTable->patchEntity($userData, $this->request->getData());
-	        if ($UserTable->save($userEntity)) {
-	            $this->Flash->success(__d('CakeDC/Users', 'The {0} has been saved'));
-	        }else{
-		        //$this->Flash->error(__d('CakeDC/Users', 'The {0} could not be saved', $singular));
-		        $this->Flash->error(__d('CakeDC/Users', 'The {0} could not be saved'));
-			}
-		// }
+        if (!$this->request->is(['patch', 'post', 'put'])) {
+            return;
+        }
+		//更新ボタンが押された場合
+        $userEntity = $UserTable->patchEntity($userData, $this->request->getData());
+        if ($UserTable->save($userEntity)) {
+            $this->Flash->success(__d('CakeDC/Users', 'The {0} has been saved'));
+        }else{
+	        //$this->Flash->error(__d('CakeDC/Users', 'The {0} could not be saved', $singular));
+	        $this->Flash->error(__d('CakeDC/Users', 'The {0} could not be saved'));
+		}
 
 	}
 

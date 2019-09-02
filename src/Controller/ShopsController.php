@@ -31,12 +31,12 @@ class ShopsController extends AppController {
     	$shopData = $this->getShopData($this->request->getParam('shop_id'));
 
 		//ショップの写真パスを取得
-		$dir = SHOPPHOTO_UPLOADDIR . '/photo_shop/' . $shopData->shop_id . '/';
+		$dir = PHOTO_UPLOADDIR . '/shop_photos/' . $shopData->shop_id . '/';
 		$photo_list = glob($dir . '*.png');
 		if(!empty($photo_list)){
 			$photoShop_fullpath = max($photo_list); //最新写真のみ抽出
 			$photoShop_array = explode('/',$photoShop_fullpath); //サーバパスの取得となるため、最後のファイル名だけを取得
-			$photoShop = "https://fave-jp.info/img/photo_shop/" . $shopData->shop_id . "/thumbnail/max_" . end($photoShop_array);
+			$photoShop = "https://fave-jp.info/img/shop_photos/" . $shopData->shop_id . "/thumbnail/max_" . end($photoShop_array);
 		}else{
 			$photoShop = null;
 		}

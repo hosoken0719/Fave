@@ -38,10 +38,9 @@ class ImgProcessComponent extends Component
                break;
             default:
             list($original_width, $original_height) = getimagesize($original_file);
-            } 
+            }
         }else{
             list($original_width, $original_height) = getimagesize($original_file);
-            
         }
 
         if($img['type'] === 'image/jpeg') $original_image = imagecreatefromjpeg($original_file);
@@ -64,9 +63,9 @@ class ImgProcessComponent extends Component
         // imagecopyresized($thumb_image, $original_image, 0, 0, 0, 0,
         //     $thumb_width, $thumb_height,
         //     $original_width, $original_height);
-        if($img['type'] === 'image/jpeg') imagejpeg($thumb_image, SHOPPHOTO_UPLOADDIR.'/'."thumbnail.jpg", 60);
-        if($img['type'] === 'image/png') imagepng($thumb_image, SHOPPHOTO_UPLOADDIR.'/'."thumbnail.png");
-        if($img['type'] === 'image/gif') imagegif($thumb_image, SHOPPHOTO_UPLOADDIR.'/'."thumbnail.gif");
+        if($img['type'] === 'image/jpeg') imagejpeg($thumb_image, PHOTO_UPLOADDIR.'/'."thumbnail.jpg", 60);
+        if($img['type'] === 'image/png') imagepng($thumb_image, PHOTO_UPLOADDIR.'/'."thumbnail.png");
+        if($img['type'] === 'image/gif') imagegif($thumb_image, PHOTO_UPLOADDIR.'/'."thumbnail.gif");
 
 
 

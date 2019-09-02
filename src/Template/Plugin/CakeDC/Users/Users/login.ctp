@@ -39,7 +39,8 @@ use Cake\Core\Configure;
                         'type' => 'checkbox',
                         'value' => '1',
                         'label' => __d('CakeDC/Users', 'ログイン情報を保存する'),
-                        'checked' => Configure::read('Users.RememberMe.checked')
+                        'checked' => Configure::read('Users.RememberMe.checked'),
+                        'class' => 'w-auto'
                     ]);
                 }
                 ?>

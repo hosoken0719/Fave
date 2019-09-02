@@ -22,6 +22,12 @@ use Cake\Validation\Validator;
 
 
             //モデル名を入れる
+               $this->belongsTo('social_accounts',[
+           'joinType' => 'LEFT',
+           'foreignKey' => 'follower_user',
+           'bindingKey' => 'user_id',
+           // 'propertyName' => 'Social_accounts'
+       ]);
 
 
     }

@@ -27,7 +27,6 @@
     <?= $this->Html->script('autocomplete.js'); ?>
 
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
-
 <script>
 $(function() {
       $header = $('header');
@@ -86,5 +85,7 @@ $(function() {
     echo $this->element('googlemap');
   endif;
   ?>
+<?= $this->fetch('script') ?>
+
   </body>  
 </html>

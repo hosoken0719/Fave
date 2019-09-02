@@ -80,9 +80,23 @@ class FollowUser extends Entity
 	    return $follower_user_common_count;
 	}
 
+    protected function setUserID($user_id){
+        return $user_id;
+    }
+
+    protected function _getAvatar(){
+
+        $UsersTable = TableRegistry::get('Users');
+        $result = $UsersTable->find()->contain(['social_accounts'])->where(['Users.id' => $this->FollowerId])->select(['avatars' => 'social_accounts.avatar'])->first();
+        //avatarにすると、なぜかnullになるためavatars変更
+        return $result->avatars;
+    }
+
     private function setTables() {
         $TableEntity['follows'] = TableRegistry::get('follows');
         $TableEntity['follow_users'] = TableRegistry::get('follow_users');
         $this->TableEntity = $TableEntity;
     }
+
+
 }

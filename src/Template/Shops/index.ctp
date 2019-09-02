@@ -1,4 +1,4 @@
-<?php ?>
+<?= $this->Html->script(['croppie.min.js','croppie_option.js'],['block' => true]) ?>
 <div class="contents shop">
     <article class="contain bg-white">
 		<div class="contain_inner">
@@ -17,14 +17,14 @@
 						<!-- <?= $this->Html->image($photoShop,array("class" => "img-fluid")); ?> -->
 						<?php //else: ?>
 						<div class="containera">
-							<div class="panel panel-default">
-								<div class="panel-heading">写真を投稿する</div>
-								<div class="panel-body">
-									<input type="file" name="upload_image" id="upload_image" />
-									<br />
+							<div class="panel panel-default text-center">
+								<div class="panel-body file">
+									<label>お店の写真を投稿
+									<?= $this->Form->control('field', ['type' => 'file' , 'name' => 'upload_image' , 'id' =>'upload_image','label'=>false]); ?>
+									</label>
 									<div id="uploaded_image"></div>
 								</div>
-						    </div>
+							</div>
 						</div>
 						<?php //endif; ?>
 						<?php //$this->Html->image($shopData->thumbnail.'media?size=m'); ?>
@@ -57,7 +57,7 @@
 						, [
 							'controller' => 'shops',
 						    'action' => '/favorited_all',$shopData->shop_id
-						], 
+						],
 						['escape' => false]);
 					endif; ?>
 				</div>
@@ -72,7 +72,7 @@
 					<?php //echo nl2br(h($shopData->introduction)); ?>
 					<!-- <p><?php //echo $hashtag; ?></p> -->
 				<!-- </div> -->
-				<div class="infor">
+				<div class="infor text-left">
 					<dl>
 						<dt>住所</dt>
 						<dd> <?= h($shopData->pref.$shopData->city.$shopData->ward.$shopData->town.$shopData->building); ?></dd>
@@ -330,69 +330,6 @@
     });
 // ▲swiperの設定▲
 
-// ▼croppieの設定▼
-	$image_crop = $('#image-demo').croppie({
-	    enableExif: true,
-	    viewport: {
-	        width: 200,
-	        height: 150,
-	        type: 'square'
-	    },
-	    boundary: {
-	        width: 250,
-	        height: 200
-	    },
-	    enableOrientation: true
-	});
-
-	// モーダルウィンドウの表示
-	$('#upload_image').on('change', function () {
-	  var reader = new FileReader();
-	    reader.onload = function (event) {
-	      $image_crop.croppie('bind', {
-	        url: event.target.result
-	      }).then(function(){
-	        console.log('jQuery bind complete');
-	      });
-	    }
-	    reader.readAsDataURL(this.files[0]);
-	    $('#uploadimageModal').modal('show');
-	});
-
-	// モーダルウィンドウ
-	//回転ボタン
-	  $('.vanilla-rotate').on('click', function(event) {
-	      $image_crop.croppie('rotate', '-90');
-	  });
-
-	// 登録ボタン
-	 var csrf = $('input[name=_csrfToken]').val();
-	$('.crop_image').on('click', function (event) {
-	  $image_crop.croppie('result', {
-	    type: 'canvas',
-	    size: { width: 800, height: 600 }
-	  }).then(function (image) {
-	    $.ajax({
-	      url: "/ajax/shopimage",
-	      type: "POST",
-	      data: {
-	      	"image":image,
-	      	"shop_id":<?= $shopData->shop_id ?>
-	      },
-	      beforeSend: function(xhr){
-	        xhr.setRequestHeader('X-CSRF-Token', csrf);
-	      },
-	      success: function (data) {
-	      	$('#uploadimageModal').modal('hide');
-	      	location.reload(false)
-	      	$('#uploaded_image').html(data);
-	      },
-	      error: function (data, status, errors){
-	      }
-	    });
-	  });
-	});
-// ▲croppieの設定▲
 
 // ▼お気に入りの登録▼
 
@@ -527,3 +464,4 @@
 })(jQuery);
 
 </script>
+<script type="text/javascript">var id = "<?= $shopData->shop_id ?>";var path = 'shopimage';var type = 'square';</script>

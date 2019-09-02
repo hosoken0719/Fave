@@ -13,6 +13,7 @@ class AjaxController extends AppController
       parent::initialize();
       $this->loadComponent('FollowComp'); // コンポーネントの読み込み
 	}
+	
 
 
 	public function shoprating(){
@@ -173,16 +174,11 @@ class AjaxController extends AppController
     public function shopimage(){
 		 if ($this->request->is('ajax')) {
 
-				$this->autoRender = false;
-				$data = $this->request->getData("image");
-				$image_array_1 = explode(";",$data);
-				$image_array_2 = explode(",", $image_array_1[1]);
-
-				$data = base64_decode($image_array_2[1]);
+				$data = $this->decode($this->request->getData("image"));
 
 				$imagename = time().'.png';
-				$shop_id = $this->request->getData("shop_id");
-				$path = SHOPPHOTO_UPLOADDIR.'/photo_shop/'.$shop_id.'/';
+				$shop_id = $this->request->getData("id");
+				$path = PHOTO_UPLOADDIR.'/shop_photos/'.$shop_id.'/';
 
 				//ショップのディレクトリ有無を確認して、無ければ新規作成
 				if(!file_exists($path)){
@@ -191,14 +187,35 @@ class AjaxController extends AppController
 				}
 				file_put_contents($path.$imagename,$data);
 
-				$this->resize($shop_id,$path,$imagename,360,480,'max');
-				$this->resize($shop_id,$path,$imagename,288,384,'middle');
-				$this->resize($shop_id,$path,$imagename,108,144,'min');
+				$this->resize($path,$imagename,360,480,'max');
+				$this->resize($path,$imagename,288,384,'middle');
+				$this->resize($path,$imagename,108,144,'min');
 		}
     }
 
+    public function avatar(){
+		if ($this->request->is('ajax')) {
+			$data = $this->decode($this->request->getData("image"));
+			$imagename = $this->request->getData("id").'.png';
+			$path = PHOTO_UPLOADDIR.'/user_photos/';
+			file_put_contents($path.$imagename,$data);
+			$this->resize($path,$imagename,300,300,'max');
+			$this->resize($path,$imagename,150,150,'middle');
+			$this->resize($path,$imagename,75,75,'min');
+		}
+    }
+    private function decode($image){
+		$this->autoRender = false;
+		$data = $image;
+		$image_array_1 = explode(";",$data);
+		$image_array_2 = explode(",", $image_array_1[1]);
+
+		$data = base64_decode($image_array_2[1]);
+
+		return $data;
+    }
 	//GDを使用しているはず
-	private function resize($shop_id,$path,$imagename,$h,$w,$prefix){
+	private function resize($path,$imagename,$h,$w,$prefix){
 
 		// 加工したいファイルを指定
 		$file = $path.$imagename;

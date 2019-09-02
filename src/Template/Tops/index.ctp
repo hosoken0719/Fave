@@ -15,13 +15,13 @@
             $i = $i + 1;
 
             //ショップの写真パスを取得
-            $dir = SHOPPHOTO_UPLOADDIR . '/photo_shop/' . $favoriteData->shop_id . '/';
+            $dir = PHOTO_UPLOADDIR . '/shop_photos/' . $favoriteData->shop_id . '/';
             $photo_list = glob($dir . '*');
             $photoShop = null;
             if(!empty($photo_list)){
                 $photoShop_fullpath = max($photo_list); //最新写真のみ抽出
                 $photoShop_array = explode('/',$photoShop_fullpath); //サーバパスの取得となるため、最後のファイル名だけを取得
-                $photoShop = "https://fave-jp.info/img/photo_shop/" . $favoriteData->shop_id . "/" . end($photoShop_array);
+                $photoShop = "https://fave-jp.info/img/shop_photos/" . $favoriteData->shop_id . "/" . end($photoShop_array);
             }
     ?>
             <article class="content">
@@ -42,8 +42,7 @@
                             array('escape' => false)); ?>
                         </div>
                     <?php endif; ?>
-                    
-                    
+
                     <div class="introduction">
                         <?php echo nl2br(h($favoriteData->introduction)); ?>
                     </div>

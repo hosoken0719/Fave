@@ -35,12 +35,12 @@ class FollowCompComponent extends Component {
     //お店の写真を取得
     public function getFollowShopPhotos($id){
         //ショップの写真パスを取得
-        $dir = SHOPPHOTO_UPLOADDIR . '/photo_shop/' . $id . '/thumbnail/';
+        $dir = PHOTO_UPLOADDIR . '/shop_photos/' . $id . '/thumbnail/';
         $photo_list = glob($dir . '*.png');
         if(!empty($photo_list)){
             $photoShop_fullpath = max($photo_list); //最新写真のみ抽出
             $photoShop_array = explode('/',$photoShop_fullpath); //サーバパスの取得となるため、最後のファイル名だけを取得
-            $photoShop = "https://fave-jp.info/img/photo_shop/" . $id . "/thumbnail/" . end($photoShop_array);
+            $photoShop = "https://fave-jp.info/img/shop_photos/" . $id . "/thumbnail/" . end($photoShop_array);
         }else{
             $photoShop = "https://fave-jp.info/img/no_image.svg";
         }

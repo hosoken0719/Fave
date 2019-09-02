@@ -25,18 +25,5 @@ use DateTime;
 class User extends UserParent
 {
 
-	// protected function _getSex($sex){
-	// 	switch($sex){
-	// 		case 1:
-	// 			return '男性';
-	// 			break;
-	// 		case 2:
-	// 			return '女性';
-	// 			break;
-	// 		case 3:
-	// 			return '指定なし';
-	// 			break;
-	// 	}
-	// }
 }
 ?>
