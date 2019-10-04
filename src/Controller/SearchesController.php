@@ -11,8 +11,11 @@ class SearchesController extends AppController{
 
     public function initialize()
     {
-      parent::initialize();
-      $this->loadComponent('FollowComp'); // コンポーネントの読み込み
+	    parent::initialize();
+	    $this->loadComponent('FollowComp'); // コンポーネントの読み込み
+	    $this->loadComponent('ShopComp'); // コンポーネントの読み込み
+	    $this->set('header_link','search');
+      	$this->Auth->allow();
     }
 
 	public function index(){
@@ -48,16 +51,10 @@ class SearchesController extends AppController{
 					]
 				);
 
-					// ->where([
-					// 		'OR' => [
-					// 			['shops.shopname LIKE' => '%'.$parameter['word'].'%']
-					// 		]
-					// 	]);
-
 				//ショップタイプの指定がある場合は検索条件に追加する
 				if(!empty($parameter['shoptype'])){
 					$shoptype = $parameter['shoptype'];
-					$shopDatas->where(['shops.shoptype' => $parameter['shoptype']]);
+					$shopDatas->where(['OR'=>['shops.shoptype' => $parameter['shoptype'],['shops.shoptype2' => $parameter['shoptype']]]]);
 					$result_flg = 1; //検索結果を表示するためのフラグを代入
 				}else{
 					$shoptype = "";
@@ -81,11 +78,19 @@ class SearchesController extends AppController{
 				}
 
 				$this->set(compact('shoptype','area'));
+			    //自分がフォローしているユーザーを取得
+			    $LoginUserFollow['follower_user'] = $this->FollowComp->getLoginUserFollowUserArray($this->Auth->user('id'));
+			   $this->set('follower_user',$LoginUserFollow['follower_user']);
+
+				// foreach ($shopDatas as $shopData) {
+				// 	$this->ShopComp->rating_avg($shopData->shop_id,$LoginUserFollow['follower_user']);
+				// }
+
 
 			    //Follow済み($followed)
-			    $followers = $FollowTable->find()
-			    ->where(['follow' => $this->Auth->user('id')])
-			    ->select(['follower'=>'follower','rating'=>'rating']);
+			    // $followers = $FollowTable->find()
+			    // ->where(['follow' => $this->Auth->user('id')])
+			    // ->select(['follower'=>'follower','rating'=>'rating']);
 
 		// $checkFollow = ['follow'=>$this->Auth->user('id'),'follower'=>$shopData->shop_id];
   //   	$rating = $this->FollowComp->isFollow($checkFollow);

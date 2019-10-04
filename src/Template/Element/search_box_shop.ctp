@@ -39,7 +39,7 @@ echo $this->Form->control('area' , [
 		</div>
 		<div class="element button">
 <?php
-	echo $this->Form->button('検索',['class'=>'search_btn']);
+	echo $this->Form->button('検索',['class'=>'search_btn','disabled'=>true]);
 ?>
 
 		</div>

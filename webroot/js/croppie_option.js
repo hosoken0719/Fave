@@ -9,7 +9,7 @@
 	    viewport: {
 	        width: width,
 	        height: 150,
-	        type: type
+	        type: 'square'
 	    },
 	    boundary: {
 	        width: 250,
@@ -43,7 +43,7 @@
 	$('.crop_image').on('click', function (event) {
 	  $image_crop.croppie('result', {
 	    type: 'canvas',
-	    size: { width: 800, height: 600 }
+	    size: { width: 600, height: 600 }
 	  }).then(function (image) {
 	    $.ajax({
 	      url: "/ajax/"+path,
@@ -57,7 +57,7 @@
 	      },
 	      success: function (data) {
 	      	$('#uploadimageModal').modal('hide');
-	      	location.reload(false)
+	      	location.reload()
 	      	$('#uploaded_image').html(data);
 	      },
 	      error: function (data, status, errors){

@@ -12,8 +12,8 @@ class AjaxController extends AppController
     {
       parent::initialize();
       $this->loadComponent('FollowComp'); // コンポーネントの読み込み
+      $this->Auth->allow();
 	}
-	
 
 
 	public function shoprating(){
@@ -129,30 +129,14 @@ class AjaxController extends AppController
 
 		$term = $this->request->getQuery('term');
 	    $UserTable = TableRegistry::get('users');
-
-		// $query = $UserTable->find('list',
-		// 	['keyField' => 'id',
-		// 	'valueField' => 'username',
-		// 	]
-		// )
-		// ->where(['username LIKE'=> '%'.$term.'%']);
-
-		// foreach($results as $result){
-		// 	$user = [];
-		// 	$user['label'] = $result;
-		// 	$user['value'] = $result;
-		// 	$user['mylink'] = '/users/'.$result;
-		// 	array_push($resultss,$user);
-		// } 
-
-		// $results = $query->toArray();
-		// $resultss = array();
+		$this->loadComponent('UserComp'); // コンポーネントの読み込み
 
 		$userDatas = $UserTable->find()
-		->where(['username LIKE'=> '%'.$term.'%'])
+		->where(['OR'=>[['username LIKE'=> '%'.$term.'%'],['nickname LIKE'=> '%'.$term.'%']]])
 		->select([
 			'username' => 'username',
-			// 'icon' => 'icon'
+			'nickname' => 'nickname',
+			'user_id' => 'id'
 		]);
 
 		$result = [];
@@ -160,15 +144,22 @@ class AjaxController extends AppController
 		foreach($userDatas as $userData){
 			$user = [];
 			$user['username'] = $userData->username;
-			$user['icon'] = $userData->icon;
+			if(!is_null($userData->nickname)){
+				$user['nickname'] = $userData->nickname;
+			}else{
+				$user['nickname'] = "";
+			}
+			$avatar = $this->UserComp->getAvatar($userData->user_id);
+			$user['icon'] = $avatar;
 			$user['userlink'] = '/users/'.$userData->username;
 			array_push($result,$user);
-		} 
+		}
 
 		$this->viewClass = 'Json';
 		$this->set(compact('result'));
 		$this->set('_serialize','result');
     }
+
 
 //ショップ画像をフォルダに保存する
     public function shopimage(){
@@ -193,17 +184,20 @@ class AjaxController extends AppController
 		}
     }
 
+    //アバターの登録
     public function avatar(){
 		if ($this->request->is('ajax')) {
 			$data = $this->decode($this->request->getData("image"));
 			$imagename = $this->request->getData("id").'.png';
 			$path = PHOTO_UPLOADDIR.'/user_photos/';
 			file_put_contents($path.$imagename,$data);
+			$this->resize($path,$imagename,800,800,'full');
 			$this->resize($path,$imagename,300,300,'max');
 			$this->resize($path,$imagename,150,150,'middle');
 			$this->resize($path,$imagename,75,75,'min');
 		}
     }
+
     private function decode($image){
 		$this->autoRender = false;
 		$data = $image;
@@ -214,6 +208,7 @@ class AjaxController extends AppController
 
 		return $data;
     }
+
 	//GDを使用しているはず
 	private function resize($path,$imagename,$h,$w,$prefix){
 

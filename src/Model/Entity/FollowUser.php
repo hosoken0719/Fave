@@ -41,7 +41,6 @@ class FollowUser extends Entity
             $follow_shop_common_count = 0;
         }
     	return $follow_shop_common_count;
-    
     }
 
     //フォローユーザ数のカウント
@@ -84,12 +83,20 @@ class FollowUser extends Entity
         return $user_id;
     }
 
+    //アバターのセット
     protected function _getAvatar(){
-
-        $UsersTable = TableRegistry::get('Users');
-        $result = $UsersTable->find()->contain(['social_accounts'])->where(['Users.id' => $this->FollowerId])->select(['avatars' => 'social_accounts.avatar'])->first();
-        //avatarにすると、なぜかnullになるためavatars変更
-        return $result->avatars;
+        $user_id = $this->FollowerId;
+       if(file_exists(PHOTO_UPLOADDIR.'/user_photos/'.$user_id.'.png')){
+               return '/img/user_photos/thumbnail/max_'.$user_id.'.png';
+        }else{
+            $UsersTable = TableRegistry::get('Users');
+            $avatar = $UsersTable->find()->contain(['social_accounts'])->where(['Users.id' => $user_id])->select(['avatars' => 'social_accounts.avatar'])->first();
+            if(!Empty($avatar->avatars)){
+                return $avatar->avatars;
+            }else{
+                return 'avatar.png';
+            }
+        }
     }
 
     private function setTables() {

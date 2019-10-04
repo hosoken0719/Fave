@@ -1,7 +1,7 @@
 <?php ?>
 <div class="contents regist">
-    <article class="contain-white">
-	    <div class="contain_inner">
+    <article class="contain bg-white">
+		<div class="contain_inner">
 	    	<?php
 				foreach($shopDatas as $shopData):
 	    	?>

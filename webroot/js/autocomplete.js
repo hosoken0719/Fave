@@ -26,11 +26,13 @@ $(function() {
     },
     })
     .autocomplete('instance')._renderItem = function(ul, item) {
-    return $( '<li>' )
+    return $( "<li class='mt-2 mb-2'>" )
       // .append( '<a>' +  item.label + '</a>' )
       .append(
-        '<div class=¥"summary¥"><div class=¥"photo¥"><img src=¥"' + item.icon + ' ¥" class=¥"img-circle img-responsive¥"></div><div class=¥"infor¥">' + 
-        '<span class=¥"name¥"><p>' + item.username +  '</p></span><p></p></span></div></div></div>'
+        // '<div class=¥"summary¥"><div class=¥"photo¥"><img src="/img/' + item.icon + ' " class=¥"circle img-responsive¥"></div><div class=¥"infor¥">' +
+        // '<span class=¥"name¥"><p>' + item.username +  '</p></span><p>'+ item.nickname +'</p></span></div></div></div>'
+        '<div class="search d-table"><div class="icon_area d-table-cell"><div class="avatar"><img src="' + item.icon + '" class="circle img-responsive"></div></div>' +
+        '<div class="detail d-table-cell align-top pl-3"><div class="name">' + item.username +  '</div><div class="nickname text-black-50">'+ item.nickname +'</div></div></div>'
       )
       .appendTo( ul );
     };

@@ -13,6 +13,7 @@ class ShopRegistsController extends AppController {
     {
       	parent::initialize();
 		$this->set('title','投稿 | Fave');
+        $this->set('header_link','regist');
 
    		$this->session = $this->getRequest()->getSession();
 
@@ -20,6 +21,7 @@ class ShopRegistsController extends AppController {
 
 
 	public function index(){
+
 
 	    $ShopTable = $this->getTableLocator()->get('shops');
 	    $shoptypes = $this->getTableLocator()->get('shoptypes');
@@ -251,7 +253,9 @@ class ShopRegistsController extends AppController {
 		//不足情報を付加
 			$basic_information["status"] = 1;
 			$bussiness_days_hours = $this->Businesshour->setBussinessDaysHours($bussiness_hours,$bussiness_days);
-
+		    $time = Time::now();
+		    $basic_information["created"] = $time->format('Y/m/d H:i:s');
+		    $basic_information["created_user"] = $this->Auth->user('id');
 		//ショップデータの保存
 	    	$shopEntity = $ShopTable->newEntity();
 	    	$shopEntity = $ShopTable->patchEntity($shopEntity, $basic_information);

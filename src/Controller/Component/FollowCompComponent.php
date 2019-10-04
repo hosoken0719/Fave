@@ -151,7 +151,11 @@ class FollowCompComponent extends Component {
     ->where(['follow' => $user_id])
     ->combine('id','follower_shop')
     ->toArray();
-    return $login_user_follow_shop;
+    if(!empty($LoginUserFollow['follower_shop'])){
+      return $login_user_follow_shop;
+    }else{
+      return 0;
+    }
   }
 
   //仮引数で取得したユーザがフォローしているユーザを取得
@@ -163,7 +167,12 @@ class FollowCompComponent extends Component {
       ])
     ->combine('id','follower_user')
     ->toArray();
-    return $login_user_follow_user;
+    if(!isset($LoginUserFollow['follower_user'])){
+      return $login_user_follow_user;
+    }else{
+      return 0;
+    }
+
   }
 
     //①フォローしているショップ
@@ -254,4 +263,36 @@ class FollowCompComponent extends Component {
         ]);
         return $query;
     }
+
+    //ショップratingの平均を取得
+    public function rating_avg($shop_id,$follower_user=null,$order=null){
+
+      $FollowsTable = TableRegistry::get('follows');
+
+      $query = $FollowsTable->find()->where(['follower_shop'=>$shop_id]);
+      if($follower_user<>null){
+        $query = $query->where(['follow IN'=>$follower_user]);
+      }
+      $result = $query->select(['avg' => $query->func()->avg('rating')])->first();
+      if($result->avg > 0){
+        return round($result->avg,1);
+      }else{
+        return 0;
+      }
+    }
+
+    //ショップratingの平均を取得
+    public function rating_avg_order($follower_user,$order){
+
+      $FollowsTable = TableRegistry::get('follows');
+
+      $query = $FollowsTable->find()->where(['follow IN'=>$follower_user]);
+      $result = $query->select(['avg' => $query->func()->avg('rating')])->first();
+      if($result->avg > 0){
+        return round($result->avg,1);
+      }else{
+        return 0;
+      }
+    }
+
   }

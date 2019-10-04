@@ -61,5 +61,23 @@ class ShopCompComponent extends Component
 	    $shop_photos = $ShopPhotoTable->find()->where(['shop_id'=>$shop_id]);
 	    return $shop_photos;
 	}
+	
+    public function rating_avg($shop_id,$follower_user=null){
+
+        $FollowsTable = TableRegistry::get('follows');
+
+        $query = $FollowsTable->find()->where(['follower_shop'=>$shop_id]);
+        if($follower_user<>null){
+        	$query = $query->where(['follow IN'=>$follower_user]);
+        }
+        $result = $query->select(['avg' => $query->func()->avg('rating')])->first();
+        if($result->avg > 0){
+        	return round($result->avg,1);
+        }else{
+        	return 0;
+        }
+
+    }
+
 
 }

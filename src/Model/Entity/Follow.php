@@ -27,25 +27,43 @@ class Follow extends Entity
         'created' => true,
     ];
 
-    public function getPhotoShopThumbnail($id){
-	    $dir = PHOTO_UPLOADDIR . '/shop_photos/' . $id . '/thumbnail/';
+
+    //Viewから変数に代入される
+    public $LoginUserId;
+    public $FollowerId;
+    public $FollowerShopId;
+    public $LoginUserFollow; //連想配列
+
+
+    public function getPhotoShopThumbnail($shop_id){
+	    $dir = PHOTO_UPLOADDIR . '/shop_photos/' . $shop_id . '/thumbnail/';
 	    $photo_list = glob($dir . '*');
 	    $photoShop = "";
 	    if(!empty($photo_list)){
 	        $photoShop_fullpath = max($photo_list); //最新写真のみ抽出
 	        $photoShop_array = explode('/',$photoShop_fullpath); //サーバパスの取得となるため、最後のファイル名だけを取得
-	        $photoShop = "https://fave-jp.info/img/shop_photos/" . $id . "/thumbnail/" . end($photoShop_array);
+	        $photoShop = "https://fave-jp.info/img/shop_photos/" . $shop_id . "/thumbnail/" . end($photoShop_array);
 	    }else{
 	        $photoShop = "https://fave-jp.info/img/no_image.png";
 	    }
 	    return $photoShop;
     }
 
-    //Viewから変数に代入される
-    public $LoginUserId;
-	public $FollowerId;
-    public $FollowerShopId;
-	public $LoginUserFollow; //連想配列
+
+    protected function _getAvatar(){
+        $user_id = $this->FollowerId;
+       if(file_exists(PHOTO_UPLOADDIR.'/user_photos/'.$user_id.'.png')){
+               return '/img/user_photos/thumbnail/max_'.$user_id.'.png';
+        }else{
+            $UsersTable = TableRegistry::get('Users');
+            $avatar = $UsersTable->find()->contain(['social_accounts'])->where(['Users.id' => $user_id])->select(['avatars' => 'social_accounts.avatar'])->first();
+            if(!Empty($avatar->avatars)){
+                return $avatar->avatars;
+            }else{
+                return 'avatar.png';
+            }
+        }
+    }
 
 	//フォローショップ数のカウント
     protected function _getFollowShopCount(){
@@ -126,6 +144,23 @@ class Follow extends Entity
         $TableEntity['follows'] = TableRegistry::get('follows');
         $TableEntity['follow_users'] = TableRegistry::get('follow_users');
         $this->TableEntity = $TableEntity;
+    }
+
+
+    public function rating_avg($shop_id,$follower_user=null){
+
+        $FollowsTable = TableRegistry::get('follows');
+
+        $query = $FollowsTable->find()->where(['follower_shop'=>$shop_id]);
+        if($follower_user<>null){
+            $query = $query->where(['follow IN'=>$follower_user]);
+        }
+        $result = $query->select(['avg' => $query->func()->avg('rating')])->first();
+        if($result->avg > 0){
+            return round($result->avg,1);
+        }else{
+            return 0;
+        }
     }
 
 }

@@ -16,9 +16,12 @@ class AccountsController extends AppController{
     {
 		parent::initialize();
 		$this->loadComponent('UserComp'); // コンポーネントの読み込み
+        $this->set('title','アカウント | Fave');
+        $this->set('header_link','account');
     }
 
 	public function index(){
+
 
 		//ユーザ情報取得
 		$UserTable = $this->getTableLocator()->get('Users');

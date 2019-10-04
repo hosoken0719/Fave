@@ -35,10 +35,17 @@ foreach($Query as $shopData) :
                     <?= h($shopData->pref.$shopData->address) ?>
                 </div>
             </div>
-            <div class="rating">
-                <?= $this->element('rating',['rating'=>$shopData->shop_id,'shop_id'=>$shopData->shop_id,'enable'=>0]); ?>
+            <div class="rating d-inline">
+                <?= $this->Html->image('followed_users.svg') ?><?= $this->element('rating',['rating'=>round($shopData->rating_avg($shopData->shop_id,$follower_user)),'shop_id'=>$shopData->shop_id,'enable'=>0]); ?>
+                <?= $shopData->rating_avg($shopData->shop_id,$follower_user); ?>
+            </div>
+            <br />
+            <div class="rating d-inline all">
+                <?= $this->Html->image('all_users.svg') ?><?= $this->element('rating',['rating'=>round($shopData->rating_avg($shopData->shop_id)),'shop_id'=>$shopData->shop_id,'enable'=>0]); ?>
+                <?= $shopData->rating_avg($shopData->shop_id); ?>
             </div>
         </dd>
     </dl>
 </div>
+
 <?php endforeach; ?>

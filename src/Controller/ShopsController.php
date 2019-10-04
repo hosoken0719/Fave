@@ -15,6 +15,7 @@ class ShopsController extends AppController {
 
 		$this->loadComponent('FollowComp'); // コンポーネントの読み込み
 		$this->loadComponent('ShopComp'); // コンポーネントの読み込み
+		$this->Auth->allow();
     }
 
 	public function index(){
@@ -30,22 +31,27 @@ class ShopsController extends AppController {
 	//ショップ情報の抽出
     	$shopData = $this->getShopData($this->request->getParam('shop_id'));
 
-		//ショップの写真パスを取得
+	//写真情報取得
 		$dir = PHOTO_UPLOADDIR . '/shop_photos/' . $shopData->shop_id . '/';
 		$photo_list = glob($dir . '*.png');
+		$shop_photos = [];
 		if(!empty($photo_list)){
-			$photoShop_fullpath = max($photo_list); //最新写真のみ抽出
-			$photoShop_array = explode('/',$photoShop_fullpath); //サーバパスの取得となるため、最後のファイル名だけを取得
-			$photoShop = "https://fave-jp.info/img/shop_photos/" . $shopData->shop_id . "/thumbnail/max_" . end($photoShop_array);
-		}else{
-			$photoShop = null;
-		}
-	//写真情報取得
-		$shop_photos = $this->ShopComp->getShopPhotos($shopData->shop_id);
-        $ShopPhotoTable = TableRegistry::getTableLocator()->get('shop_photos');
-        $shop_photos = $ShopPhotoTable->find()->where(['shop_id'=>$shopData->shop_id]);
-        $this->set('shop_photos',$shop_photos);
+			for($i=6;$i>=0;$i--){
+				if(!empty($photo_list[$i])){
+					$photoShop_fullpath = $photo_list[$i]; //最新写真のみ抽出
+					$photoShop_array = explode('/',$photoShop_fullpath); //サーバパスの取得となるため、最後のファイル名だけを取得
+					array_push($shop_photos,"https://fave-jp.info/img/shop_photos/" . $shopData->shop_id . "/thumbnail/max_" . end($photoShop_array));
 
+				}
+			}
+		}else{
+			$shop_photos = null;
+		}
+
+        $ShopPhotoTable = TableRegistry::getTableLocator()->get('shop_photos');
+        $instagram_photos = $ShopPhotoTable->find()->where(['shop_id'=>$shopData->shop_id]);
+		$instagram_photos_count = $instagram_photos->count();
+		$this->set(compact('shop_photos','instagram_photos','instagram_photos_count'));
 
  	// ハッシュタグにリンクをつける
 		// if(!is_null($shopData->tag)){
@@ -98,7 +104,7 @@ class ShopsController extends AppController {
 		$checkFollow = ['follow'=>$this->Auth->user('id'),'follower_shop'=>$shopData->shop_id];
     	$myrating = $this->FollowComp->isShopFollow($checkFollow);
 
-		$this->set(compact('FollowerUser','photoShop','shopData','hashtag','myrating','followShopDatas','followUserDatas','followerShopDatas','followerUserDatas','shop_data_summary','shop_icon','countFollower'));	//ショップ写真
+		$this->set(compact('FollowerUser','shopData','hashtag','myrating','followShopDatas','followUserDatas','followerShopDatas','followerUserDatas','shop_data_summary','shop_icon','countFollower'));	//ショップ写真
 
 
 

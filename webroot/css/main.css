@@ -21,11 +21,52 @@ body{
   background-color:  #F4F4F4;
   font-size: 12px;
   color: rgb(94,94,94);
+  background-color: #fff;
   /*font-size: calc(112.5% + 0.25vw);*/
   /*font-family: 游ゴシック体, 'Yu Gothic', YuGothic, 'ヒラギノ角ゴシック Pro', 'Hiragino Kaku Gothic Pro', メイリオ, Meiryo, Osaka, 'MS Pゴシック', 'MS PGothic', sans-serif;*/
   font-family: "Yu Gothic", "游ゴシック", YuGothic, "游ゴシック体", "ヒラギノ角ゴ Pro W3", "メイリオ", sans-serif;
 }
 
+.bg-white{
+  background-color: #fff;
+  /*border: 1px solid #eee;*/
+}
+
+.contain_inner{
+  /*padding: 20px 10%;*/
+  padding: 20px 0;
+  overflow: hidden;
+}
+
+.contain{
+  max-width: 1000px;
+  margin: 15px auto 0;
+  padding: 0;
+}
+
+}
+
+@media (max-width: 767px)  {
+
+  .contents{
+    padding: 5px 0;
+    margin-top: 0px;
+  }
+  .contain_inner{
+    padding: 5px 0 15px;
+  }
+}
+
+footer{
+  padding: 30px 0;
+  text-align: center;
+}
+
+@media (max-width: 767px)  {
+  footer{
+    padding: 30px 0 70px;
+  }
+}
 /*chromeで入力後のinputが黄色になるのを防ぐ*/
 input:-webkit-autofill{
   box-shadow: 0 0 0px 999px #fff inset !important;
@@ -178,6 +219,14 @@ header {
 }
 
 
+  .header-home .header-link-home,
+  .header-follow .header-link-follow,
+  .header-search .header-link-search,
+  .header-regist .header-link-regist,
+  .header-account .header-link-account{
+    text-decoration: underline;
+  }
+
 @media (max-width: 767px)  {
 
   header {
@@ -203,6 +252,16 @@ header {
     padding-top: 0px;
     font-size: 12px;
     background-color: #eee;
+    z-index: 990;
+  }
+
+  #header-link img{
+    width: 20px;
+    height: 20px;
+  }
+
+  #header-link{
+    font-size: 9px;
   }
 
   .header_inner .left,
@@ -221,6 +280,14 @@ header {
 
   .header_inner .home_button{
     display: inline;
+  }
+
+  .header-home .header-link-home,
+  .header-follow .header-link-follow,
+  .header-search .header-link-search,
+  .header-regist .header-link-regist,
+  .header-account .header-link-account{
+    font-weight: bold;
   }
 
 }
@@ -244,32 +311,23 @@ body > .main{
 .header_inner{
   max-width: 1000px;
   margin: 0 auto;
+  padding: 0 5px;
 }
 
-.contain{
-  max-width: 1000px;
-  margin: 15px auto 30px;
-}
+
 .contain-small{
   max-width: 500px;
   margin: 15px auto 80px;
 }
-.bg-white{
-  background-color: #fff;
-  border: 1px solid #eee;
-}
 
-.contain_inner{
-  padding: 20px 10%;
-}
+
+
 
 @media (max-width: 767px)  {
   .main{
     padding-top: 5px;
   }
-  .contain_inner{
-    padding: 5px 5% 15px;
-  }
+
 }
 #top .content{
   width: 100%;
@@ -554,7 +612,6 @@ body > .main{
 }
 
 .form button,
-/*.form input[type='file'],*/
 .regist button,
 .shop .display_favorite_button,
 .shop .favorite_button,
@@ -579,6 +636,12 @@ body > .main{
   cursor: pointer;
 }
 
+.shop .file label{
+  background-color: #fff;
+  color: #737373;
+  border: 1px #808080 solid;
+  width: 150px;
+}
 
 
 .regist button.back,
@@ -765,7 +828,6 @@ li{
 /* Swiper本体 */
 .swiper-container {
   /*width: calc(100% - 100px);   ☆前・次ページボタンの幅をそれぞれ50pxとして、その分を引く */
-  margin-right: 50px;
   padding-bottom: 50px;   /* ★ページネーション・スクロールバー分の余白50pxを下に取る */
   box-sizing: content-box;
   overflow: visible;
@@ -807,11 +869,6 @@ input::placeholder{
   }
 
 
-  .contents{
-    padding: 5px;
-    margin-top: 0px;
-  }
-
   #modal-content{
     width: 80%;
   }
@@ -840,7 +897,6 @@ a{
 /*画面左からの文字の隙間幅*/
 /*.shop_detail,*/
 .shop_infor header,
-.shop .shop_detail,
 .shop .followlist
 .follow .followlist{
   padding-left: 5px;
@@ -1165,7 +1221,7 @@ display: -webkit-box;
   font-size: 18px;
 }
 .content_review .myrating{
-  margin-top: 20px;
+  padding-top: 20px;
 }
 
 .content_review h4{
@@ -1357,19 +1413,47 @@ display: -webkit-box;
 }
 
 
+/*ショップ写真*/
 .shop .photo{
   margin: 0 auto;
-    width:414px !important;
     max-width: 100% !important;
     min-width: initial !important;
+    overflow: hidden;
+}
+.shop .photo ul{
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  justify-content: space-between;
+
+}
+.shop .photo ul:after{
+  content:"";
+  display:block;
+  width: 30%;
+  height:0;
 }
 
-
-/*ショップ写真*/
+.shop .photo li{
+  position: relative;
+  width: 30%;
+  margin-bottom: 15px;
+}
+.shop .photo li:before{
+  content: "";
+  display: block;
+  padding-top: 100%;
+}
 .shop .photo img{
-  width:100%;
-  max-width: 320px;
-  height: auto;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  object-fit: cover;
 }
 
 
@@ -1389,7 +1473,7 @@ display: -webkit-box;
   width: 100%;
   text-align: center;
   /*text-align: center;*/
-  padding: 10px;
+  padding: 10px 0;
 }
 
 .shop .shop_header .name{
@@ -1637,10 +1721,6 @@ display: -webkit-box;
   padding-right: 20px;
 }
 
-/*アイコン画像のサイズ設定*/
-.shop .review .icon_area img{
-  width: 40px;
-}
 
 .shop .review .follow_area{
   flex: 1 1 100%;
@@ -1720,6 +1800,7 @@ display: -webkit-box;
   flex-wrap: wrap;
   justify-content: space-between;
 }
+
 
 
 @media (max-width: 767px) {
@@ -1954,19 +2035,33 @@ display: -webkit-box;
     margin-bottom: 45px;
   }
 
+  .header-follow .main,
+  .header-follow .contents,
+  .follow .contain{
+    padding: 0;
+    margin: 0;
+  }
 
   .follow #googlemap{
     height: calc(100vh - 45px);
     position: fixed !important;
-    top: 0;
+    /*top: 0;*/
     left: 0;
-    z-index: 910;
+    z-index: 1;
   }
 
   .shop #googlemap,
   .follow #googlemap,
   .search #googlemap{
-    height: calc(100vh - 45px);
+    height: calc(100vh - 105px);
+  }
+
+  .follow .list_area{
+    display: none;
+  }
+
+  .follow .map_area{
+    /*display: none;*/
   }
 
   .search .switch ul,
@@ -2051,16 +2146,12 @@ display: -webkit-box;
   display: table-cell;
   justify-content: center;
   align-items: center;
-  min-width: 100px;
-  min-height: 100px;
-  width: 150px;
-  height: 150px;
-  background-color: #f9f9f9;
 }
 
 .user .header .detail{
   display: table-cell;
   padding-left: 20px;
+  vertical-align: top;
 }
 
 
@@ -2070,6 +2161,10 @@ display: -webkit-box;
     margin: 0;
 }
 
+.user .nickname a{
+  color: #777;
+}
+
 
 @media (max-width: 767px)  {
   .user .header h1{
@@ -2077,7 +2172,7 @@ display: -webkit-box;
   }
 
   .user .header{
-    margin: 0 0 10px 0;
+    margin: 15px 0 10px 0;
   }
 
   .user .header .detail{
@@ -2091,6 +2186,7 @@ display: -webkit-box;
 
 .user .submit{
   display: inline;
+  vertical-align: text-bottom;
 }
 
 
@@ -2113,9 +2209,6 @@ display: -webkit-box;
   /*margin-bottom: 150px;*/
 }
 
-.user article .icon{
-  width: 50px;
-}
 
 .user .shops li{
   float:left;
@@ -2161,6 +2254,7 @@ display: -webkit-box;
 
 .user .user_infor .icon_area img{
   width: 40px;
+  height: 40px;
 }
 
 
@@ -2318,7 +2412,7 @@ display: -webkit-box;
 
 
 @media (max-width: 767px)  {
-  .regist select{
+  select{
     font-size: 16px;
   }
 }
@@ -2515,7 +2609,9 @@ select::-ms-expand {
   margin-top: 10px;
 }
 
-.shop .shoprating form{
+.shop .shoprating form,
+.search .rating form,
+.user .rating form{
   display: inline;
 }
 
@@ -2523,8 +2619,9 @@ select::-ms-expand {
 .search .rating,
 .follow_user .rating,
 .user .rating{
-  width: 75px;
+  width: 90px;
 }
+
 
 .follower_followed{
   margin-top: 30px;
@@ -2578,9 +2675,13 @@ select::-ms-expand {
 }
 
 .evaluation input[type='radio']:checked ~ label{
-  /*color: #ffcc00;*/
   color: #c55e5e;
 }
+
+.all .evaluation input[type='radio']:checked ~ label{
+  color: #c7abab;
+}
+
 
 .shop .review_wrap{
   margin-top: 10px;
@@ -2677,9 +2778,38 @@ select::-ms-expand {
   flex: 0 0 25%;
 }
 
-.avatar img{
+.user .header .avatar img{
   width: 150px;
   height: 150px;
+}
+
+@media (max-width: 767px)  {
+  .user .header .avatar img{
+    width: 75px;
+    height: 75px;
+  }
+}
+
+
+.account .avatar img{
+  width: 150px;
+  height: 150px;
+}
+
+.shop .avatar img{
+  width: 50px;
+  height: 50px;
+}
+
+.search .avatar img{
+  width: 40px;
+  height: 40px;
+}
+
+
+.circle{
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   -moz-border-radius: 50%;
   -webkit-border-radius: 50%;
@@ -2691,4 +2821,19 @@ select::-ms-expand {
 }
 .file label {
      padding: 10px 0;
+}
+
+/*.form button{
+  display: inline-block;
+  width: 30%;
+  margin-top:0;
+  margin-right: 20px;
+}*/
+
+@media screen and (max-width: 899px){
+  .instagram-media{
+    max-width: 100% !important;
+    min-width: initial !important;
+  }
+
 }

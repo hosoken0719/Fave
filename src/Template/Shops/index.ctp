@@ -1,10 +1,10 @@
-<?= $this->Html->script(['croppie.min.js','croppie_option.js'],['block' => true]) ?>
+<?php echo $this->Html->script(['croppie.min.js','croppie_option.js'],['block' => true]) ?>
 <div class="contents shop">
-    <article class="contain bg-white">
-		<div class="contain_inner">
+    <article class="contain">
+		<div class="contain_inner bg-white">
 			<div class="information">
 				<div class="shop_header">
-					<div class="name">
+					<div class="name mb-5">
 
 						<h2><?php echo h($shopData->shopname); ?></h2>
 
@@ -12,58 +12,89 @@
 							<?php echo h($shopData->typename); ?> | <?= h($shopData->pref.$shopData->city.$shopData->ward)?>
 						</div>
 					</div>
-					<div class="photo">
-						<?php //if($photoShop <> null): ?>
-						<!-- <?= $this->Html->image($photoShop,array("class" => "img-fluid")); ?> -->
-						<?php //else: ?>
-						<div class="containera">
-							<div class="panel panel-default text-center">
-								<div class="panel-body file">
-									<label>お店の写真を投稿
-									<?= $this->Form->control('field', ['type' => 'file' , 'name' => 'upload_image' , 'id' =>'upload_image','label'=>false]); ?>
-									</label>
-									<div id="uploaded_image"></div>
-								</div>
-							</div>
+					<?php if($this->request->getSession()->read('Auth.User.id')): //ログイン時のみ表示?>
+					<div class='follower_followed'>
+						<?php if($countShopFollowMyUser > 0):
+							echo $this->Html->link(
+							"あなたがフォローしているユーザの内、<br />".$shopData->shopname."をお気に入り登録している人数<br />".$countShopFollowMyUser."人
+								<div class='shoprating'>
+									平均お気に入り度<br />".$this->element('rating',['rating'=>round($avgShopFollowMyUser->rating_avg),'shop_id'=>$shopData->shop_id,'enable'=>0]).
+									round($avgShopFollowMyUser->rating_avg,1).
+								"</div>
+							", [
+								'controller' => 'shops',
+							    'action' => '/favorited_follow',$shopData->shop_id
+							],
+							['escape' => false]);
+						else:
+							echo $this->Html->link(
+							"あなたがフォローしているユーザの内、<br />".$shopData->shopname."をお気に入り登録している人数<br />0人"
+							, [
+								'controller' => 'shops',
+							    'action' => '/favorited_all',$shopData->shop_id
+							],
+							['escape' => false]);
+						endif; ?>
+
+						<div class="button_wrap">
+							<a href="#review_area">
+							<?php if($ShopFollowData['rating'] === 0){
+								echo $this->Form->button("お気に入りに登録する",['id'=>'display_favorite_button'  ,'class'=>'display_favorite_button ']);
+							}else{
+								echo $this->Form->button("お気に入りに登録する",['id'=>'display_favorite_button'  ,'class'=>'display_favorite_button hide']);
+							} ?>
+							</a>
+
 						</div>
-						<?php //endif; ?>
-						<?php //$this->Html->image($shopData->thumbnail.'media?size=m'); ?>
-
-						<?php
-                        	foreach ($shop_photos as $shop_photo) {
-                        		echo '<p><br><br>';
-								echo $shop_photo->url;
-                        		echo '<p>';
-                        	}
-                        ?>
-
 					</div>
-					<?php if($countShopFollowMyUser > 0):
-						echo $this->Html->link(
-						"<div class='follower_followed'>あなたがフォローしているユーザの内、<br />".$shopData->shopname."をお気に入り登録している人数<br />".$countShopFollowMyUser."人
-							<div class='shoprating'>
-								平均お気に入り度<br />".$this->element('rating',['rating'=>round($avgShopFollowMyUser->rating_avg),'shop_id'=>$shopData->shop_id,'enable'=>0]).
-								round($avgShopFollowMyUser->rating_avg,1).
-							"</div>
-						</div>
-						", [
-							'controller' => 'shops',
-						    'action' => '/favorited_follow',$shopData->shop_id
-						],
-						['escape' => false]);
-					else:
-						echo $this->Html->link(
-						"<div class='follower_followed'>あなたがフォローしているユーザの内、<br />".$shopData->shopname."をお気に入り登録している人数<br />0人"
-						, [
-							'controller' => 'shops',
-						    'action' => '/favorited_all',$shopData->shop_id
-						],
-						['escape' => false]);
-					endif; ?>
+					<?php else: ?>
+
+					<?php endif; ?>
+
+
 				</div>
 			</div>
+			<div class="photo mb-5">
+				<?php if($shop_photos <> null): ?>
+				<h5 class="text-center">投稿写真</h5><hr>
+					<ul>
+						<?php foreach ($shop_photos as $key => $value) : ?>
+							<li><?= $this->Html->image($value,array("class" => "img-fluid")); ?> </li>
+						<?php endforeach; ?>
+				</ul>
+                <?php elseif($instagram_photos_count > 0): ?>
+				<h5 class="text-center">Instagram</h5><hr>
+				<div class="swiper-container">
+					<div class="swiper-wrapper">
+	                        <?php
+	                        	foreach ($instagram_photos as $instagram_photo) {
+	                        		echo "<div class='swiper-slide'>";
+									echo $instagram_photo->url;
+	                        		echo '</div>';
+	                        	}
+                        ?>
+                	</div>
+                    <div class="swiper-pagination"></div>
+				    <div class="swiper-button-prev"></div>
+				    <div class="swiper-button-next"></div>
+                </div>
+            	<?php endif; ?>
 
+					<div class="panel panel-default text-center">
+						<div class="panel-body file">
+							<label>お店の写真を投稿
+							<?= $this->Form->control('field', ['type' => 'file' , 'name' => 'upload_image' , 'id' =>'upload_image','label'=>false]); ?>
+							</label>
+							<div id="uploaded_image"></div>
+						</div>
+					</div>
+			</div>
+
+
+<div class="">
 			<div class="shop_detail">
+
+				<h5 class="text-center">店舗情報</h5>
 				<div class="follower">
 				</div>
 <!-- 				</span>
@@ -73,6 +104,24 @@
 					<!-- <p><?php //echo $hashtag; ?></p> -->
 				<!-- </div> -->
 				<div class="infor text-left">
+										<dl>
+						<dt>お気に入り登録者数</dt>
+						<dd>
+						<?php echo $this->Html->link(
+							h($countFollowShop)."人	<br />
+							<span class='shoprating'>
+								<form>
+								平均お気に入り度：".
+								$this->element('rating',['rating'=>round($avgFollowShop->rating_avg),'shop_id'=>$shopData->shop_id,'enable'=>0]).round($avgFollowShop->rating_avg,1).
+								"</form>
+							</span>", [
+							'controller' => 'shops',
+						    'action' => '/favorited_all',$shopData->shop_id
+							],
+							['escape' => false]);
+						?>
+						</dd>
+					</dl>
 					<dl>
 						<dt>住所</dt>
 						<dd> <?= h($shopData->pref.$shopData->city.$shopData->ward.$shopData->town.$shopData->building); ?></dd>
@@ -139,54 +188,30 @@
 						</dd>
 
 					</dl>
-					<dl>
-						<dt>お気に入り登録者数</dt>
-						<dd>
-						<?php echo $this->Html->link(
-							h($countFollowShop)."人	<br />
-							<span class='shoprating'>
-								<form>
-								平均お気に入り度：".
-								$this->element('rating',['rating'=>round($avgFollowShop->rating_avg),'shop_id'=>$shopData->shop_id,'enable'=>0]).round($avgFollowShop->rating_avg,1).
-								"</form>
-							</span>", [
-							'controller' => 'shops',
-						    'action' => '/favorited_all',$shopData->shop_id
-							],
-							['escape' => false]);
-						?>
-						</dd>
-					</dl>
-					<div class="edit">
-						<?= $this->Html->link('編集', [
-					    'controller' => 'ShopUpdates',
-					    'action' => 'edit',
-					    'id' => $shopData->shop_id]);
-					 	?>
-					</div>
-					<div class="button_wrap">
 
-					<?php if($ShopFollowData['rating'] === 0){
-						echo $this->Form->button("お気に入りに登録する",['id'=>'display_favorite_button'  ,'class'=>'display_favorite_button ']);
-					}else{
-						echo $this->Form->button("お気に入りに登録する",['id'=>'display_favorite_button'  ,'class'=>'display_favorite_button hide']);
-					} ?>
-				</div>
+					<!-- <div class="edit"> -->
+						<?php // $this->Html->link('編集', ['controller' => 'ShopUpdates','action' => 'edit','id' => $shopData->shop_id]); ?>
+					<!-- </div> -->
+
 
 				</div>
-			</div>
+			</div></div>
+
 		</div>
 	</article>
 
 	<?php if($ShopFollowData['rating'] > 0): ?>
-		<article class="contain bg-white content_review">
+		<article class="contain content_review">
 	<?php else: ?>
-		<article class="contain bg-white content_review hide">
+		<article class="contain content_review hide">
 	<?php endif; ?>
-
-		<div class="contain_inner">
-		    <legend><h3>お気に入り登録</h3></legend>
-			<div class="review_area">
+		<div class="contain_inner bg-white">
+			<div id="review_area">
+			<?php if($ShopFollowData['rating'] > 0): ?>
+			    <h5 class="text-center">お気に入り登録済み</h5>
+			<?php else: ?>
+			    <h5 class="text-center">お気に入り登録</h5>
+			<?php endif; ?>
 				<dl class="myrating">
 					<dt>お気に入り度</dt>
 					<dd>
@@ -252,7 +277,7 @@
 					</dl>
 					<div class="button">
 						<?= $this->Form->button("編集",['id'=>'edit_favorite'  ,'class'=>'edit_favorite','data-shop'=>$shopData->shop_id]); ?>
-						<?= $this->Form->button("削除",['id'=>'delete_favorite'  ,'class'=>'delete_favorite','data-shop'=>$shopData->shop_id]); ?>
+						<?= $this->Form->button("登録を解除",['id'=>'delete_favorite'  ,'class'=>'delete_favorite','data-shop'=>$shopData->shop_id]); ?>
 					</div>
 				</div>
 			</div>
@@ -261,37 +286,25 @@
 </div>
 <div class="loading hide"></div>
 
-<div id="googlemap">
-</div>
-
+<!-- <div id="googlemap">
+</div> -->
 <div id="uploadimageModal" class="modal" role="dialog">
 	<div class="modal-dialog">
 		<div class="modal-content">
-<!-- 			<div class="modal-header">
-				<button tupe="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">Upload & cCrop Image</h4>
-			</div> -->
+
 			<div class="modal-body">
 				<div class="row">
 						<div id="image-demo" style="width:100%; margin-top:30px";></div>
 				</div>
-				<div class="button">
+				<div class="button form">
 					<button class="btn vanilla-rotate">回転</button>
-
 					<?= $this->Form->create(); ?>
-					<?= $this->Form->button('登録', array('type' => 'button','class' => 'btn btn-success crop_image')); ?>
+					<?= $this->Form->button('登録', array('type' => 'button','class' => 'btn crop_image')); ?>
 					<?= $this->Form->end(); ?>
-					<!-- <button class="btn btn-success crop_image">登録</button> -->
 				</div>
 			</div>
 		</div>
-		<div class="model-footer">
-			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		</div>
 	</div>
-</div>
-
-</div>
 </div>
 
 
@@ -300,28 +313,27 @@
 <script type="text/javascript">
 // ▼swiperの設定▼
     var swiper = new Swiper('.swiper-container', {
-		slidesPerView: 6,
+		slidesPerView: 2,
 		spaceBetween: 15,
-		// init: false,
 		pagination: {
 			el: '.swiper-pagination',
 			type: 'bullets',
 			clickable: true
 		},
 		breakpoints: {
-			1024: {
-			  slidesPerView: 4,
-			},
+			// 1024: {
+			//   slidesPerView: 2,
+			// },
 			768: {
-			  slidesPerView: 3,
-			},
-			640: {
 			  slidesPerView: 2,
 			},
-			// 320: {
-			//   slidesPerView: 1,
-			//   spaceBetween: 10,
-			// }
+			640: {
+			  slidesPerView: 1,
+			},
+			320: {
+			  slidesPerView: 1,
+			  spaceBetween: 10,
+			}
 		},
 		navigation: {
 			nextEl: '.swiper-button-next',
@@ -334,11 +346,18 @@
 // ▼お気に入りの登録▼
 
  	//「お気に入りに登録する」ボタン
-	$("#display_favorite_button").on("click",function(){
-		$('.content_review').removeClass('hide'); //お気に入り登録画面の表示
-		$('#display_favorite_button').addClass('hide'); //ボタンの装飾を変更
-		disabled_review('enable'); //コメント蘭の編集を可能にする
-	});
+
+	<?php if($this->request->getSession()->read('Auth.User.id')): //ログイン時のみ表示?>
+		$("#display_favorite_button").on("click",function(){
+			$('.content_review').removeClass('hide'); //お気に入り登録画面の表示
+			$('#display_favorite_button').addClass('hide'); //ボタンの装飾を変更
+			disabled_review('enable'); //コメント蘭の編集を可能にする
+		});
+	<?php else: ?>
+		$("#display_favorite_button").on("click",function(){
+			window.location.href = '/login';
+		});
+	<?php endif; ?>
 	//編集ボタン
 	$("#edit_favorite").on("click",function(){
 		disabled_review('enable'); //コメント蘭の編集を可能にする
@@ -353,11 +372,13 @@
 		$('#display_favorite_button').removeClass('hide'); //「お気に入りに登録する」ボタンの表示
 		$('input[name="input_rating"]').prop('checked',false); //お気に入り度のチェックを全て外す
 		$('#star5').prop('checked',true); //お気に入り度のチェックを1つだけ付ける
+		$('#review_area h5').text("お気に入りに登録");; //コメントの編集を禁止
 	});
 	//お気に入り登録ボタン。
 	//ajaxの登録処理と以下の表示変更を実行
 	$("#favorite_button").on("click",function(){
 		disabled_review('disabled'); //コメントの編集を禁止
+		$('#review_area h5').text("お気に入り登録済み");; //コメントの編集を禁止
 	});
 	//お気に入り欄の編集モード
 	function disabled_review(mode){

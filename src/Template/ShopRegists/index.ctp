@@ -1,7 +1,7 @@
 <?php ?>
 <div class="contents regist">
-    <article class="contain bg-white">
-    <div class="contain_inner">
+    <article class="contain">
+    <div class="contain_inner bg-white">
 			<div class="form">
         <fieldset class="basic">
           <legend><?= "基本情報" ?></legend>

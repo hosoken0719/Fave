@@ -1,21 +1,34 @@
 <?php ?>
 <div class="content header">
 	<div class="icon_area">
-		<div class="icon"><?php echo $this->Html->image('icon_user',['alt'=> 'User']); ?></div>
+		<div class="avatar"><?php echo $this->Html->image($avatar,['alt'=> 'User','class'=>'circle']); ?></div>
 	</div>
-	<div class="detail">
+	<div class="detail pt-2">
 		<div class="user_name">
-			<h1><?= $nickname; ?>
-			<?php //ログインユーザ自身の場合はフォローボタンを非表示
-			if($login_id <> $user_id): ?>
-				<span class='follow'>
-				<?php echo $this->Form->create('Follow');
-				echo $this->Form->submit($follow_status['text'],['id'=>'button'.$user_id ,'class'=>'follow_button inline '.$follow_status['tag'],'data-user'=>$user_id , 'data-button'=>'button'.$user_id,'div'=>false ]);
-				echo $this->Form->end(); ?>
-				</span></h1>
+			<h1>
+				<?php
+				if(!empty($nickname)){
+					echo $nickname;
+				}else{
+					echo $user_name;
+				}
+				?>
+			</h1>
+			<?php if($this->request->getSession()->read('Auth.User.id')): //ログイン時のみ表示?>
+				<?php if($login_id <> $user_id): //ログインユーザ自身の場合はフォローボタンを非表示 ?>
+					<span class='follow'>
+					<?php echo $this->Form->create('Follow');
+					echo $this->Form->submit($follow_status['text'],['id'=>'button'.$user_id ,'class'=>'follow_button inline '.$follow_status['tag'],'data-user'=>$user_id , 'data-button'=>'button'.$user_id,'div'=>false ]);
+					echo $this->Form->end(); ?>
+					</span>
+				<?php endif; ?>
+			<?php else: ?>
+				<?= $this->Html->link(__('フォローするにはログインが必要です'), ['plugin'=>'CakeDC/Users','controller' => 'users', 'action' => 'login']) ?>
+			
+			<?php endif; ?>
+
         </div>
         <div>
-			<?php endif; ?>
 			<?php if($sex) echo "<div class='sex'>{$sex}</div>"; ?>
 			<?php if($address) echo "<div class='address'>{$address}</div>"; ?>
 		</div>

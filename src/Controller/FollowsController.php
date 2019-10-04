@@ -15,8 +15,9 @@ class FollowsController extends AppController{
 	// }
     public function initialize()
     {
-      parent::initialize();
-      $this->loadComponent('FollowComp'); // コンポーネントの読み込み
+    	parent::initialize();
+    	$this->loadComponent('FollowComp'); // コンポーネントの読み込み
+	    $this->set('header_link','follow');
     }
 	public function index(){
 

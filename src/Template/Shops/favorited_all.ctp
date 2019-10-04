@@ -1,7 +1,7 @@
 <?php ?>
 	<div class="contents shop">
-		<article class="contain bg-white">
-			<div class="contain_inner">
+		<article class="contain">
+			<div class="contain_inner bg-white">
 				<div class="review">
 					<?php
 					    echo $this->element('shop_favorite_header', ["type" => "all"]);

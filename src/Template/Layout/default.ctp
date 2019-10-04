@@ -1,7 +1,3 @@
-<?php
-  $controller = $this->name;
-  $action = $this->request->getParam('action');
-?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -47,7 +43,11 @@ $(function() {
 
 
   </head>
-  <body>
+  <?php if(!empty($header_link)): ?>
+    <body <?= "class='header-" .$header_link ."'"?>>
+  <?php else: ?>
+    <body>
+  <?php endif; ?>
     <header>
       <div id="header">
         <div class="header_inner">
@@ -57,11 +57,17 @@ $(function() {
           <?php //if(!empty($auth)): //ログインしている場合?>
           <nav>
             <div id="header-link">
-              <div class="header-link-item home_button left"><a href="/">ホーム</a></div>
-              <div class="header-link-item left"><?= $this->Html->link(__('お気に入り'), ['controller' => 'Follows', 'action' => 'index']) ?></div>
-              <div class="header-link-item left"><?= $this->Html->link(__('探す'), ['controller' => 'Searches', 'action' => 'index']) ?></div>
-              <div class="header-link-item left"><?= $this->Html->link(__('お店登録'), ['controller' => 'ShopRegists', 'action' => 'index']) ?></div>
-              <div class="header-link-item right"><?= $this->Html->link(__('アカウント'), ['controller' => 'Accounts', 'action' => 'index', '_full' => true]) ?></div>
+              <div class="header-link-follow left"><?= $this->Html->link(__('お気に入り'), ['plugin'=>false,'controller' => 'Follows', 'action' => 'index']) ?></div>
+              <div class="header-link-search left"><?= $this->Html->link(__('探す'), ['plugin'=>false,'controller' => 'Searches', 'action' => 'index']) ?></div>
+              <div class="header-link-regist left"><?= $this->Html->link(__('お店登録'), ['plugin'=>false,'controller' => 'ShopRegists', 'action' => 'index']) ?></div>
+              <div class="header-link-account right"><?= $this->Html->link(__('アカウント'), ['plugin'=>false,'controller' => 'Accounts', 'action' => 'index', '_full' => true]) ?></div>
+            </div>
+            <div id="header-link">
+              <div class="header-link-home home_button left"><?= $this->Html->image('home.svg',['url'=>['plugin'=>false,'controller'=>'users','action'=>'index']]) ?><br />ホーム</div>
+              <div class="header-link-follow home_button left"><?= $this->Html->image('follow.svg',['url'=>['plugin'=>false,'controller'=>'Follows','action'=>'index']]) ?><br />お気に入り</div>
+              <div class="header-link-search home_button left"><?= $this->Html->image('search.svg',['url'=>['plugin'=>false,'controller'=>'Searches','action'=>'index']]) ?><br />検索</div>
+              <div class="header-link-regist home_button left"><?= $this->Html->image('regist.svg',['url'=>['plugin'=>false,'controller'=>'ShopRegists','action'=>'index']]) ?><br />お店登録</div>
+              <div class="header-link-account home_button left"><?= $this->Html->image('account.svg',['url'=>['plugin'=>false,'controller'=>'accounts','action'=>'index','_full' => true]]) ?><br />アカウント</div>
             </div>
           </nav>
           <?php //endif; ?>
@@ -80,6 +86,9 @@ $(function() {
     </div> -->
   <?php //endif; ?>
     </main>
+    <footer>
+      ©2019 Fave Creative
+    </footer>
   <?php
   if(!empty($locate_json)):
     echo $this->element('googlemap');
@@ -87,5 +96,5 @@ $(function() {
   ?>
 <?= $this->fetch('script') ?>
 
-  </body>  
+  </body>
 </html>

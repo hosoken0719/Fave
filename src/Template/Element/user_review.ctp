@@ -10,8 +10,10 @@
         <div class="user_wrap">
             <div class="user_infor">
                 <div class="icon_area">
-                    <div class="icon">
-                        <?php echo $this->Html->image('icon_user',['alt'=> 'User']); ?>
+                    <div class="avatar">
+                        <?php
+                            echo $this->Html->image($user_data->Avatar,['alt'=> $user_data->username,'class'=>'circle']);
+                        ?>
                     </div>
                     <div class="sex">
                         <?php if($user_data->sex_id === 1 or $user_data->sex_id === 2) echo $user_data->sex_typename;  ?>
@@ -25,7 +27,13 @@
 
                 </div>
                 <div class="follow_area">
-                    <?= $this->Html->link(__($user_data->nickname), ['controller' => 'Users', 'action' => '/',$user_data->username,'div'=>false]); ?>
+                    <?php //nicknameの登録がなければ、ユーザネームを表示
+                    if(!empty($user_data->nickname)){
+                        echo $this->Html->link(__($user_data->nickname), ['controller' => 'Users', 'action' => '/',$user_data->username,'div'=>false]);
+                    }else{
+                        echo $this->Html->link(__($user_data->username), ['controller' => 'Users', 'action' => '/',$user_data->username,'div'=>false]);
+                    }
+                    ?>
                     <div class="address">
                         <?= $user_data->address ?>
                     </div>

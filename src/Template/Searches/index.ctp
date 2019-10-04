@@ -2,7 +2,8 @@
 <div class="contents search">
 
 <?php if(!$result_flg): //検索ボタンが押された場合?>
-    <article class="contain bg-white">
+    <article class="contain">
+		<div class="contain_inner bg-white">
 		<div class="search_box">
 			<div class="switch">
 				<ul class="search_tab clearfix">
@@ -24,7 +25,8 @@
 						echo $this->Form->control('word', [
 							'maxlength' => false,
 							'placeholder' => '',
-							'label' => 'ユーザ名'
+							'label' => 'ユーザ名',
+							'id' => 'ac_user'
 						]);?>
 						</div>
 					</li>
@@ -35,8 +37,8 @@
 <?php else: ?>
 
 	<div class="search_result">
-		<article class="contain bg-white">
-		<div class="contain_inner">
+		<article class="contain">
+		<div class="contain_inner bg-white">
 			<div class="element_wrap">
 
 				<?= $this->Form->create('Searches',['type' => 'get','url' => ['action' => 'index'],'inputDefaults'=>['label'=>false,'div'=>false],'templates' => $template]);?>
@@ -86,7 +88,7 @@
 				<ul class="show_result">
 					<li>
 						<div class="shop_flame">
-							<?= $this->element('shop_list',['Query' => $shopDatas]); ?>
+							<?= $this->element('shop_list',['Query' => $shopDatas,'follower_user'=>$follower_user]); ?>
 						</div>
 					</li>
 				</ul>
@@ -98,8 +100,8 @@
 				</ul>
 			</div>
 		</div>
-		</article>
 	</div>
+		</article>
 </div>
 
 <?php endif;?>
@@ -141,4 +143,19 @@
 
 		  });
 		});
+
+		//検索ボタンの有効/無効
+		$('select[name="shoptype"]').change(function() {
+			changeDisabled();
+		});
+		$('input[name="area"]').on('input', function() {
+			changeDisabled();
+		});
+		function changeDisabled(){
+			if($('select[name="shoptype"]').val().length > 0 || $('input[name="area"]').val().length > 0){
+    			$('.search_btn').prop('disabled', false);
+			}else{
+				$('.search_btn').prop('disabled', true);
+			}
+		}
 	</script>

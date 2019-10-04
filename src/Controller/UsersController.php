@@ -19,6 +19,7 @@ class UsersController extends AppController
   {
       parent::initialize();
       $this->loadComponent('FollowComp'); // コンポーネントの読み込み
+      $this->Auth->allow();
   }
 
 
@@ -100,16 +101,18 @@ class UsersController extends AppController
         ->order(['follows.created' => 'DESC']);
 
               //*ショップタイプの取得
-      $ShoptypeTable = TableRegistry::get('shoptypes');
-    $this->set('typename',$ShoptypeTable->find('list'));
-          $template = [
-            'label' => '<div{{attrs}}>{{text}}</div>',
-            'input' => '<div class="inputbox"><input type="{{type}}" name="{{name}}"{{attrs}}></div>',
-            'select' => "<div class='selectbox'><select name='{{name}}'{{attrs}}>{{content}}</select></div>",
-          ];
+        $ShoptypeTable = TableRegistry::get('shoptypes');
+        $this->set('typename',$ShoptypeTable->find('list'));
+
+        $template = [
+          'label' => '<div{{attrs}}>{{text}}</div>',
+          'input' => '<div class="inputbox"><input type="{{type}}" name="{{name}}"{{attrs}}></div>',
+          'select' => "<div class='selectbox'><select name='{{name}}'{{attrs}}>{{content}}</select></div>",
+        ];
         $this->set(compact('template'));
 
         $this->set('title','Fave');
+        $this->set('header_link','home');
         $this->set(compact('favoriteDatas'));
 
       } //inputとselectboxのtemplate
@@ -168,18 +171,18 @@ class UsersController extends AppController
   //①フォローショップ・②フォローユーザ・③フォロワーで共通の値を取得
   private function setCommonValue(){
 
-    $UserTable = TableRegistry::get('users');
-    $TableEntity[('follows')] =  TableRegistry::get('follows');
-
-    $TableEntity[('follow_users')] =  TableRegistry::get('follow_users');
+    // $UserTable = TableRegistry::get('users');
+    // $TableEntity[('follows')] =  TableRegistry::get('follows');
+    // $TableEntity[('follow_users')] =  TableRegistry::get('follow_users');
 
     $this->loadComponent('FollowComp'); // コンポーネントの読み込み
 
     //ログインIDを取得
     $this->set('login_id',$this->Auth->user('id'));
 
-    // 表示しているユーザの名名を取得
+    // 表示しているユーザ名を取得
     $user_name = $this->setUserName();
+    $this->set(compact('user_name'));
 
     // 表示しているユーザのIDを取得
     $user_id = $this->setUserdataByUsername($user_name);
@@ -190,12 +193,11 @@ class UsersController extends AppController
     // 表示しているユーザのフォローショップ・フォローユーザ・フォロワー数の取得
     $this->setCountQuery($user_id);
 
+    // アバターのセット
+    $this->setAvatar($user_id);
+
     //ログインユーザがフォローしているショップを取得
     $LoginUserFollow['follower_shop'] = $this->FollowComp->getLoginUserFollowShopArray($this->Auth->user('id'));
-    //誰もフォローしていない場合、ダミーを代入
-    if(empty($LoginUserFollow['follower_shop'])){
-      $LoginUserFollow['follower_shop'] = 0;
-    }
 
     //自分がフォローしているユーザーを取得
     $LoginUserFollow['follower_user'] = $this->FollowComp->getLoginUserFollowUserArray($this->Auth->user('id'));
@@ -305,6 +307,23 @@ class UsersController extends AppController
     $count['followers'] = $query->count();
 
     $this->set(compact('count'));
+  }
+
+  //アバターのセット
+  private function setAvatar($user_id){
+     if(file_exists(PHOTO_UPLOADDIR.'/user_photos/'.$user_id.'.png')){
+             $avatar = '/img/user_photos/thumbnail/max_'.$user_id.'.png';
+      }else{
+          $UsersTable = TableRegistry::get('Users');
+          $query = $UsersTable->find()->contain(['social_accounts'])->where(['Users.id' => $user_id])->select(['avatars' => 'social_accounts.avatar'])->first();
+          if(!Empty($query->avatars)){
+              $avatar = $query->avatars;
+          }else{
+              $avatar = 'avatar.png';
+          }
+      }
+
+    $this->set(compact('avatar'));
   }
 
 
