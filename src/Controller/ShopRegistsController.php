@@ -12,7 +12,7 @@ class ShopRegistsController extends AppController {
     public function initialize()
     {
       	parent::initialize();
-		$this->set('title','投稿 | Fave');
+		$this->set('title','お店登録 - Fave');
         $this->set('header_link','regist');
 
    		$this->session = $this->getRequest()->getSession();

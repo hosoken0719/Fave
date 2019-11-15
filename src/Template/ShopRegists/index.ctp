@@ -6,17 +6,17 @@
         <fieldset class="basic">
           <legend><?= "基本情報" ?></legend>
           <?= $this->Form->create('',['class'=>'next','url' => ['controller' => 'ShopRegists', 'action' => 'checkshopname'],'templates' => $template]); ?>
-          <dl><div class='shopname'><div class='require'></div></div>
+          <dl><div id='shopname'><div class='require'></div></div>
             <?= $this->Form->control('shopname', ['label' => "ショップ名（必須)",'name'=>'shopname','value'=>$shopname]); ?></dl>
             <dl><?= $this->Form->control('branch', ['label' => '支店名','value'=>$branch,'placeholder' => '栄支店']) ?></dl>
 
-          <dl><div class='kana'><div class='require'></div></div>
+          <dl><div id='kana'><div class='require'></div></div>
             <?= //フリガナ（必須項目のため、空欄の場合はcontrollerからフラグを受け取る）
-                $this->Form->control('kana', ['label' => 'フリガナ（必須)','name'=>'kana','value'=>$kana]); ?>
+                $this->Form->control('kana', ['label' => 'フリガナ（必須)','name'=>'kana','value'=>$kana,'placeholder' => 'ショップ名と支店名のフリガナを入力']); ?>
             </dl>
 
             <dl>
-              <div class='shoptype'><div class='require'></div></div>
+              <div id='shoptype'><div class='require'></div></div>
               <?= //ショップタイプ一覧
               $this->Form->control('shoptype',
                 ['options' => $typename,
@@ -44,7 +44,7 @@
         <fieldset class="address">
           <legend><?= "住所" ?></legend>
             <dl>
-              <div class='pref'><div class='require'></div></div>
+              <div id='pref'><div class='require'></div></div>
             <?= //住所の県一覧
               $this->Form->control('pref',
                 ['options' => $pref_list,
@@ -57,7 +57,7 @@
               ]); ?>
             </dl>
           <dl>
-            <div class='address'><div class='require'></div>
+            <div id='address'><div class='require'></div>
             <?php  if($this->request->getQuery('error') == 1) echo "住所が間違っています。";  ?>
           </div>
             <?= $this->Form->control('address', ['label' => '市区町村・番地(必須)','name'=>'address','value'=>$address]); ?>
@@ -116,34 +116,58 @@
     var chkForm = true;
     var check_require = function(type,tag){
       if ($(type+"[name="+tag+"]").val() == ''){
-        $('.'+tag+' .require').text("*必須項目です"); 
+        $('#'+tag+' .require').text("*必須項目です");
+        if(chkForm === true){
+          window.location.hash = tag;
+        }
         chkForm = false;
       }else{
-        $('.'+tag+' .require').text(''); 
+        $('.'+tag+' .require').text('');
       }
     }
-    
+
+
     check_tag = ['shopname','kana','address'];
     check_tag.forEach(function(tag){
       check_require('input',tag)
     })
-    
+
     check_tag = ['pref','shoptype'];
     check_tag.forEach(function(tag){
       check_require('select',tag)
     })
 
     var str = $("input[name='kana']").val();
-    if(!str.match(/^[ァ-ヶー　]*$/)){  
-      $('.kana .require').text("*全角カタカタで入力下さい"); 
+    if(!str.match(/^[ァ-ヶー　・/-]*$/)){
+      $('#kana .require').text("*全角カタカタで入力下さい");
+      window.location.hash = "kana"
       chkForm = false;
     }
+    //固定ヘッダーの高さ分をずらす
+      id = location.hash;
+      speed = 0;
+      headerHight = 120; // 固定ヘッダーの高さ
+      if ( '' != id && chkForm === false) {
+        pos = $(id).offset().top - headerHight;
+        $( 'html' ).animate({ scrollTop: pos }, speed );
+      }
+
     return chkForm;
   });
 
 
-$("dt:contains('必須')").addClass('text-danger');
+  $("dt:contains('必須')").addClass('text-danger');
 
+  //iphoneで電話番号をコピーする際の、先頭のtel:を自動で削除
+  $("input[name='phone_number']").keyup(function(){
+      var input = $(this).val();
+      alert(input.indexOf('tel:'));
+      if(input.indexOf('tel:') !== -1) {
+        var output = input.replace('tel:','');
+        $(this).val(output);
+      }
+
+  });
 
     //「営業時間を追加する」ボタン
   $(".button1").on("click",function(){

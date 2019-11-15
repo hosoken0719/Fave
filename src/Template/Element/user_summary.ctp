@@ -29,9 +29,24 @@
                 </div>
                 <hr />
 	                <table>
-	                    <tr><td>お気に入り</td><td><?= h($user_data->FollowShopCount) ?>店(共通:<?= h($user_data->FollowShopCommonCount) ?>店)</td></tr>
-	                    <tr><td>フォロー</td><td><?= h($user_data->FollowUserCount) ?>人(共通:<?= h($user_data->FollowUserCommonCount) ?>人)</td></tr>
-	                    <tr><td>フォロワー</td><td><?= h($user_data->FollowerUserCount) ?>人(共通:<?= h($user_data->FollowerUserCommonCount) ?>人)</td></tr>
+                        <?php if($this->request->getSession()->read('Auth.User.id')): ?>
+	                       <tr><td>お気に入り</td><td><?= h($user_data->FollowShopCount) ?>店(共通:<?= h($user_data->FollowShopCommonCount) ?>店)</td></tr>
+                        <?php else: ?>
+                           <tr><td>お気に入り</td><td><?= h($user_data->FollowShopCount) ?>店</td></tr>
+                        <?php endif; ?>
+
+
+                        <?php if($this->request->getSession()->read('Auth.User.id')): ?>
+	                       <tr><td>フォロー</td><td><?= h($user_data->FollowUserCount) ?>人(共通:<?= h($user_data->FollowUserCommonCount) ?>人)</td></tr>
+                        <?php else: ?>
+                            <tr><td>フォロー</td><td><?= h($user_data->FollowUserCount) ?>人</td></tr>
+                        <?php endif; ?>
+
+                        <?php if($this->request->getSession()->read('Auth.User.id')): ?>
+	                       <tr><td>フォロワー</td><td><?= h($user_data->FollowerUserCount) ?>人(共通:<?= h($user_data->FollowerUserCommonCount) ?>人)</td></tr>
+                        <?php else: ?>
+                            <tr><td>フォロワー</td><td><?= h($user_data->FollowerUserCount) ?>人</td></tr>
+                        <?php endif; ?>
                 </table>
             </dd>
         </dl>

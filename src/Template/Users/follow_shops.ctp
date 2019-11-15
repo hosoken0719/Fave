@@ -8,7 +8,7 @@
 				//ログインユーザと共通のフォローショップを表示
 				echo $this->element('shop_list',['Query' => $FollowShopsIn,'isFollowed'=>1]);
 				//残り全てのショップを表示
-				echo $this->element('shop_list',['Query' => $FollowShopsNotIn,'isFollowed'=>0]);
+				//echo $this->element('shop_list',['Query' => $FollowShopsNotIn,'isFollowed'=>0]);
 				?>
 	        </div>
 		</div>

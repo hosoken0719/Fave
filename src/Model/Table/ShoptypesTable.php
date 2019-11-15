@@ -19,17 +19,7 @@ use Cake\Validation\Validator;
     	$this->setTable('shoptypes');
         $this->setPrimaryKey('id');
         $this->setDisplayField('typename');
-        
     }
-
-    
-    //	public $primaryKey = 'follower';
-
-//    	public $hasOne = array(
-  //  		'User'=>array(
-	//	      'foreignKey'=>'username',
-	//	     )
-	 // );
 
 }
 

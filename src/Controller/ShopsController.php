@@ -24,69 +24,44 @@ class ShopsController extends AppController {
 	    $ShoptypeTable = TableRegistry::get('shoptypes');
 	    $FollowTable = TableRegistry::get('follows');
 	    $UserTagTable = TableRegistry::get('users_tags');
-	    $TagTable = TableRegistry::get('tags');
 	    $UsersTable = TableRegistry::get('users');
 
 
 	//ショップ情報の抽出
     	$shopData = $this->getShopData($this->request->getParam('shop_id'));
+    	$LoginUserFollow['follower_user'] = $this->FollowComp->getLoginUserFollowUserArray($this->Auth->user('id'));
+    	$shopData = $this->ShopComp->rating_avg($shopData,$LoginUserFollow['follower_user']);
+    	$shopData = $shopData->first();
+
+    	$user_infor = $this->setCommonValue($shopData);
+
+
 
 	//写真情報取得
-		$dir = PHOTO_UPLOADDIR . '/shop_photos/' . $shopData->shop_id . '/';
-		$photo_list = glob($dir . '*.png');
-		$shop_photos = [];
-		if(!empty($photo_list)){
-			for($i=6;$i>=0;$i--){
-				if(!empty($photo_list[$i])){
-					$photoShop_fullpath = $photo_list[$i]; //最新写真のみ抽出
-					$photoShop_array = explode('/',$photoShop_fullpath); //サーバパスの取得となるため、最後のファイル名だけを取得
-					array_push($shop_photos,"https://fave-jp.info/img/shop_photos/" . $shopData->shop_id . "/thumbnail/max_" . end($photoShop_array));
+		$shop_photos = $this->ShopComp->getShopPhotos($shopData->shop_id,6);
+		$shop_photo_dir = $this->ShopComp->getShopPhotoDir($shopData->shop_id).'/thumbnail/middle_';
+		// $photo_list = glob($dir . '*.png');
+		// $shop_photos = [];
+		// if(!empty($photo_list)){
+		// 	for($i=count($photo_list);$i>count($photo_list)-7;$i--){
+		// 		if(!empty($photo_list[$i])){
+		// 			$photoShop_fullpath = $photo_list[$i]; //最新写真のみ抽出
+		// 			$photoShop_array = explode('/',$photoShop_fullpath); //サーバパスの取得となるため、最後のファイル名だけを取得
+		// 			array_push($shop_photos,"https://fave-jp.info/img/shop_photos/" . $shopData->shop_id . "/thumbnail/middle_" . end($photoShop_array));
 
-				}
-			}
-		}else{
-			$shop_photos = null;
-		}
-
-        $ShopPhotoTable = TableRegistry::getTableLocator()->get('shop_photos');
-        $instagram_photos = $ShopPhotoTable->find()->where(['shop_id'=>$shopData->shop_id]);
-		$instagram_photos_count = $instagram_photos->count();
-		$this->set(compact('shop_photos','instagram_photos','instagram_photos_count'));
-
- 	// ハッシュタグにリンクをつける
-		// if(!is_null($shopData->tag)){
-		//     $saved_hashtag_separates = explode(' ',$shopData->tag);
-		// 	$hashtag = NULL;
-		//     foreach ($saved_hashtag_separates as $saved_hashtag_separate) {
-		// 	    $hashtag .= "<a href='#'>". $saved_hashtag_separate . "</a> ";
-		//     }
+		// 		}
+		// 	}
 		// }else{
-		// 	$hashtag ='';
+		// 	$shop_photos = null;
 		// }
 
-	// ショップの全フォロワー数を取得
-		$this->set('countFollowShop',$this->FollowComp->getShopFollowUserCount($shopData->shop_id));
-	// ショップの全フォロワーのレーティングを取得
-		$this->set('avgFollowShop',$this->FollowComp->getShopRatingByShopId($shopData->shop_id));
+        $ShopPhotoSnsTable = TableRegistry::getTableLocator()->get('shop_photos_sns');
+        $instagram_photos = $ShopPhotoSnsTable->find()->where(['shop_id'=>$shopData->shop_id]);
+		$instagram_photos_count = $instagram_photos->count();
+		$this->set(compact('shop_photos','shop_photo_dir','instagram_photos','instagram_photos_count'));
 
-	//ログインユーザが表示ショップをフォローしているか確認
-		$isFollowId['follow'] =  $this->Auth->user('id');
-		$isFollowId['follower_shop'] = $this->request->getParam('shop_id');
-		$this->set('ShopFollowData',$this->FollowComp->isShopFollow($isFollowId));
 
-	//ショップフォロワーのうち、ログインユーザがフォローしているユーザ数
-		$FollowerUser['FollowedId'] = $this->FollowComp->getLoginUserFollowUserArray($this->Auth->user('id'));
-		$FollowerUser['follower_shop'] = $this->request->getParam('shop_id');
-		if(!empty($FollowerUser['FollowedId'])){
-			$this->set('countShopFollowMyUser',$this->FollowComp->getShopCountMyFollowUser($FollowerUser));
-			$this->set('avgShopFollowMyUser',$this->FollowComp->getShopRatingMyFollowUser($FollowerUser));
-		}else{
 
-			$this->set('countShopFollowMyUser',0);
-			$this->set('avgShopFollowMyUser',0);
-		}
-        //フォローユーザを取得
-        $followUserDatas = $this->FollowComp->getShopFollowUserDatas($shopData->shop_id);
 	//営業時間
 	//▽▼営業時間はbusiness_hoursから取得▽▼
     	//DBから取り出し
@@ -106,6 +81,189 @@ class ShopsController extends AppController {
 
 		$this->set(compact('FollowerUser','shopData','hashtag','myrating','followShopDatas','followUserDatas','followerShopDatas','followerUserDatas','shop_data_summary','shop_icon','countFollower'));	//ショップ写真
 
+	//タイトルの設定
+		$this->set('title',$shopData->shopname.'('.$shopData->kana.')のお店情報 - Fave');
+
+	}
+
+//お店をフォローしている人一覧（自分がフォローしている人のみ表示）
+	public function favoritedFollow(){
+
+		//ログインしていない場合は全ユーザへリダイレクト
+		if(!$this->request->getSession()->read('Auth.User')){
+   			$this->redirect(['action' => $this->request->getParam('shop_id').'/favoritedAll']);
+		}
+
+	    $this->loadComponent('FollowComp'); // コンポーネントの読み込み
+
+	//ショップ情報の抽出
+    	$shopData = $this->getShopData($this->request->getParam('shop_id'));
+    	$LoginUserFollow['follower_user'] = $this->FollowComp->getLoginUserFollowUserArray($this->Auth->user('id'));
+    	$shopData = $this->ShopComp->rating_avg($shopData,$LoginUserFollow['follower_user']);
+    	$shopData = $shopData->first();
+
+	//ショップ情報の抽出
+    	$user_infor = $this->setCommonValue($shopData);
+    	$favoriteDatas= $this->FollowComp->getShopFollowUserDatas($shopData['shop_id'])->where(['follow IN' => $user_infor['LoginUserFollowerUser']]);
+
+    	$this->set(compact('favoriteDatas','shopData'));
+
+	//タイトルの設定
+		$this->set('title',$shopData->shopname.'('.$shopData->kana.')の口コミ（フォローユーザ） - Fave');
+	}
+
+//お店をフォローしている人一覧（全員表示）
+	public function favoritedAll(){
+	    $this->loadComponent('FollowComp'); // コンポーネントの読み込み
+
+	//ショップ情報の抽出
+    	$shopData = $this->getShopData($this->request->getParam('shop_id'));
+    	$LoginUserFollow['follower_user'] = $this->FollowComp->getLoginUserFollowUserArray($this->Auth->user('id'));
+    	$shopData = $this->ShopComp->rating_avg($shopData,$LoginUserFollow['follower_user']);
+    	$shopData = $shopData->first();
+
+	//ログインユーザ情報の抽出
+    	$user_infor = $this->setCommonValue($shopData);
+
+   	//ログインユーザのフォローユーザ情報を取得
+    	$favoriteDatasLoginUser = $this->FollowComp->getShopFollowUserDatas($shopData['shop_id'])->where(['follow' => $user_infor['user_id']]);
+
+   	//フォローユーザを取得
+    	if(!empty($user_infor['LoginUserFollowerUser'])){
+	    	$favoriteDatas = $this->FollowComp->getShopFollowUserDatas($shopData['shop_id'])->where(['follow IN' => $user_infor['LoginUserFollowerUser']]);
+
+   		// //フォローしていないユーザを取得するが、ログインユーザは別のSQLで取得しているため対象外とする
+    		$LoginUserFollowerUserIncOwn = array_merge($user_infor['LoginUserFollowerUser'],[$user_infor['user_id']]); //ログインユーザを追加
+    		$favoriteDatasNotIn = $this->FollowComp->getShopFollowUserDatas($this->request->getParam('shop_id'))->where(['NOT' => ['follow IN' => $LoginUserFollowerUserIncOwn]]);
+
+    	}else{//ログインユーザが誰もフォローしていない場合
+    		$favoriteDatasNotIn = [];
+    		$favoriteDatas = $this->FollowComp->getShopFollowUserDatas($shopData['shop_id'])->all();
+    	}
+
+    	$this->set(compact('favoriteDatas','favoriteDatasLoginUser','favoriteDatasNotIn','shopData'));
+
+	//タイトルの設定
+		$this->set('title',$shopData->shopname.'('.$shopData->kana.')の口コミ（全てのユーザ） - Fave');
+	}
+
+//写真
+	public function photo(){
+	    $this->loadComponent('FollowComp'); // コンポーネントの読み込み
+
+	//ショップ情報の抽出
+    	$shopData = $this->getShopData($this->request->getParam('shop_id'));
+    	$LoginUserFollow['follower_user'] = $this->FollowComp->getLoginUserFollowUserArray($this->Auth->user('id'));
+    	$shopData = $this->ShopComp->rating_avg($shopData,$LoginUserFollow['follower_user']);
+    	$shopData = $shopData->first();
+    	$this->set(compact('shopData'));
+
+	//ログインユーザが表示ショップをフォローしているか確認
+		$isFollowId['follow'] =  $this->Auth->user('id');
+		$isFollowId['follower_shop'] = $this->request->getParam('shop_id');
+		$this->set('ShopFollowData',$this->FollowComp->isShopFollow($isFollowId));
+
+
+	//写真情報取得
+		$shop_photos = $this->ShopComp->getShopPhotos($shopData->shop_id);
+		$shop_photo_dir = $this->ShopComp->getShopPhotoDir($shopData->shop_id).'/thumbnail/middle_';
+		// $dir = PHOTO_UPLOADDIR . '/shop_photos/' . $shopData->shop_id . '/';
+		// $photo_list = glob($dir . '*.png');
+		// $photo_list = array_reverse($photo_list); //最新順にするため、配列を逆転する
+		// $shop_photos = [];
+		// if(!empty($photo_list)){
+		// 	foreach ($photo_list as $photoShop_fullpath) {
+		// 		$photoShop_array = explode('/',$photoShop_fullpath); //サーバパスの取得となるため、最後のファイル名だけを取得
+		// 		array_push($shop_photos,"https://fave-jp.info/img/shop_photos/" . $shopData->shop_id . "/thumbnail/middle_" . end($photoShop_array));
+		// 	}
+		// }else{
+		// 	$shop_photos = null;
+		// }
+
+        $ShopPhotoTable = TableRegistry::getTableLocator()->get('shop_photos');
+        $instagram_photos = $ShopPhotoTable->find()->where(['shop_id'=>$shopData->shop_id]);
+		$instagram_photos_count = $instagram_photos->count();
+		$this->set(compact('shop_photos','shop_photo_dir','instagram_photos','instagram_photos_count'));
+
+	//タイトルの設定
+		$this->set('title',$shopData->shopname.'('.$shopData->kana.')の写真 - Fave');
+	}
+
+//お気に入り登録
+	public function postFavorite(){
+	    $this->loadComponent('FollowComp'); // コンポーネントの読み込み
+
+	//ショップ情報の抽出
+    	$shopData = $this->getShopData($this->request->getParam('shop_id'));
+    	$LoginUserFollow['follower_user'] = $this->FollowComp->getLoginUserFollowUserArray($this->Auth->user('id'));
+    	$shopData = $this->ShopComp->rating_avg($shopData,$LoginUserFollow['follower_user']);
+    	$shopData = $shopData->first();
+    	$this->set(compact('shopData'));
+
+	//ログインユーザが表示ショップをフォローしているか確認
+		$isFollowId['follow'] =  $this->Auth->user('id');
+		$isFollowId['follower_shop'] = $this->request->getParam('shop_id');
+		$this->set('ShopFollowData',$this->FollowComp->isShopFollow($isFollowId));
+
+
+	//タイトルの設定
+		$this->set('title',$shopData->shopname.'('.$shopData->kana.')をお気に入りに登録 - Fave');
+	}
+
+
+	//お気に入り登録のDB登録処理
+	public function register(){
+
+		if ($this->request->is('post')) {
+
+	        $FollowsTable = TableRegistry::get('follows');
+
+ 		    //新規にフォローする場合
+	        if($this->request->getData('method') === 'add'){
+		    	$follow = $FollowsTable->newEntity();
+		        $follow->follow =  $this->Auth->user('id');
+		        $follow->follower_shop = $this->request->getData('shop_id');
+		        $follow->rating = $this->request->getData('rating');
+		        $follow->review = $this->request->getData('review');
+		        $time = Time::now();
+		        $follow->created = $time->format('Y/m/d H:i:s');
+
+		        if($FollowsTable->save($follow)){
+				// 	return $this->redirect(['controller' => 'shops', 'action' => '/' ,$this->request->getData('shop_id')]);
+				// }else{
+					return $this->redirect(['controller' => 'shops', 'action' => $this->request->getData('shop_id'),'post-favorite']);
+				}
+			// }elseif($this->request->getData('method') === 'update'){
+	  //       	$shopEntity = $FollowsTable->patchEntity($shopData, $basic_information);
+
+		    // }elseif($this->request->getData('method') === 'delete'){
+			}else{
+				$FollowsTable->deleteAll(['follow'=>$this->Auth->user('id'),'follower_shop'=>$this->request->getData('shop_id')]);
+				return $this->redirect(['controller' => 'shops', 'action' => $this->request->getData('shop_id'),'post-favorite']);
+			}
+
+		$this->autoRender = false;
+		}
+	}
+
+//地図
+	public function map(){
+
+ 	// コンポーネントの読み込み
+		$this->loadComponent('FollowComp');
+
+	//ショップ情報の抽出
+    	$shopData = $this->getShopData($this->request->getParam('shop_id'));
+    	$LoginUserFollow['follower_user'] = $this->FollowComp->getLoginUserFollowUserArray($this->Auth->user('id'));
+    	$shopData = $this->ShopComp->rating_avg($shopData,$LoginUserFollow['follower_user']);
+    	$shopData = $shopData->first();
+    	$this->set(compact('shopData'));
+
+	//ログインユーザが表示ショップをフォローしているか確認
+		$isFollowId['follow'] =  $this->Auth->user('id');
+		$isFollowId['follower_shop'] = $this->request->getParam('shop_id');
+		$this->set('ShopFollowData',$this->FollowComp->isShopFollow($isFollowId));
+
 
 
 //googlemap関連の処理
@@ -123,22 +281,6 @@ class ShopsController extends AppController {
 	//地図のセンターを設定
 		$map_default_center = $shopData->lat. ',' . $shopData->lng;
 
-		// $shops = array_merge($followList,$followerList);  //フォロー、フォローワーリストの結合
-		// $shops = array_unique($shops, SORT_REGULAR);  //重複削除
-		// $shops = array_values($shops);  //配列番号(index)を振り直し
-		// $shops = array_filter($shops);  //空白の配列を削除
-		// foreach($shops as $shop){ //follow/followeにはショップ以外が含まれているが、地図には不要のため削除する
-		// 	if(!is_null($shop['Shop']['shopname'])){
-		// 		$locate = array(
-		// 			'lat' => $shop['Shop']['lat'],
-		// 			'lng' => $shop['Shop']['lng'],
-		// 			'shopname' => $shop['Shop']['shopname'] . "<br />" . $shop['Shoptype']['typename'],
-		// 			'account' => $shop['Shop']['accountname'],
-		// 		);
-		// 		array_push($map_shops,$locate);
-		// 	}
-		// }
-
 	//ズームの値を設定	
 		$map_zoom = 14;
 		$locate_json = json_encode($map_shops);
@@ -148,68 +290,12 @@ class ShopsController extends AppController {
 		$title = $shopData->shopname . ' | Fave';
 		$this->set(compact('title','map_zoom','map_default_center','locate_json','gestureHandling'));//locate_jsonはmain.ctpで受け取り
 
-	}
-
-//お店をフォローしている人一覧（自分がフォローしている人のみ表示）
-	public function favoritedFollow(){
-
-	    $this->loadComponent('FollowComp'); // コンポーネントの読み込み
-
-	//ショップ情報の抽出
-    	$shopData = $this->getShopData($this->request->getParam('shop_id'));
-
-	//ショップ情報の抽出
-    	$user_infor = $this->setCommonValue();
-    	$favoriteDatas= $this->FollowComp->getShopFollowUserDatas($shopData['shop_id'])->where(['follow IN' => $user_infor['LoginUserFollowerUser']]);
-
-    //ヘッダーに表示するためのカウント
-    	$count['followed'] = $favoriteDatas->count();
-    	$count['all'] = $this->FollowComp->getShopFollowUserDatas($shopData['shop_id'])->count();
-
-    	$this->set(compact('favoriteDatas','shopData','count'));
-	}
-
-//お店をフォローしている人一覧（全員表示）
-	public function favoritedAll(){
-	    $this->loadComponent('FollowComp'); // コンポーネントの読み込み
-
-	//ショップ情報の抽出
-    	$shopData = $this->getShopData($this->request->getParam('shop_id'));
-
-	//ログインユーザ情報の抽出
-    	$user_infor = $this->setCommonValue();
-
-   	//ログインユーザのフォローユーザ情報を取得
-    	$favoriteDatasLoginUser = $this->FollowComp->getShopFollowUserDatas($shopData['shop_id'])->where(['follow' => $user_infor['user_id']]);
-
-    //カウントの初期化
-    	$count['followed'] = 0;
-    	$count['all'] = 0;
-
-   	//フォローユーザを取得
-    	if(!empty($user_infor['LoginUserFollowerUser'])){
-	    	$favoriteDatas = $this->FollowComp->getShopFollowUserDatas($shopData['shop_id'])->where(['follow IN' => $user_infor['LoginUserFollowerUser']]);
-
-   		// //フォローしていないユーザを取得するが、ログインユーザは別のSQLで取得しているため対象外とする
-    		$LoginUserFollowerUserIncOwn = array_merge($user_infor['LoginUserFollowerUser'],[$user_infor['user_id']]); //ログインユーザを追加
-    		$favoriteDatasNotIn = $this->FollowComp->getShopFollowUserDatas($this->request->getParam('shop_id'))->where(['NOT' => ['follow IN' => $LoginUserFollowerUserIncOwn]]);
-
-       	//ヘッダーに表示するためのカウント
-    		$count['followed'] = $this->FollowComp->getShopFollowUserDatas($shopData['shop_id'])->where(['follow IN' => $user_infor['LoginUserFollowerUser']])->count();
-    	}else{//ログインユーザが誰もフォローしていない場合
-    		$favoriteDatasNotIn = [];
-    		$favoriteDatas = $this->FollowComp->getShopFollowUserDatas($shopData['shop_id'])->all();
-// debug($this->FollowComp->getShopFollowUserDatas($shopData['shop_id'])->sql());
-       	//ヘッダーに表示するためのカウント
-    	}
-    //全てのユーザのフォロー件数を取得
-   		$count['all'] = $this->FollowComp->getShopFollowUserDatas($shopData['shop_id'])->count();
-
-    	$this->set(compact('favoriteDatas','favoriteDatasLoginUser','favoriteDatasNotIn','shopData','count'));
+	//タイトルの設定
+		$this->set('title',$shopData->shopname.'('.$shopData->kana.')の地図 - Fave');
 	}
 
 //favoritedFollowとfavoritedAllの共通処理
-	private function setCommonValue(){
+	private function setCommonValue($shopData){
 
 	    $this->loadComponent('FollowComp'); // コンポーネントの読み込み
 
@@ -222,17 +308,24 @@ class ShopsController extends AppController {
 	    if(empty($LoginUserFollow['follower_shop'])){
 	      $LoginUserFollow['follower_shop'] = null;
 	    }
-
 	    $LoginUserFollow['follower_user'] = $this->FollowComp->getLoginUserFollowUserArray($login_user_id);
-
 	    $this->set(compact('LoginUserFollow','login_user_id'));
 
+	// ショップの全フォロワー数を取得
+		$this->set('countFollowShop',$this->FollowComp->getShopFollowUserCount($shopData->shop_id));
+	// ショップの全フォロワーのレーティングを取得
+		$this->set('avgFollowShop',$this->FollowComp->getShopRatingByShopId($shopData->shop_id));
+
+	//ログインユーザが表示ショップをフォローしているか確認
+		$isFollowId['follow'] =  $this->Auth->user('id');
+		$isFollowId['follower_shop'] = $this->request->getParam('shop_id');
+		$this->set('ShopFollowData',$this->FollowComp->isShopFollow($isFollowId));
 
 	    return ['user_id'=>$login_user_id,'LoginUserFollowShop'=>$LoginUserFollow['follower_shop'],'LoginUserFollowerUser'=>$LoginUserFollow['follower_user']];
 	}
 
 //仮引数のショップ情報を取得する
-  private function getShopData($shop_id){
+  private function getShopData($shop_id,$type=null){
 
 	//ショップ情報の抽出
     	$shopData = $this->Shops->find()
@@ -241,11 +334,14 @@ class ShopsController extends AppController {
     		'Shops.id' => $shop_id,
 			'Shops.status' => '1'
 		])
-		->contain(['shoptypes','prefectures'])
+		// ->group(['Shops.id'])
+		->contain(['shoptypes','shoptypes2','prefectures','follows'])
 		->select([
 			'shopname' => 'shopname',
 			'user_id' => 'Shops.user_id',
+			'kana' => 'Shops.kana',
 			'shop_id' => 'Shops.id',
+			'branch' => 'Shops.branch',
 			'shop_accountname' => 'Shops.accountname',
 			'shop_business_hour_detail' => 'Shops.business_hour_detail',
 			'introduction' => 'Shops.introduction',
@@ -259,11 +355,10 @@ class ShopsController extends AppController {
 			'lat' => 'Shops.lat',
 			'lng' => 'Shops.lng',
 			'typename' => 'shoptypes.typename',
+			// 'typename2' => 'shoptypes2.typename',
 			'instagram' => 'Shops.instagram',
 			'thumbnail' => 'Shops.thumbnail',
-		])
-		->first();
-
+		]);
 		return $shopData;
   }
 

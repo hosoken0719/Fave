@@ -1,3 +1,4 @@
+<?php ?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -14,7 +15,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.2/croppie.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.2/croppie.min.css">
-
     <?= $this->Html->script('swiper.min.js'); ?>
     <?= $this->Html->css('swiper.min.css'); ?>
     <?php //echo $this->Html->css('bootstrap.min.css'); ?>
@@ -54,7 +54,7 @@ $(function() {
           <div id="header_logo">
             <h1><a href="/"><?php echo $this->Html->image('logo.svg',['alt'=> 'Fave']); ?></a></h1>
           </div>
-          <?php //if(!empty($auth)): //ログインしている場合?>
+          <?php if($this->request->getSession()->read('Auth.User')): //ログインしている場合?>
           <nav>
             <div id="header-link">
               <div class="header-link-follow left"><?= $this->Html->link(__('お気に入り'), ['plugin'=>false,'controller' => 'Follows', 'action' => 'index']) ?></div>
@@ -65,12 +65,25 @@ $(function() {
             <div id="header-link">
               <div class="header-link-home home_button left"><?= $this->Html->image('home.svg',['url'=>['plugin'=>false,'controller'=>'users','action'=>'index']]) ?><br />ホーム</div>
               <div class="header-link-follow home_button left"><?= $this->Html->image('follow.svg',['url'=>['plugin'=>false,'controller'=>'Follows','action'=>'index']]) ?><br />お気に入り</div>
-              <div class="header-link-search home_button left"><?= $this->Html->image('search.svg',['url'=>['plugin'=>false,'controller'=>'Searches','action'=>'index']]) ?><br />検索</div>
+              <div class="header-link-search home_button left"><?= $this->Html->image('search.svg',['url'=>['plugin'=>false,'controller'=>'Searches','action'=>'index']]) ?><br />探す</div>
               <div class="header-link-regist home_button left"><?= $this->Html->image('regist.svg',['url'=>['plugin'=>false,'controller'=>'ShopRegists','action'=>'index']]) ?><br />お店登録</div>
               <div class="header-link-account home_button left"><?= $this->Html->image('account.svg',['url'=>['plugin'=>false,'controller'=>'accounts','action'=>'index','_full' => true]]) ?><br />アカウント</div>
             </div>
           </nav>
-          <?php //endif; ?>
+  <?php else: //ログインしていない場合 ?>
+          <nav>
+            <div id="header-link">
+              <div class="header-link-search left"><?= $this->Html->link(__('探す'), ['plugin'=>false,'controller' => 'Searches', 'action' => 'index']) ?></div>
+              <div class="header-link-login left"><?= $this->Html->link(__('ログイン'), ['plugin'=>false,'controller' => 'login', 'action' => 'index']) ?></div>
+
+            </div>
+            <div id="header-link">
+              <div class="header-link-home home_button left"><?= $this->Html->image('home.svg',['url'=>['plugin'=>false,'controller'=>'users','action'=>'index']]) ?><br />ホーム</div>
+              <div class="header-link-search home_button left"><?= $this->Html->image('search.svg',['url'=>['plugin'=>false,'controller'=>'Searches','action'=>'index']]) ?><br />探す</div>
+              <div class="header-link-account home_button left"><?= $this->Html->image('account.svg',['url'=>['plugin'=>false,'controller'=>'accounts','action'=>'index','_full' => true]]) ?><br />ログイン
+            </div>
+          </nav>
+  <?php endif; ?>
         </div>
       </div>
     </header>
@@ -78,13 +91,6 @@ $(function() {
     <div class="main">
         <?php echo $this->fetch('content'); ?>
     </div>
-  <?php //else: //ログインしていない場合 ?>
-<!--     <div class="main">
-      <div class="row">
-      <?php //echo $this->fetch('content'); ?>
-      </div>
-    </div> -->
-  <?php //endif; ?>
     </main>
     <footer>
       ©2019 Fave Creative

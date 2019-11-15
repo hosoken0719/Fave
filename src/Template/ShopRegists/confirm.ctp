@@ -60,7 +60,8 @@
         </fieldset>
     <fieldset>
        <legend><?= '地図確認' ?></legend>
-      <p class="notice">お店の位置が間違っている場合は、ピンを移動して下さい</p>
+      <p class="notice">・お店の位置が間違っている場合は、ピンを移動して下さい<br />
+      ・地図が表示されない場合は、戻るボタンを押して住所を確認してください</p>
       <div id="googlemap">
       </div>
 
@@ -76,7 +77,7 @@
         echo $this->Form->end();
       ?>
     </fieldset>
-    
+
 </div>
 </article>
 </div>

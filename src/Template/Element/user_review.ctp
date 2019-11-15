@@ -4,7 +4,6 @@
     $user_data->FollowerId = $user_data->user_id; //表示するユーザID
     $user_data->FollowerShopId = $shopData->shop_id; //表示しているショップID
     $user_data->LoginUserFollow = $LoginUserFollow;
-    
 ?>
     <div class="user_review">
         <div class="user_wrap">
@@ -39,7 +38,7 @@
                     </div>
                     <hr />
                     <table>
-                        <tr><th>お気に入り</th><td><?= h($user_data->FollowShopCount) ?>店(共通:<?= ($user_data->FollowShopCommonCount) ?>店)</td></tr>
+                        <tr><th>お気に入り</th><td><?= h($user_data->FollowShopCount) ?>店(共通:<?= h($user_data->FollowShopCommonCount) ?>店)</td></tr>
                         <tr><th>フォロー</th><td><?= h($user_data->FollowUserCount) ?>人(共通:<?= h($user_data->FollowUserCommonCount) ?>人)</td></tr>
                         <tr><th>フォロワー</th><td><?= h($user_data->FollowerUserCount) ?>人(共通:<?= h($user_data->FollowerUserCommonCount) ?>人)</td></tr>
                     </table>

@@ -88,7 +88,7 @@ class FollowsController extends AppController{
 		//スマホの2本指操作を解除
 			$gestureHandling = "gestureHandling: 'greedy'";
 
-			$this->set('title','フォロー一覧 | Fave');
+			$this->set('title','お気に入りのお店　- Fave');
 			$this->set(compact('map_zoom'));
 			$this->set(compact('gestureHandling'));
 			$this->set(compact('map_default_center'));

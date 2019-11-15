@@ -3,6 +3,7 @@ namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
+use Cake\Database\Expression\IdentifierExpression;
 
 /**
  * User Entity
@@ -139,6 +140,42 @@ class Follow extends Entity
             return 1;
         }
     }
+
+
+    public function getFollowerRating($shop_id,$LoginUserFollowerUser){
+        $ShopTable = TableRegistry::get('shops');
+        $query = $ShopTable->find()
+        ->where(['shops.id' => $shop_id,'follows.follow IN' => $LoginUserFollowerUser])
+        ->contain(['follows'])
+        ->group(['shops.id']);
+
+
+        $avgFolloweCase = $query->newExpr()->addCase(
+            $query->newExpr()->add(['follows.follow IN' => $LoginUserFollowerUser]),
+            $query->newExpr(new IdentifierExpression('follows.rating')), //'follows.rating'だとstring型になってしまう。構文の意味は不明
+            'integer'
+        );
+
+        $cntFolloweCase = $query->newExpr()->addCase(
+            $query->newExpr()->add(['follows.follow IN' => $LoginUserFollowerUser]),
+            1,
+            'integer'
+        );
+
+        $query = $query->select([
+        'avg_followed' => $query->func()->avg($avgFolloweCase), //フォロー平均レート
+        'cnt_followed' => $query->func()->count($cntFolloweCase), //フォロー人数
+        ])->first();
+
+        if(!empty($query->avg_followed)){
+            return $query->avg_followed;
+        }else{
+            return 0;
+        }
+
+    }
+
+
     //テーブルエンティティのセット
     private function setTables() {
         $TableEntity['follows'] = TableRegistry::get('follows');
@@ -147,20 +184,5 @@ class Follow extends Entity
     }
 
 
-    public function rating_avg($shop_id,$follower_user=null){
-
-        $FollowsTable = TableRegistry::get('follows');
-
-        $query = $FollowsTable->find()->where(['follower_shop'=>$shop_id]);
-        if($follower_user<>null){
-            $query = $query->where(['follow IN'=>$follower_user]);
-        }
-        $result = $query->select(['avg' => $query->func()->avg('rating')])->first();
-        if($result->avg > 0){
-            return round($result->avg,1);
-        }else{
-            return 0;
-        }
-    }
 
 }

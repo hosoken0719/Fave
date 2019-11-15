@@ -151,7 +151,7 @@ class FollowCompComponent extends Component {
     ->where(['follow' => $user_id])
     ->combine('id','follower_shop')
     ->toArray();
-    if(!empty($LoginUserFollow['follower_shop'])){
+    if(!empty($login_user_follow_shop)){
       return $login_user_follow_shop;
     }else{
       return 0;
@@ -167,7 +167,7 @@ class FollowCompComponent extends Component {
       ])
     ->combine('id','follower_user')
     ->toArray();
-    if(!isset($LoginUserFollow['follower_user'])){
+    if(!empty($login_user_follow_user)){
       return $login_user_follow_user;
     }else{
       return 0;
@@ -180,10 +180,12 @@ class FollowCompComponent extends Component {
 
         $FollowsTable = TableRegistry::get('follows');
 
-        $query = $FollowsTable->Find()
+        $query = $FollowsTable->Find('all')
         ->where([
             'follow' => $id,
         ])
+    // ->group(['follows.follow'])
+    ->group(['shops.id'])
         ->contain(['shops' => ['shoptypes','prefectures']])
         ->select([
             'shopname' => 'shops.shopname',

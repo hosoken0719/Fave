@@ -128,12 +128,18 @@ class UsersController extends AppController
 
   //①フォローショップ一覧を作成
   public function followShops(){
+      $this->loadComponent('ShopComp'); // コンポーネントの読み込み
     //フォローショップ・フォローユーザ・フォロワーで共通の値を取得
     $user_infor = $this->setCommonValue();
-    //表示ユーザのフォローショップを取得
-    $FollowShopsIn =  $this->FollowComp->getFollowerShopsByID($user_infor['user_id'])->where(['follower_shop IN' => $user_infor['LoginUserFollowShop']]);
-    $FollowShopsNotIn = $this->FollowComp->getFollowerShopsByID($user_infor['user_id'])->where(['NOT' => ['follower_shop IN' => $user_infor['LoginUserFollowShop']]]);
 
+    $FollowShopsIn =  $this->FollowComp->getFollowerShopsByID($user_infor['user_id'])->order(['follows.rating'=>'DESC']);
+    
+    //表示ユーザのフォローショップを取得
+    // $FollowShopsIn =  $this->FollowComp->getFollowerShopsByID($user_infor['user_id'])->where(['follower_shop IN' => $user_infor['LoginUserFollowShop']])->order(['follows.rating'=>'DESC']); //ログインユーザのお気に入り登録ショップ
+    // $FollowShopsIn = $this->ShopComp->rating_avg($FollowShopsIn,$user_infor['LoginUserFollowerUser']);
+    // $FollowShopsNotIn = $this->FollowComp->getFollowerShopsByID($user_infor['user_id'])->where(['NOT' => ['follower_shop IN' => $user_infor['LoginUserFollowShop']]]); //ログインユーザのお気に入り未登録ショップ
+    // $FollowShopsNotIn = $this->ShopComp->rating_avg($FollowShopsNotIn,$user_infor['LoginUserFollowerUser']);
+    $this->set('LoginUserFollowerUser',$user_infor['LoginUserFollowerUser']);
     $this->set(compact('login_user_follow_shop','FollowShopsIn','FollowShopsNotIn'));
   }
 
@@ -199,7 +205,7 @@ class UsersController extends AppController
     //ログインユーザがフォローしているショップを取得
     $LoginUserFollow['follower_shop'] = $this->FollowComp->getLoginUserFollowShopArray($this->Auth->user('id'));
 
-    //自分がフォローしているユーザーを取得
+    //ログインユーザがフォローしているユーザーを取得
     $LoginUserFollow['follower_user'] = $this->FollowComp->getLoginUserFollowUserArray($this->Auth->user('id'));
 
     $this->set(compact('LoginUserFollow'));

@@ -73,8 +73,8 @@ class ShopConfirmsController extends AppController
         $PrefTable = TableRegistry::getTableLocator()->get('prefectures');
         $this->set('pref_list',$PrefTable->find('list')->where(['enable' => 1]));
 
-        $ShopPhotoTable = TableRegistry::getTableLocator()->get('shop_photos');
-        $shop_photos = $ShopPhotoTable->find()->where(['shop_id'=>$shop_id]);
+        $ShopPhotoSnsTable = TableRegistry::getTableLocator()->get('shop_photos_sns');
+        $shop_photos = $ShopPhotoSnsTable->find()->where(['shop_id'=>$shop_id]);
         $this->set('shop_photos',$shop_photos);
 
 

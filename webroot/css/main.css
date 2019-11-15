@@ -6,7 +6,7 @@
   src:url("/font/NotoSerifJP-Regular.woff2") format("woff2"),
   url("/font/NotoSerifJP-Regular.woff") format("woff"),
   url("/font/NotoSerifJP-Regular.ttf") format("truetype");    font-style: normal;
-    font-weight: normal;font-weight: 400;
+  font-weight: normal;font-weight: 400;
   font-display:fallback;
 }
 
@@ -15,9 +15,11 @@ body, html{
     width: 100%;
     background-repeat: no-repeat;
     margin: 0;
+    word-break : break-all;
 }
-
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP:300,400,500,700&display=swap&subset=japanese');
 body{
+  overflow-y: scroll;
   background-color:  #F4F4F4;
   font-size: 12px;
   color: rgb(94,94,94);
@@ -25,6 +27,11 @@ body{
   /*font-size: calc(112.5% + 0.25vw);*/
   /*font-family: 游ゴシック体, 'Yu Gothic', YuGothic, 'ヒラギノ角ゴシック Pro', 'Hiragino Kaku Gothic Pro', メイリオ, Meiryo, Osaka, 'MS Pゴシック', 'MS PGothic', sans-serif;*/
   font-family: "Yu Gothic", "游ゴシック", YuGothic, "游ゴシック体", "ヒラギノ角ゴ Pro W3", "メイリオ", sans-serif;
+  /*font-family: 'Noto Sans JP', sans-serif;*/
+}
+
+h5{
+  font-size: 1.1rem;
 }
 
 .bg-white{
@@ -37,13 +44,17 @@ body{
   padding: 20px 0;
   overflow: hidden;
 }
-
 .contain{
   max-width: 1000px;
   margin: 15px auto 0;
   padding: 0;
 }
 
+
+@media (max-width: 767px)  {
+  .contain_inner{
+    padding: 0;
+  }
 }
 
 @media (max-width: 767px)  {
@@ -147,7 +158,7 @@ main{
 
 
 header {
-  position: fixed;
+  /*position: fixed;*/
   top: 0;
   left: 0;
   z-index: 1000;
@@ -159,7 +170,7 @@ header {
 }
 
 .scroll-height {
-  height: 80px;
+  /*height: 80px;*/
 }
 
 #scrool-header {
@@ -300,9 +311,9 @@ header {
 }
 
 .main{
-  padding-top: 100px;
+  /*padding-top: 100px;*/
   height: 100%;
-    min-height: 100%;
+  min-height: 100%;
 }
 
 body > .main{
@@ -613,10 +624,7 @@ body > .main{
 
 .form button,
 .regist button,
-.shop .display_favorite_button,
-.shop .favorite_button,
-.shop .edit_favorite,
-.shop .delete_favorite,
+.shop .submit input,
 .user form input.follow,
 .user form input.followed,
 .search button,
@@ -652,18 +660,37 @@ body > .main{
   color: #888;
 }
 
+.button_white{
+  background-color: #fff;
+  border: 1px solid #888;
+  color: #888;
+}
+
+
 .user form input.follow,
-.user form input.followed{
+.user form input.followed,
+.shop .shop_header .favorite_button .button{
   margin: 0;
   width: 125px;
-  height: 25px;
+  height: 30px;
+  padding: 5px;
   text-align: center;
 }
 
 
+.shop .shop_header .favorite_button .button{
+  margin-top: 15px;
+  background-color: #c55e5e;
+}
+
+.shop .shop_header .favorite_button .button a{
+  color: #fff;
+}
+
 .users .link{
   margin-top: 10px;
 }
+
 
 
 .form input[type=password],
@@ -671,7 +698,7 @@ body > .main{
 .form input[type=text],
 .form textarea,
 .shop textarea,
-.shop .content_review.edit form,
+.shop .edit .evaluation,
 .search select,
 .search input{
   resize: none;
@@ -691,6 +718,21 @@ body > .main{
   padding: 10px 18px;
 }
 
+
+
+.search select{
+  font-size:12px;
+}
+
+@media (max-width: 767px)  {
+  .search select{
+    font-size:16px;
+  }
+}
+
+.shop .edit .evaluation{
+  width: 140px;
+}
 
 
 
@@ -847,6 +889,7 @@ input::placeholder{
 .contents{
   width: 100%;
   margin-top: 30px;
+  padding: 0 10px;
 }
 
 @media (max-width: 767px)  {
@@ -1114,7 +1157,7 @@ display: -webkit-box;
 
 
   .search .search_box{
-    width: 90%;
+    width: 100%;
     padding: 10px 0;
     height: auto;
     margin-bottom: 0;
@@ -1267,8 +1310,14 @@ display: -webkit-box;
 .shop .myreview_display{
   line-height: 2.0em;
 }
+
 .shop .edit .myreview_edit{
   margin-top: 10px;
+}
+
+
+.shop .myreview_edit dd{
+  margin-top: -18px;
 }
 
 .shop .content .photo img{
@@ -1299,19 +1348,16 @@ display: -webkit-box;
   padding: 13px 0;
   margin: 0;
 }
-.shop dl,
+
+.shop .shop_detail dl,
 .regist .confirm dl{
   border-top: 1px solid #e7e7e7;
 }
 
 /*最初の行は線を消す(first-childはなぜか効かなかった）*/
 .shop dl:first-of-type,
-.regist .confirm dl:first-of-type
+.regist .confirm dl:first-of-type{
   border-top: none;
-}
-
-.form dl{
-  padding: 25px 0;
 }
 
 .shop dt,
@@ -1322,7 +1368,7 @@ display: -webkit-box;
   color: #666;
   font-weight: normal;
   line-height: 27px;
-    color: #999;
+  color: #999;
 }
 
 .shop dd,
@@ -1366,6 +1412,7 @@ display: -webkit-box;
   border-bottom: 1px solid #eee;
   margin: 0;
 }
+
 
 @media (max-width: 767px) {
   .regist dl{
@@ -1471,20 +1518,46 @@ display: -webkit-box;
 
 .shop .shop_header{
   width: 100%;
-  text-align: center;
-  /*text-align: center;*/
   padding: 10px 0;
+  display: table;
 }
+
+.shop .shop_header .information{
+  display: table-cell;
+  width: calc(100% - 125px)
+}
+.shop .shop_header .favorite_button{
+  display: table-cell;
+  vertical-align: top;
+  width: 125px;
+}
+
+@media (max-width: 767px) {
+  .shop .shop_header{
+    display: block;
+  }
+  .shop .shop_header .information{
+    display: block;
+    width: 100%;
+  }
+
+  .shop .shop_header .favorite_button_header{
+    display: block;
+  }
+}
+
 
 .shop .shop_header .name{
   margin-bottom: 10px;
 }
 
 .shop .shop_header .name h2{
-  font-size: 32px;
+  font-size: 24px;
   color: #000;
   display: inline;
 }
+
+.shop .information
 
 .shop .shop_header.type{
   padding-bottom: 15px;
@@ -1643,30 +1716,73 @@ display: -webkit-box;
 /* ▼ ▼ ▼ ▼ Shopページのレビューサイト ▼ ▼ ▼ ▼ */
 
 /* ▽ ▽ ヘッダーエリア ▽ ▽ */
-.shop .review .select{
-  width: 100%;
-}
 
 /**/
-.shop .review .select ul {
+.inner_link ul,
+.inner_link_sub ul  {
+  font-size: 12px;
   padding: 0;
-  border-bottom: solid 1px #707070;
 }
 
-/*リンクが2つのため、横幅を2分割*/
-.shop .review .select ul li{
-  width: calc(100%/2);
+
+.inner_link li{
   text-align: center;
   float: left;
+  padding: 10px 0;
+  border-bottom: solid 1px #ddd;
+}
+
+.shop .inner_link li{
+ width: calc(100%/4);
+}
+
+.inner_link li a,
+.inner_link_sub li a{
+  color: #5e5e5e;
 }
 
 /*選択しているリンクは下線を太くする*/
-.shop .review .select ul li.active{
-  border-bottom: solid 2px #707070;
+.inner_link li.active,
+.inner_link_sub li.active p{
+  border-bottom: solid 1px #000;
 }
 
+
+.inner_link li.active a,
+.inner_link_sub li.active a{
+  color: #000;
+}
+
+.inner_link_sub li{
+  text-align: center;
+  width: calc(50% - 2px);
+  display: inline-block;
+}
+
+
+.inner_link_sub p{
+  width: 200px;
+  margin:0 auto;
+  /*border-top: solid 1px #ddd;*/
+  border-bottom: solid 1px #ddd;
+}
+
+@media (max-width: 767px) {
+  .inner_link ul,
+  .inner_link_sub ul{
+    font-size: 10px;
+  }
+
+  .inner_link_sub p{
+    width: 100px;
+  }
+}
+
+
 /*リンクを幅いっぱいにする*/
-.shop .review .select ul li a{
+.inner_link ul li a,
+.inner_link_sub li a{
+  width: 100%;
   display: block;
 }
 
@@ -1683,13 +1799,14 @@ display: -webkit-box;
   width: 100%;
 }
 
-/*縮小した場合は、レビュー欄を回り込みにする*/
 @media (max-width: 767px) {
   .shop .review .user_review{
+/*縮小した場合は、レビュー欄を回り込みにする*/
     -webkit-flex-wrap: wrap;
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
   }
+
 }
 
 /*アイコンエリアとフォローエリア（左側）のサイズ設定*/
@@ -1756,9 +1873,9 @@ display: -webkit-box;
 /* ▼ ▼ ▼ ▼ SearchとFollowページ ▼ ▼ ▼ ▼ */
 /*ショップ情報を並べるためのパラメータ*/
 
-.follow .shop_list,
-.search .shop_list {
+.follow .shop_list{
   width: 100%;
+}
 /*  display: -webkit-flex;
   display: -ms-flex;
   display: -moz-flex;
@@ -1810,8 +1927,8 @@ display: -webkit-box;
     display: block;
   }
 }
-.search .shop_infor,
-.user .shop_infor,
+
+.shop_list,
 .user .user_infor{
   background-color: #fff;
   -webkit-flex: 0 0 45%; /* 1マスのサイズ設定 */
@@ -1819,6 +1936,15 @@ display: -webkit-box;
   -moz-flex: 0 0 45%; /* 1マスのサイズ設定 */
   flex: 0 0 45%; /* 1マスのサイズ設定 */*/
   max-width: 45%;
+}
+
+
+.shop_infor .thumbnail{
+  padding-top: 5px;
+  width: 100px;
+}
+.shop_infor .thumbnail img{
+  height: 80px;
 }
 
 .user .shop_flame::before{
@@ -1854,19 +1980,20 @@ display: -webkit-box;
 
 
 
-.search dl,
+.shop_list dl,
 .user dl{
+  width: 100%;
   padding: 20px 0;
   border-bottom: 1px solid #e7e7e7;
   margin: 0;
 }
 
-.search dt,
+.shop_list dt,
 .user dt{
   display: inline-block;
   vertical-align: top;
   max-width: 130px;
-  margin-right: 20px;
+  margin-right: 10px;
 }
 
 @media (max-width: 767px) {
@@ -1880,11 +2007,11 @@ display: -webkit-box;
   margin: 0;
 }
 
-.search dd,
+.shop_list dd,
 .user dd{
-  vertical-align: top;
   display: inline-block;
-  /*max-width: calc(100% - 155px);*/
+  vertical-align: top;
+  max-width: calc(100% - 155px);
 }
 
 .user .user_flame dd{
@@ -1902,36 +2029,44 @@ display: -webkit-box;
     max-width: 100%; /* IE11バグ対応 */
   }
 
-  .search .shop_infor,
-  .user .shop_infor{
-    flex: 0 0 calc(50% - 10px);
-    max-width: 100%; /* IE11バグ対応 */
-  }
+
 }
 
 /*レスポンシブ対応*/
 @media (max-width: 480px) {
-  .search .shop_infor,
-  .user .shop_infor{
+  .shop_list{
     flex: 0 0 calc(100% - 10px);
     max-width: 100%; /* IE11バグ対応 */
   }
 }
 
 /*ショップ情報の枠*/
-.follow .shop_infor header,
-.search .shop_infor header{
+.follow .shop_infor header{
   padding-top: 5px;
   padding-bottom: 5px;
 }
 
 /*ショップ名*/
 .follow .shop_summary a,
-.search .shop_infor a,
-.user .shop_infor a{
+.shop_list .name{
   font-size: 20px;
 }
 
+
+/*レスポンシブ対応*/
+@media (max-width: 767px) {
+  .shop_list .category{
+    font-size: 10px;
+  }
+
+  .shop_list .name{
+    font-size: 16px;
+  }
+
+  .shop_list .address,{
+    font-size: 10px;
+  }
+}
 /*フォローするボタンをショップ名に並べる*/
 .follow .shop_summary form,/*フォローボタンをショップ名に並べるため*/
 .search .shop_detail form,
@@ -2219,7 +2354,6 @@ display: -webkit-box;
 
 .user .type ul{
   padding: 0;
-  border-bottom :solid 1px #707070;
 }
 
 
@@ -2229,6 +2363,7 @@ display: -webkit-box;
   width: calc(100%/3);
   text-align: center;
   float: left;
+  border-bottom :solid 1px #ddd;
 }
 
 .user .type a{
@@ -2236,7 +2371,7 @@ display: -webkit-box;
 }
 
 .user .type li.active{
-  border-bottom :solid 2px #707070;
+  border-bottom :solid 1px #000;
 }
 
 
@@ -2610,6 +2745,7 @@ select::-ms-expand {
 }
 
 .shop .shoprating form,
+.shop .shop_header form,
 .search .rating form,
 .user .rating form{
   display: inline;
@@ -2776,6 +2912,8 @@ select::-ms-expand {
 
 .follow .list_area{
   flex: 0 0 25%;
+  overflow-y: scroll;
+  height: 700px;
 }
 
 .user .header .avatar img{

@@ -24,14 +24,14 @@ use Cake\Validation\Validator;
       $this->setPrimaryKey(['follow','follower_shop']);
 
       $this->belongsTo('shops',[
-       'joinType' => 'inner',
+       'joinType' => 'INNER',
        'foreignKey' => 'follower_shop',
        'bindingKey' => 'id',
        'propertyName' => 'shops'
       ]);
 
       $this->belongsTo('users',[
-       'joinType' => 'inner',
+       'joinType' => 'INNER',
        'foreignKey' => 'follow',
        'bindingKey' => 'id',
        'propertyName' => 'users'

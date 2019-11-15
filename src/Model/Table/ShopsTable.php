@@ -24,12 +24,32 @@ class ShopsTable extends Table
            'propertyName' => 'shoptypes'
        ]);
 
+        $this->belongsTo('shoptypes2',[
+          'className' => 'shoptypes',
+           'joinType' => 'LEFT',
+           'foreignKey' => 'shoptype2',
+           'bindingKey' => 'id',
+           'propertyName' => 'shoptypes'
+       ]);
+
       $this->belongsTo('prefectures',[
            'joinType' => 'LEFT',
            'foreignKey' => 'pref',
            'bindingKey' => 'id',
            // 'propertyName' => 'pref'
        ]);
+
+      $this->belongsTo('follows',[
+           'joinType' => 'LEFT',
+           'foreignKey' => 'id',
+           'bindingKey' => 'follower_shop',
+       ]);
+
+      $this->belongsTo('shop_photos',[
+         'joinType' => 'LEFT',
+         'foreignKey' => 'id',
+         'bindingKey' => 'shop_id',
+      ]);
     }
 
 }

@@ -16,36 +16,6 @@ class AjaxController extends AppController
 	}
 
 
-	public function shoprating(){
-
-		// if ($this->request->is('ajax')) {
-
-	        $FollowsTable = TableRegistry::get('follows');
-
- 		    //新規にフォローする場合
-			// if($this->FollowComp->isShopFollow($id) > 0){
-		    	$follow = $FollowsTable->newEntity();
-		        $follow->follow =  $this->Auth->user('id');
-		        $follow->follower_shop = $this->request->getData('shop');
-		        $follow->rating = $this->request->getData('rating');
-		        $follow->review = $this->request->getData('review');
-		        $time = Time::now();
-		        $follow->created = $time->format('Y/m/d H:i:s');
-		        if($FollowsTable->save($follow)){
-		    		$array = ['result'=>'follow'];
-		        }else{
-		        	$array = array('result'=>'fail');
-		        }
-			// }else{
-	  //   		$FollowsTable->deleteAll(['follow'=>$id['follow'],'follower_shop'=>$id['follower_shop']]);
-	  //   		$array = ['result'=>'followed'];
-			// }
-	        $result = json_encode($array);
-			$this->viewClass = 'Json';
-			$this->set(compact('result'));
-	        $this->set('_serialize', 'result');
-		// }
-	}
 	public function deleteshoprating(){
 
 		if ($this->request->is('ajax')) {
@@ -127,6 +97,7 @@ class AjaxController extends AppController
 	//autocompleteのユーザ
     public function acuser(){
 
+		if ($this->request->is('ajax')) {
 		$term = $this->request->getQuery('term');
 	    $UserTable = TableRegistry::get('users');
 		$this->loadComponent('UserComp'); // コンポーネントの読み込み
@@ -159,15 +130,17 @@ class AjaxController extends AppController
 		$this->set(compact('result'));
 		$this->set('_serialize','result');
     }
+}
 
 
 //ショップ画像をフォルダに保存する
     public function shopimage(){
 		 if ($this->request->is('ajax')) {
 
+		 	//ファイルの保存
 				$data = $this->decode($this->request->getData("image"));
 
-				$imagename = time().'.png';
+				$filename = time().'.png';
 				$shop_id = $this->request->getData("id");
 				$path = PHOTO_UPLOADDIR.'/shop_photos/'.$shop_id.'/';
 
@@ -176,11 +149,21 @@ class AjaxController extends AppController
 					mkdir($path,0755);
 					mkdir($path.'thumbnail/',0755);
 				}
-				file_put_contents($path.$imagename,$data);
+				file_put_contents($path.$filename,$data);
 
-				$this->resize($path,$imagename,360,480,'max');
-				$this->resize($path,$imagename,288,384,'middle');
-				$this->resize($path,$imagename,108,144,'min');
+				$this->resize($path,$filename,360,480,'max');
+				$this->resize($path,$filename,288,384,'middle');
+				$this->resize($path,$filename,108,144,'min');
+
+			//DBに書き込み
+ 				$PhotosTable = TableRegistry::get('shop_photos');
+		    	$photo = $PhotosTable->newEntity();
+		        $photo->user_id =  $this->Auth->user('id');
+		        $photo->shop_id = $shop_id;
+		        $photo->file_name = $filename;
+		        $time = Time::now();
+		        $photo->created = $time->format('Y/m/d H:i:s');
+		        $PhotosTable->save($photo);
 		}
     }
 

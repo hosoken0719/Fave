@@ -13,8 +13,7 @@
 					echo $user_name;
 				}
 				?>
-			</h1>
-			<?php if($this->request->getSession()->read('Auth.User.id')): //ログイン時のみ表示?>
+			</h1>v
 				<?php if($login_id <> $user_id): //ログインユーザ自身の場合はフォローボタンを非表示 ?>
 					<span class='follow'>
 					<?php echo $this->Form->create('Follow');
@@ -22,9 +21,6 @@
 					echo $this->Form->end(); ?>
 					</span>
 				<?php endif; ?>
-			<?php else: ?>
-				<?= $this->Html->link(__('フォローするにはログインが必要です'), ['plugin'=>'CakeDC/Users','controller' => 'users', 'action' => 'login']) ?>
-			
 			<?php endif; ?>
 
         </div>

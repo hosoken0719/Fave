@@ -170,7 +170,7 @@
             var marker_num = marker_ary.length - 1;
             //右のリストHTML出力
             // $('.follow .shoplist ul').append("<li><div class='summary'><div class='icon'><img src='"+photo+"' class='img-circle img-responsive'></div><div class='infor'><span class='name'><p><a href='/shops/"+LocateId+"'>"+LocateShopname+"</a></p></span><span class='other'><p>"+LocateShoptype+"</p><p><a href='javascript:map_click("+marker_num+")'>"+shopaddress+"</a></p></span></div></li>");
-            $('.follow .shoplist ul').append("<li><div class='summary'><div class='infor'><span class='name'><p><a href='/shops/"+LocateId+"'>"+LocateShopname+"</a></p></span><span class='other'><p>"+LocateShoptype+"</p><p><a href='javascript:map_click("+marker_num+")'>"+shopaddress+"</a></p></span></div></li><hr />");
+            $('.follow .shoplist ul').append("<li><div class='summary'><div class='infor'><span class='other'><p>"+LocateShoptype+"</p><span class='name'><p><a href='/shops/"+LocateId+"'>"+LocateShopname+"</a></p></span><p><a href='javascript:map_click("+marker_num+")'>"+shopaddress+"</a></p></span></div></li><hr />");
         }
       }
 

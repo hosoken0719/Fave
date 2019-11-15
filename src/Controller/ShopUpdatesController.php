@@ -13,7 +13,7 @@ class ShopUpdatesController extends AppController {
     public function initialize()
     {
       	parent::initialize();
-		$this->set('title','お店情報編集 | Fave');
+		$this->set('title','お店情報編集 - Fave');
 
    		$this->session = $this->getRequest()->getSession();
 
