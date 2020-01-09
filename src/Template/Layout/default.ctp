@@ -21,6 +21,8 @@
     <?= $this->Html->css('main'); ?>
     <?= $this->Html->script('follow.js'); ?>
     <?= $this->Html->script('autocomplete.js'); ?>
+    <link rel="icon" href="/img/favicon.png" />
+
 
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
 <script>
@@ -74,7 +76,7 @@ $(function() {
           <nav>
             <div id="header-link">
               <div class="header-link-search left"><?= $this->Html->link(__('探す'), ['plugin'=>false,'controller' => 'Searches', 'action' => 'index']) ?></div>
-              <div class="header-link-login left"><?= $this->Html->link(__('ログイン'), ['plugin'=>false,'controller' => 'login', 'action' => 'index']) ?></div>
+              <div class="header-link-login right"><?= $this->Html->link(__('新規登録　　ログイン'), ['plugin'=>false,'controller' => 'login', 'action' => 'index']) ?></div>
 
             </div>
             <div id="header-link">
@@ -93,7 +95,7 @@ $(function() {
     </div>
     </main>
     <footer>
-      ©2019 Fave Creative
+      ©2020 Fave Creative
     </footer>
   <?php
   if(!empty($locate_json)):

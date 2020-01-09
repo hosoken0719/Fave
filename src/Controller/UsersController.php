@@ -22,108 +22,33 @@ class UsersController extends AppController
       $this->Auth->allow();
   }
 
-
-
   public function index()
   {
 
-    // if (!$this->Auth->user()) {
-    // // 非ログイン
-    //   $this->viewBuilder()->setLayout('top'); //レイアウトのテンプレートをdefaultからtopに変更
-    //     //inputとselectboxのtemplate
 
-    //   $this->render('top'); //viewファイルをindexからtopに変更
+    //*ショップタイプの取得
+    $ShoptypeTable = TableRegistry::get('shoptypes');
+    $this->set('typename',$ShoptypeTable->find('list'));
 
-    // } else {
-    // // ログイン
+    $template = [
+      'label' => '<div{{attrs}}>{{text}}</div>',
+      'input' => '<div class="inputbox"><input type="{{type}}" name="{{name}}"{{attrs}}></div>',
+      'select' => "<div class='selectbox'><select name='{{name}}'{{attrs}}>{{content}}</select></div>",
+    ];
+    $this->set(compact('template'));
 
+    $this->set('title','Fave');
+    $this->set('header_link','home');
+    $this->set(compact('favoriteDatas'));
 
-      $UserTable = TableRegistry::get('users');
-      $FollowsTable = TableRegistry::get('follows');
+    $template = [
+      'label' => '<div{{attrs}}>{{text}}</div>',
+      'input' => '<div class="inputbox"><input type="{{type}}" name="{{name}}"{{attrs}}></div>',
+      'select' => "<div class='selectbox'><select name='{{name}}'{{attrs}}>{{content}}</select></div>",
+    ];
 
-      $ShoptypeTable = TableRegistry::get('shoptypes');
-      $this->set('typename',$ShoptypeTable->find('list'));
-      //*自分がフォローしているユーザを取得
-      $followData = $FollowsTable->find()->where(['follow' => $this->Auth->user('id')]);
+    $this->set(compact('template'));
 
-
-      if($followData->isEmpty()){
-      } else {
-        //*Followerの取得
-
-        $follower = array();
-        foreach($followData as $data){
-            array_push($follower , $data->follower);
-        }
-
-
-    //*$followerがfollowしているユーザ($favorite)
-        $favoriteDatas = $FollowsTable->Find()
-        // ->where([
-        //     'follow IN' => $follower ,
-        //     'NOT' => [
-        //       'follower IN' => $follower,  //自分がフォローしているユーザは対象外
-        //     ]
-        // ])
-        ->where([
-            'follow IN' => $follower ,
-            'NOT' => [
-              'follow IN' => $follower,  //自分がフォローしているユーザは対象外
-            ]
-        ])
-        ->join([
-          'table' => 'shops',
-          'alias' => 'shops',
-          'type' => 'inner',
-          'conditions' => [
-            'AND' => [
-              'follows.follow = shops.user_id',
-              'shops.status = 1',
-            ]
-          ]
-        ])
-        ->join([
-          'table' => 'shoptypes',
-          'alias' => 'shoptype',
-          'type' => 'LEFT',
-          'conditions'  => 'shops.shoptype = shoptype.id'
-        ])
-        ->select([
-            'user_id' => 'follows.follow',
-            'shop_id' => 'shops.id',
-            'shopname' => 'shops.shopname',
-            'shop_accountname' => 'shops.accountname',
-            'address' => 'shops.address',
-            'introduction' => 'shops.introduction',
-            'typename' => 'shoptype.typename',
-            'update' => 'follows.created',
-        ])
-        ->order(['follows.created' => 'DESC']);
-
-              //*ショップタイプの取得
-        $ShoptypeTable = TableRegistry::get('shoptypes');
-        $this->set('typename',$ShoptypeTable->find('list'));
-
-        $template = [
-          'label' => '<div{{attrs}}>{{text}}</div>',
-          'input' => '<div class="inputbox"><input type="{{type}}" name="{{name}}"{{attrs}}></div>',
-          'select' => "<div class='selectbox'><select name='{{name}}'{{attrs}}>{{content}}</select></div>",
-        ];
-        $this->set(compact('template'));
-
-        $this->set('title','Fave');
-        $this->set('header_link','home');
-        $this->set(compact('favoriteDatas'));
-
-      } //inputとselectboxのtemplate
-  $template = [
-    'label' => '<div{{attrs}}>{{text}}</div>',
-    'input' => '<div class="inputbox"><input type="{{type}}" name="{{name}}"{{attrs}}></div>',
-    'select' => "<div class='selectbox'><select name='{{name}}'{{attrs}}>{{content}}</select></div>",
-  ];
-
-  $this->set(compact('template'));
-    // }
   }
 
   //①フォローショップ一覧を作成
@@ -132,13 +57,20 @@ class UsersController extends AppController
     //フォローショップ・フォローユーザ・フォロワーで共通の値を取得
     $user_infor = $this->setCommonValue();
 
-    $FollowShopsIn =  $this->FollowComp->getFollowerShopsByID($user_infor['user_id'])->order(['follows.rating'=>'DESC']);
-    
-    //表示ユーザのフォローショップを取得
-    // $FollowShopsIn =  $this->FollowComp->getFollowerShopsByID($user_infor['user_id'])->where(['follower_shop IN' => $user_infor['LoginUserFollowShop']])->order(['follows.rating'=>'DESC']); //ログインユーザのお気に入り登録ショップ
-    // $FollowShopsIn = $this->ShopComp->rating_avg($FollowShopsIn,$user_infor['LoginUserFollowerUser']);
-    // $FollowShopsNotIn = $this->FollowComp->getFollowerShopsByID($user_infor['user_id'])->where(['NOT' => ['follower_shop IN' => $user_infor['LoginUserFollowShop']]]); //ログインユーザのお気に入り未登録ショップ
-    // $FollowShopsNotIn = $this->ShopComp->rating_avg($FollowShopsNotIn,$user_infor['LoginUserFollowerUser']);
+    // $FollowShopsIn =  $this->FollowComp->getFollowerShopsByID($user_infor['user_id'])->order(['follows.rating'=>'DESC'])->select(['shop_id'=>'follower_shop']);
+    $FollowShopsIn = $this->FollowComp->getFollowerShopsByID($user_infor['user_id'])->order(['follows.rating'=>'DESC'])->select(['shop_id'=>'follower_shop']);
+    $FollowsTable = TableRegistry::getTableLocator()->get('follows');
+
+    //サブクエリ1（自分がフォローしているショップをフォローしている全ユーザの平均rating）
+    $sub_query_avg_followed = $FollowsTable->find()->from(['sub_follows'=>'follows'])->where(['sub_follows.follower_shop = follows.follower_shop']);
+    $sub_query_avg_followed = $this->ShopComp->getAvgFollowed($sub_query_avg_followed,$user_infor['LoginUserFollowerUser'])->group(['sub_follows.follower_shop']);
+
+    // //サブクエリ2（自分がフォローしているショップをフォローしている全ユーザ数）
+    $sub_query_cnt_followed = $FollowsTable->find()->from(['sub_follows'=>'follows'])->where(['sub_follows.follower_shop = follows.follower_shop']);
+    $sub_query_cnt_followed = $this->ShopComp->getCntFollowed($sub_query_cnt_followed,$user_infor['LoginUserFollowerUser'])->group(['sub_follows.follower_shop']);
+
+    $FollowShopsIn = $FollowShopsIn->select(['avg_followed' => $sub_query_avg_followed,'cnt_followed' => $sub_query_cnt_followed]);
+
     $this->set('LoginUserFollowerUser',$user_infor['LoginUserFollowerUser']);
     $this->set(compact('login_user_follow_shop','FollowShopsIn','FollowShopsNotIn'));
   }

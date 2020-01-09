@@ -76,7 +76,7 @@
 
 		</div>
 
-		<div class="inner_link">
+		<div class="inner_link mb-5">
 			<ul class="search_tab clearfix">
 				<li <?php if($type === 'basic') echo "class='active'"; ?>>
 					<?= $this->Html->link(__('基本情報'), ['controller' => 'Shops','action' => '/',$shopData->shop_id],['escape' => false]); ?>
@@ -106,3 +106,4 @@
 			</ul>
 		</div>
 
+		

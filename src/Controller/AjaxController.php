@@ -151,9 +151,9 @@ class AjaxController extends AppController
 				}
 				file_put_contents($path.$filename,$data);
 
-				$this->resize($path,$filename,360,480,'max');
-				$this->resize($path,$filename,288,384,'middle');
-				$this->resize($path,$filename,108,144,'min');
+				$this->resize($path,$filename,480,360,'max');
+				$this->resize($path,$filename,384,288,'middle');
+				$this->resize($path,$filename,144,108,'min');
 
 			//DBに書き込み
  				$PhotosTable = TableRegistry::get('shop_photos');
@@ -193,7 +193,7 @@ class AjaxController extends AppController
     }
 
 	//GDを使用しているはず
-	private function resize($path,$imagename,$h,$w,$prefix){
+	private function resize($path,$imagename,$w,$h,$prefix){
 
 		// 加工したいファイルを指定
 		$file = $path.$imagename;

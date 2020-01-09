@@ -176,23 +176,22 @@ class FollowCompComponent extends Component {
   }
 
     //①フォローしているショップ
-    public function getFollowerShopsByID($id){
+    public function getFollowerShopsByID($user_id){
 
         $FollowsTable = TableRegistry::get('follows');
-
         $query = $FollowsTable->Find('all')
         ->where([
-            'follow' => $id,
+            'follows.follow' => $user_id,
         ])
-    // ->group(['follows.follow'])
-    ->group(['shops.id'])
+        ->group(['shops.id'])
         ->contain(['shops' => ['shoptypes','prefectures']])
+        // ->from(['main_follows' => 'follows'])
         ->select([
             'shopname' => 'shops.shopname',
             'user_id' => 'shops.user_id',
             'shop_id' => 'shops.id',
             'pref' => 'prefectures.name',
-            'addres' => 'shops.address',
+            'address' => 'shops.address',
             'lat' => 'shops.lat',
             'lng' => 'shops.lng',
             'thumbnail' => 'shops.thumbnail',

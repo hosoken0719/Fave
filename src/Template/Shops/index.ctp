@@ -7,8 +7,8 @@
 			<div class="photo mt-5 mb-5">
 				<?php // if($shop_photos <> null): ?>
 				<ul>
-					<?php foreach ($shop_photos as $value) :?>
-						<li><?= $this->Html->image($shop_photo_dir.$value->file_name,array("class" => "img-fluid")); ?> </li>
+					<?php foreach ($shop_photos as $shop_photo) :?>
+						<li><?= $this->Html->image($shop_photo_dir.$shop_photo->filename,array("class" => "img-fluid")); ?> </li>
 					<?php endforeach; ?>
 				</ul>
                 <?php //elseif($instagram_photos_count > 0): ?>

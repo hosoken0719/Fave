@@ -13,7 +13,7 @@
 					echo $user_name;
 				}
 				?>
-			</h1>v
+			</h1>
 				<?php if($login_id <> $user_id): //ログインユーザ自身の場合はフォローボタンを非表示 ?>
 					<span class='follow'>
 					<?php echo $this->Form->create('Follow');
@@ -21,7 +21,6 @@
 					echo $this->Form->end(); ?>
 					</span>
 				<?php endif; ?>
-			<?php endif; ?>
 
         </div>
         <div>

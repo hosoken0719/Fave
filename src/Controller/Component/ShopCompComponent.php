@@ -107,7 +107,7 @@ class ShopCompComponent extends Component
 
     // }
 
-    public function rating_avg($query,$follower_user=null){
+    public function rating_avg($query,$follower_user){
 		$avgFolloweCase = $query->newExpr()->addCase(
 		    $query->newExpr()->add(['follows.follow IN'=>$follower_user]),
 		    $query->newExpr(new IdentifierExpression('follows.rating')), //'follows.rating'だとstring型になってしまう。構文の意味は不明
@@ -130,5 +130,43 @@ class ShopCompComponent extends Component
 
 		return $query;
 	}
+
+
+    public function getAvgFollowed($query,$follower_user){
+		$avgFolloweCase = $query->newExpr()->addCase(
+		    $query->newExpr()->add(['sub_follows.follow IN'=>$follower_user]),
+		    $query->newExpr(new IdentifierExpression('sub_follows.rating')), //'follows.rating'だとstring型になってしまう。構文の意味は不明
+		    'integer'
+		);
+		$query = $query->select([
+		'avg_followed' => $query->func()->avg($avgFolloweCase), //フォロー平均レート
+		]);
+		// ->group(['follows.follower_shop']);
+		return $query;
+	}
+
+    public function getCntFollowed($query,$follower_user){
+		$avgFolloweCase = $query->newExpr()->addCase(
+		    $query->newExpr()->add(['sub_follows.follow IN'=>$follower_user]),
+		    $query->newExpr(new IdentifierExpression('sub_follows.rating')), //'follows.rating'だとstring型になってしまう。構文の意味は不明
+		    'integer'
+		);
+
+		$cntFolloweCase = $query->newExpr()->addCase(
+		    $query->newExpr()->add(['sub_follows.follow IN'=>$follower_user]),
+		    1,
+		    'integer'
+		);
+
+ 	    // $query = $query->group(['shops.id']);
+		$query = $query->select([
+		// 'avg_followed' => $query->func()->avg($avgFolloweCase), //フォロー平均レート
+		'cnt_followed' => $query->func()->count($cntFolloweCase), //フォロー人数
+		// 'avg_all' => $query->func()->avg('follows.rating'), //全員平均レート
+		// 'cnt_all' => $query->func()->count('follows.rating') //全員人数
+		]);
+		return $query;
+	}
+
 
 }
