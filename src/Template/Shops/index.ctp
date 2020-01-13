@@ -1,11 +1,14 @@
-<?php echo $this->Html->script(['croppie.min.js','croppie_option.js'],['block' => true]) ?>
 <div class="contents shop">
     <article class="contain">
 		<div class="contain_inner bg-white">
-
 			<?= $this->element('shop_header', ["type" => "basic"]); ?>
 			<div class="photo mt-5 mb-5">
 				<?php // if($shop_photos <> null): ?>
+
+
+<!-- 		            <canvas id="canvas" width="0" height="0"></canvas>
+					<button class="btn btn-primary" id="upload">投稿</button> -->
+<!-- サムネイル表示領域 -->
 				<ul>
 					<?php foreach ($shop_photos as $shop_photo) :?>
 						<li><?= $this->Html->image($shop_photo_dir.$shop_photo->filename,array("class" => "img-fluid")); ?> </li>
@@ -29,23 +32,16 @@
                 </div> -->
             	<?php //endif; ?>
 
-					<div class="panel panel-default text-center">
-						<div class="panel-body file">
-							<label>お店の写真を投稿
-							<?= $this->Form->control('field', ['type' => 'file' , 'name' => 'upload_image' , 'id' =>'upload_image','label'=>false]); ?>
-							</label>
-							<div id="uploaded_image"></div>
-						</div>
-					</div>
-			</div>
 
+			</div>
 
 			<div class="shop_detail">
 
 				<div class="infor">
 					<dl>
 						<dt>住所</dt>
-						<dd> <?= h($shopData->pref.$shopData->city.$shopData->ward.$shopData->town.$shopData->building); ?></dd>
+						<dd> <?= h($shopData->pref.$shopData->city.$shopData->ward.$shopData->town.$shopData->building); ?>
+							<?= $this->Html->link("（地図を開く）","https://www.google.co.jp/maps/place/".$shopData->pref.$shopData->city.$shopData->ward.$shopData->town,array('target'=>'_blank')); ?>
 					</dl>
 					<dl>
 						<dt>営業時間</dt>
@@ -57,7 +53,7 @@
 									$length = count($bussiness_hours[$i]);
 									$no = 0;
 									foreach ($bussiness_hours[$i] as $day) {
-										echo $day['open'] . "〜" . $day['close'];
+										echo $day['open'] . " - " . $day['close'];
 										if(++$no !== $length){
 											echo  " , ";
 										}
@@ -91,7 +87,7 @@
 							if(!$shopData->parking === "0"){
 								echo h($shopData->parking);
 							}else{
-								echo 'なし';
+								echo '-';
 							}
 							?>
 						</dd>
@@ -123,31 +119,11 @@
 </div>
 <div class="loading hide"></div>
 
-<!-- <div id="googlemap">
-</div> -->
-<div id="uploadimageModal" class="modal" role="dialog">
-	<div class="modal-dialog">
-		<div class="modal-content">
-
-			<div class="modal-body">
-				<div class="row">
-						<div id="image-demo" style="width:100%; margin-top:30px";></div>
-				</div>
-				<div class="button form">
-					<button class="btn vanilla-rotate">回転</button>
-					<?= $this->Form->create(); ?>
-					<?= $this->Form->button('登録', array('type' => 'button','class' => 'btn crop_image')); ?>
-					<?= $this->Form->end(); ?>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
 
 
 
 <script type="text/javascript">
+
 // ▼swiperの設定▼
     var swiper = new Swiper('.swiper-container', {
 		slidesPerView: 2,
@@ -321,5 +297,7 @@
     }
 })(jQuery);
 
+
+
 </script>
-<script type="text/javascript">var id = "<?= $shopData->shop_id ?>";var path = 'shopimage';var type = 'square';</script>
+

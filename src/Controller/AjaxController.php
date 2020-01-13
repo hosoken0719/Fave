@@ -36,7 +36,9 @@ class AjaxController extends AppController
 
 	public function followuser(){
 
-		// if ($this->request->is('ajax')) {
+		if(!$this->request->is('ajax')) {
+			throw new BadRequestException();
+		}
 
 	        $FollowUsersTable = TableRegistry::get('follow_users');
 
@@ -68,12 +70,14 @@ class AjaxController extends AppController
 			$this->viewClass = 'Json';
 			$this->set(compact('result'));
 	        $this->set('_serialize', 'result');
-		// }
 	}
 
 	//autocompleteのキーワード・ハッシュタグ
 	public function acword(){
 
+		if(!$this->request->is('ajax')) {
+			throw new BadRequestException();
+		}
 		$term = $this->request->getQuery('term');
 	    $TagTable = TableRegistry::get('tags');
 		$query_tag = $TagTable->find('list')
@@ -97,9 +101,11 @@ class AjaxController extends AppController
 	//autocompleteのユーザ
     public function acuser(){
 
-		if ($this->request->is('ajax')) {
+		if(!$this->request->is('ajax')) {
+			throw new BadRequestException();
+		}
 		$term = $this->request->getQuery('term');
-	    $UserTable = TableRegistry::get('users');
+		$UserTable = TableRegistry::get('users');
 		$this->loadComponent('UserComp'); // コンポーネントの読み込み
 
 		$userDatas = $UserTable->find()
@@ -129,60 +135,97 @@ class AjaxController extends AppController
 		$this->viewClass = 'Json';
 		$this->set(compact('result'));
 		$this->set('_serialize','result');
-    }
 }
-
 
 //ショップ画像をフォルダに保存する
     public function shopimage(){
-		 if ($this->request->is('ajax')) {
 
-		 	//ファイルの保存
-				$data = $this->decode($this->request->getData("image"));
-
-				$filename = time().'.png';
-				$shop_id = $this->request->getData("id");
-				$path = PHOTO_UPLOADDIR.'/shop_photos/'.$shop_id.'/';
-
-				//ショップのディレクトリ有無を確認して、無ければ新規作成
-				if(!file_exists($path)){
-					mkdir($path,0755);
-					mkdir($path.'thumbnail/',0755);
-				}
-				file_put_contents($path.$filename,$data);
-
-				$this->resize($path,$filename,480,360,'max');
-				$this->resize($path,$filename,384,288,'middle');
-				$this->resize($path,$filename,144,108,'min');
-
-			//DBに書き込み
- 				$PhotosTable = TableRegistry::get('shop_photos');
-		    	$photo = $PhotosTable->newEntity();
-		        $photo->user_id =  $this->Auth->user('id');
-		        $photo->shop_id = $shop_id;
-		        $photo->file_name = $filename;
-		        $time = Time::now();
-		        $photo->created = $time->format('Y/m/d H:i:s');
-		        $PhotosTable->save($photo);
+		if(!$this->request->is('ajax')) {
+			throw new BadRequestException();
 		}
+
+		$this->autoRender = false;
+			//画像ファイルを取得
+			$upload_file_path = $this->request->getData('file.tmp_name');
+
+
+			//フォーマットチェック_
+			$import_data = $this->checkFormat($upload_file_path);
+
+				//jpegだった場合、処理を開始
+				if($import_data === 2){
+
+					//shopIDを取得
+					$shop_id = $this->request->getData('id');
+
+					//ファイル名の設定
+					$file_name = $shop_id.time().".jpg";
+
+					//正式な保存フォルダのパスを設定
+					$shop_folder = PHOTO_UPLOADDIR.'shop_photos/'.$shop_id.'/';
+
+					//ショップのディレクトリ有無を確認して、無ければ新規作成。併せてサムネイルもDBに登録
+					if(!file_exists($shop_folder)){
+						mkdir($shop_folder,0777);
+						mkdir($shop_folder.'thumbnail/',0777);
+
+						//サムネイル情報をshopテーブルに書き込み
+						// $ShopTable = $this->loadModel('Shops');
+						// $shopData = $ShopTable->get($shop_id);
+						// $ShopsTable = TableRegistry::get('shops');
+						// $addData['thumbnail'] = $file_name;
+						// $shopEntity = $ShopsTable->patchEntity($shopData, $addData);
+						// $ShopsTable->save($shopEntity);
+
+					}
+
+					$file_path = $shop_folder.$file_name;
+
+					//オリジナルファイルの移動
+					copy($upload_file_path , $file_path);
+
+					$baseImage = imagecreatefromjpeg($file_path);
+
+					// サイズを変更してサムネイルを保存（高さはインスタの画像保存サイズを参考にしているため変更しないこと。横は可変でも問題なし）
+					$this->resize($baseImage , $shop_folder , $file_name,1440,1080,'large_');
+					$this->resize($baseImage ,$shop_folder,$file_name,427,320,'medium_');
+					$this->resize($baseImage ,$shop_folder,$file_name,200,150,'thumbnail_');
+
+					//メモリの開放
+					imagedestroy($baseImage);
+
+					//ファイル情報をDBに書き込み
+	 				$PhotosTable = TableRegistry::get('shop_photos');
+			    	$photo = $PhotosTable->newEntity();
+			        $photo->user_id =  $this->Auth->user('id');
+			        $photo->shop_id = $shop_id;
+			        $photo->file_name = $file_name;
+			        $photo->created = date("Y-m-d H:i:s", strtotime('+9hour'));
+			        $PhotosTable->save($photo);
+
+			    }else{
+			    	echo "error";
+			    }
+		// }
+	return;
     }
 
     //アバターの登録
     public function avatar(){
 		if ($this->request->is('ajax')) {
 			$data = $this->decode($this->request->getData("image"));
-			$imagename = $this->request->getData("id").'.png';
+			$imagename = $this->request->getData("id").'.jpg';
 			$path = PHOTO_UPLOADDIR.'/user_photos/';
 			file_put_contents($path.$imagename,$data);
-			$this->resize($path,$imagename,800,800,'full');
-			$this->resize($path,$imagename,300,300,'max');
-			$this->resize($path,$imagename,150,150,'middle');
-			$this->resize($path,$imagename,75,75,'min');
+			$this->resize($path,$imagename,800,800,'full_');
+			$this->resize($path,$imagename,300,300,'max_');
+			$this->resize($path,$imagename,150,150,'middle_');
+			$this->resize($path,$imagename,75,75,'min_');
 		}
     }
 
     private function decode($image){
-		$this->autoRender = false;
+
 		$data = $image;
 		$image_array_1 = explode(";",$data);
 		$image_array_2 = explode(",", $image_array_1[1]);
@@ -192,52 +235,33 @@ class AjaxController extends AppController
 		return $data;
     }
 
-	//GDを使用しているはず
-	private function resize($path,$imagename,$w,$h,$prefix){
-
-		// 加工したいファイルを指定
-		$file = $path.$imagename;
+    private function checkFormat($file){
 
 		// 加工前の画像の情報を取得
 		list($original_w, $original_h, $type) = getimagesize($file);
 
-		// 加工前のファイルをフォーマット別に読み出す（この他にも対応可能なフォーマット有り）
-		switch ($type) {
-		    case IMAGETYPE_JPEG:
-		        $original_image = imagecreatefromjpeg($file);
-		        break;
-		    case IMAGETYPE_PNG:
-		        $original_image = imagecreatefrompng($file);
-		        break;
-		    case IMAGETYPE_GIF:
-		        $original_image = imagecreatefromgif($file);
-		        break;
-		    default:
-		        throw new RuntimeException('対応していないファイル形式です。: ', $type);
-		}
+		return $type;
+
+    }
+
+	//GDを使用しているはず
+	private function resize($image_data,$path,$image_name,$w,$h,$prefix){
 
 		// 新しく描画するキャンバスを作成
 		$canvas = imagecreatetruecolor($w, $h);
-		imagecopyresampled($canvas, $original_image, 0,0,0,0, $w, $h, $original_w, $original_h);
 
-		$resize_path = $path.'thumbnail/'.$prefix.'_'.$imagename; // 保存先を指定
+		//元のファイルサイズを取得
+		$size = getimagesize($path.$image_name);
+		imagecopyresampled($canvas, $image_data, 0,0,0,0, $w, $h, $size[0], $size[1]);
 
-		switch ($type) {
-		    case IMAGETYPE_JPEG:
-		        imagejpeg($canvas, $resize_path);
-		        break;
-		    case IMAGETYPE_PNG:
-		        imagepng($canvas, $resize_path, 9);
-		        break;
-		    case IMAGETYPE_GIF:
-		        imagegif($canvas, $resize_path);
-		        break;
-		}
+		// 保存先を指定
+		$resize_path = $path.'thumbnail/'.$prefix.$image_name;
 
-		// 読み出したファイルは消去
-		imagedestroy($original_image);
+		//jpegに変換して保存（圧縮率60%）
+		imagejpeg($canvas, $resize_path , 60);
+
+		//メモリの開放
 		imagedestroy($canvas);
-
 
 	}
 

@@ -1,5 +1,11 @@
-<?php ?>
 
+<script type="text/javascript">var id = "<?= $shopData->shop_id ?>";
+
+</script>
+
+<?php echo $this->Html->script(['import_image.js']); ?>
+<?php echo $this->Html->script(['upload_image.js']); ?>
+<div class="uploaded_image"></div>
 			<div class="shop_header mb-3 text-left">
 				<div class="information">
 					<div class="name">
@@ -65,16 +71,47 @@
 			<div class="favorite_button">
 				<div class="button">
 					<?php if($ShopFollowData['rating'] === 0){
+						echo "<div class='on'>";
 						echo $this->Html->link(__('お気に入りに登録'), ['controller' => 'Shops','action' => '/'.$shopData->shop_id.'/post_favorite'],['escape' => false]);
 					}else{
+						echo "<div class='off'>";
 						echo $this->Html->link(__('お気に入り登録済み'), ['controller' => 'Shops','action' => '/'.$shopData->shop_id.'/post_favorite'],['escape' => false]);
 					}
 					?>
+					</div>
+				</div>
+				<div class="panel panel-default text-center">
+					<div class="panel-body file">
+						<label>写真を投稿
+						<?= $this->Form->create('images', ['type' => 'post']); ?>
+						<?= $this->Form->control('field', ['type' => 'file' , 'name' => 'upload_images' , 'id' =>'upload_images', 'accept' => 'image/*' , 'label'=>false]); ?>
+						<?= $this->Form->end(); ?>
+						</label>
+					</div>
 				</div>
 			</div>
+
+			<div class="modal js-modal">
+		        <div class="modal__bg js-modal-close"></div>
+		        <div class="modal__content">
+					<!-- アップロード開始ボタン -->
+<!-- サムネイル表示領域 -->
+<canvas id="canvas" width="0" height="0"></canvas>
+
+<!-- アップロード開始ボタン -->
+<button class="btn" id="upload">投稿</button>
+<button class="btn closes js-modal-close">閉じる</button>
+		        </div><!--modal__inner-->
+		    </div><!--modal-->
+
+
+<?php //echo $this->Html->script(['upload_image.js']); ?>
+	
+
 			<?php endif; ?>
 
 		</div>
+
 
 		<div class="inner_link mb-5">
 			<ul class="search_tab clearfix">
@@ -105,5 +142,6 @@
 				</li>
 			</ul>
 		</div>
+
 
 		

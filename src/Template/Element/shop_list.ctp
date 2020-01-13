@@ -30,38 +30,35 @@
                 </div>
             </div>
 
-    <?php if($this->name==='Users'): //ユーザページのお気に入りお店の場合は、表示ユーザのレーティングを表示 ?>
-                <div class="rating d-inline">
-                <?php if($this->request->getSession()->read('Auth.User')):
-                    echo $this->Html->image('display_users.svg');
-                    echo $this->element('rating',['rating'=>round($shopData->rating),'shop_id'=>$shopData->shop_id,'enable'=>0]);
-                    echo number_format(round($shopData->rating,1),1);
-                endif; ?>
-                </div>
-              <br />
-    <?php endif; ?>
 
     <?php //ログインユーザがフォローしているユーザの平均レーティングを表示 ?>
+                <?php if($this->request->getSession()->read('Auth.User')): ?>
                 <div class="rating d-inline">
-                <?php if($this->request->getSession()->read('Auth.User')):
-                    echo $this->Html->image('followed_users.svg');
-                    echo $this->element('rating',['rating'=>round($shopData->avg_followed),'shop_id'=>$shopData->shop_id,'enable'=>0]);
-                    echo number_format(round($shopData->avg_followed,1),1);
-                    if($shopData->cnt_followed > 0) echo " (".h($shopData->cnt_followed)."人)";
-                ?>
+                    <?php //フォロー済みのrating
+                    echo $this->Html->link(
+                    $this->Html->image('followed_users.svg'). $this->element('rating',['rating'=>round($shopData->avg_followed),'shop_id'=>$shopData->shop_id,'enable'=>0]),
+                        [
+                            'controller' => 'shops',
+                            'action' => '/'.$shopData->shop_id.'/favorited_follow'
+                        ],
+                        ['escape' => false]);
+                    if($shopData->cnt_followed > 0) echo number_format(round(h($shopData->avg_followed),1),1). " (".h($shopData->cnt_followed)."人)";
+                    ?>
                 </div>
                 <br />
-               <?php endif; ?>
-    <?php if($this->name==='Searches'): //検索結果ページの場合は、全員の平均レーティングを表示 ?>
+                <? endif; ?>
                 <div class="rating d-inline all">
                 <?php
-                    echo $this->Html->image('all_users.svg');
-                    echo $this->element('rating',['rating'=>round($shopData->avg_all),'shop_id'=>$shopData->shop_id,'enable'=>0]);
-                    echo number_format(round($shopData->avg_all,1),1);
-                    if($shopData->cnt_all > 0) echo " (".h($shopData->cnt_all)."人)";
+                    echo $this->Html->link(
+                    $this->Html->image('all_users.svg'). $this->element('rating',['rating'=>round($shopData->avg_all),'shop_id'=>$shopData->shop_id,'enable'=>0]),
+                        [
+                            'controller' => 'shops',
+                            'action' => '/'.$shopData->shop_id.'/favorited_all'
+                        ],
+                        ['escape' => false]);
+                    if($shopData->cnt_all > 0) echo number_format(round($shopData->avg_all,1),1)." (".h($shopData->cnt_all)."人)";
                 ?>
                 </div>
-    <?php endif; ?>
         </dd>
     </dl>
 </div>

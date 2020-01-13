@@ -43,10 +43,11 @@
 	$('.crop_image').on('click', function (event) {
 	  $image_crop.croppie('result', {
 	    type: 'canvas',
-	    size: { width: 600, height: 600 }
+	    size: { width: 1440, height: 1080 },
+	    format: 'jpg',
 	  }).then(function (image) {
 	    $.ajax({
-	      url: "/ajax/"+path,
+	      url: "/ajax/shopimage",
 	      type: "POST",
 	      data: {
 	      	"image":image,

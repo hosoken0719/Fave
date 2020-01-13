@@ -67,11 +67,9 @@ class TopsController extends AppController
       ->limit(8)
       ->order(['shops.id'=>'DESC']);
 
-
-      //フォロー平均の条件設定
-
       //平均をqueryに追加
-      $shopDatas = $this->ShopComp->rating_avg($shopDatas,$LoginUserFollow['follow_shop']);
+      $LoginUserFollow['follower_user'] = $this->FollowComp->getLoginUserFollowUserArray($this->Auth->user('id'));
+      $shopDatas = $this->ShopComp->rating_avg($shopDatas,$LoginUserFollow['follower_user']);
 
       $this->set(compact('shopDatas'));
 

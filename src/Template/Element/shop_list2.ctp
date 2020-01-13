@@ -4,7 +4,7 @@
 		<?php
 			if($shopData->thumbnail):
 				echo $this->Html->link(
-                $this->Html->image('shop_photos/'.$shopData->shop_id.'/thumbnail/max_'.$shopData->thumbnail,array("class" => "")),
+                $this->Html->image('shop_photos/'.$shopData->shop_id.'/thumbnail/middium_'.$shopData->thumbnail,array("class" => "")),
                 array('controller' => 'shops', 'action' => '/'. $shopData->shop_id),
                 array('escape' => false));
 
@@ -30,23 +30,27 @@
 			</p>
                 <div class="rating d-inline">
 		            <?php //フォロー済みのrating
-
-		                 echo $this->Html->link(
-		                $this->Html->image('followed_users.svg'). $this->element('rating',['rating'=>round($shopData->avg_followed),'shop_id'=>$shopData->shop_id,'enable'=>0]).
-		                number_format(round(h($shopData->avg_followed),1),1).
-		                " (".h($shopData->cnt_followed)."人)",
-		                 [
-								'controller' => 'shops',
-							    'action' => '/'.$shopData->shop_id.'/favorited_follow'
-							],
-						['escape' => false]); ?>
-		            </div>
-		                            <div class="rating d-inline all">
+		            echo $this->Html->link(
+	                $this->Html->image('followed_users.svg'). $this->element('rating',['rating'=>round($shopData->avg_followed),'shop_id'=>$shopData->shop_id,'enable'=>0]),
+		                [
+							'controller' => 'shops',
+						    'action' => '/'.$shopData->shop_id.'/favorited_follow'
+						],
+						['escape' => false]);
+		            if($shopData->cnt_followed > 0) echo number_format(round(h($shopData->avg_followed),1),1). " (".h($shopData->cnt_followed)."人)";
+					?>
+		        </div>
+		        <br />
+		        <div class="rating d-inline all">
                 <?php
-                    echo $this->Html->image('all_users.svg');
-                    echo $this->element('rating',['rating'=>round($shopData->avg_all),'shop_id'=>$shopData->shop_id,'enable'=>0]);
-                    echo number_format(round($shopData->avg_all,1),1);
-                    if($shopData->cnt_all > 0) echo " (".h($shopData->cnt_all)."人)";
+		            echo $this->Html->link(
+	                $this->Html->image('all_users.svg'). $this->element('rating',['rating'=>round($shopData->avg_all),'shop_id'=>$shopData->shop_id,'enable'=>0]),
+		                [
+							'controller' => 'shops',
+						    'action' => '/'.$shopData->shop_id.'/favorited_all'
+						],
+						['escape' => false]);
+                    if($shopData->cnt_all > 0) echo number_format(round($shopData->avg_all,1),1)." (".h($shopData->cnt_all)."人)";
                 ?>
                 </div>
 		</div>

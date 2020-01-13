@@ -76,7 +76,6 @@ class ShopCompComponent extends Component
 	}
 
 	public function getThumbnail($shop_id){
-		
 	    $ShopTable = TableRegistry::getTableLocator()->get('shops');
 	    $query = $ShopTable->find()
 	    ->where(['id'=>$shop_id])
