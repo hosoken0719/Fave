@@ -39,7 +39,7 @@ class ShopsController extends AppController {
 
 	//写真情報取得
 		$shop_photos = $this->ShopComp->getShopPhotos($shopData->shop_id,6);
-		$shop_photo_dir = $this->ShopComp->getShopPhotoDir($shopData->shop_id).'/thumbnail/middle_';
+		$shop_photo_dir = $this->ShopComp->getShopPhotoDir($shopData->shop_id).'/thumbnail/midium_';
 		// $photo_list = glob($dir . '*.png');
 		// $shop_photos = [];
 		// if(!empty($photo_list)){
@@ -166,7 +166,7 @@ class ShopsController extends AppController {
 
 	//写真情報取得
 		$shop_photos = $this->ShopComp->getShopPhotos($shopData->shop_id);
-		$shop_photo_dir = $this->ShopComp->getShopPhotoDir($shopData->shop_id).'/thumbnail/middle_';
+		$shop_photo_dir = $this->ShopComp->getShopPhotoDir($shopData->shop_id).'/thumbnail/midium_';
 		// $dir = PHOTO_UPLOADDIR . '/shop_photos/' . $shopData->shop_id . '/';
 		// $photo_list = glob($dir . '*.png');
 		// $photo_list = array_reverse($photo_list); //最新順にするため、配列を逆転する

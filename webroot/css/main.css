@@ -60,6 +60,94 @@ body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, object, iframe, pre, 
 }
 
 
+
+
+
+/* ▼ ▼ ▼ ▼ 各ページに跨る設定 ▼ ▼ ▼ ▼ */
+.contents{
+  width: 100%;
+  margin-top: 30px;
+  padding: 0px 30px;
+}
+
+@media (max-width: 767px)  {
+  input,
+  textarea{
+    font-size: 16px !important;
+    transform: scale(0.8) !important;
+    transform-origin: left;
+  }
+
+  .form input[type='checkbox']{
+    width: auto !important;
+  }
+
+  .form input,
+  .form textarea,
+  .shop textarea,
+  .search input{
+    width: 120% !important;
+  }
+
+
+  #modal-content{
+    width: 80%;
+  }
+
+}
+
+
+
+.regist #googlemap{
+  height: 300px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+h2{
+  font-size: 16px;
+  margin: 0;
+}
+
+a{
+  color: #000;
+  /*font-weight: normal;*/
+}
+
+
+/*画面左からの文字の隙間幅*/
+/*.shop_detail,*/
+.shop_infor header,
+.shop .followlist
+.follow .followlist{
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+
+.bgt{
+background-color: transparent;
+}
+
+
+.fluid-box{  
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #ff0;
+  z-index: 100;
+
+}
+.fluid-box-inner{
+　margin: 0 auto;
+　padding: 0 25px;
+}
+
+
+
+
+
 .bg-white{
   background-color: #fff;
   /*border: 1px solid #eee;*/
@@ -94,7 +182,7 @@ body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, object, iframe, pre, 
 @media (max-width: 767px)  {
 
   .contents{
-    padding: 5px 0;
+    padding: 5px;
     margin-top: 0px;
   }
   .contain_inner{
@@ -144,7 +232,8 @@ select{
     color: #666;
 }
 
-  
+/* ▲ ▲ ▲ ▲ 各ページに跨る設定 ▲ ▲ ▲ ▲ */
+
 .vertical_line:after{
     content: "";
     width: 1px;
@@ -1096,92 +1185,6 @@ li{
 input::placeholder{
   color: #ccc;
 }
-
-/* ▼ ▼ ▼ ▼ 各ページに跨る設定 ▼ ▼ ▼ ▼ */
-.contents{
-  width: 100%;
-  margin-top: 30px;
-  padding: 0px 30px;
-}
-
-@media (max-width: 767px)  {
-  input,
-  textarea{
-    font-size: 16px !important;
-    transform: scale(0.8) !important;
-    transform-origin: left;
-  }
-
-  .form input[type='checkbox']{
-    width: auto !important;
-  }
-
-  .form input,
-  .form textarea,
-  .shop textarea,
-  .search input{
-    width: 120% !important;
-  }
-
-
-  #modal-content{
-    width: 80%;
-  }
-
-}
-
-
-
-.regist #googlemap{
-  height: 300px;
-  width: 100%;
-  margin-bottom: 20px;
-}
-
-h2{
-  font-size: 16px;
-  margin: 0;
-}
-
-a{
-  color: #000;
-  /*font-weight: normal;*/
-}
-
-
-/*画面左からの文字の隙間幅*/
-/*.shop_detail,*/
-.shop_infor header,
-.shop .followlist
-.follow .followlist{
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-
-.bgt{
-background-color: transparent;
-}
-
-
-.fluid-box{  
-  width: 100vw;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #ff0;
-  z-index: 100;
-
-}
-.fluid-box-inner{
-　margin: 0 auto;
-　padding: 0 25px;
-}
-
-
-
-/* ▲ ▲ ▲ ▲ 各ページに跨る設定 ▲ ▲ ▲ ▲ /
-
 /* ▼ ▼ ▼ ▼ ログインページ ▼ ▼ ▼ ▼ */
 
 .login h1{
@@ -1672,45 +1675,31 @@ display: -webkit-box;
 
 
 /*ショップ写真*/
-.shop .photo{
+.shop .photo_list{
   margin: 0 auto;
-    max-width: 100% !important;
-    min-width: initial !important;
-    overflow: hidden;
-}
-.shop .photo ul{
+  overflow: hidden;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -ms-flex-wrap: wrap;
   flex-wrap: wrap;
-  justify-content: space-between;
-
-}
-.shop .photo ul:after{
-  content:"";
-  display:block;
-  width: 30%;
-  height:0;
 }
 
-.shop .photo li{
-  position: relative;
-  width: 30%;
-  margin-bottom: 15px;
+.shop .photo_list .photo{
+  width: calc(25% - 6px);
+  margin-top: 5px;
+  margin-right: 5px;
 }
-.shop .photo li:before{
-  content: "";
-  display: block;
-  padding-top: 100%;
+
+
+@media (max-width: 767px) {
+  .shop .photo_list .photo{
+    width: calc(33.3333333% - 6px);
+  }
 }
-.shop .photo img{
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  margin: auto;
-  object-fit: cover;
+
+.shop .photo_list img{
+  max-width: 100%;
 }
 
 
@@ -3181,10 +3170,10 @@ select::-ms-expand {
 }
 .modal__content .btn{
   height: 40px;
-  width: 70%;
+  width: 100%;
   padding:0;
   /*display: inline-block;*/
-  background-color: #c55e5e;;
+  background-color: #4c4c4c;;
   border: none;
   color: #fff;
   text-align: center;
@@ -3195,7 +3184,38 @@ select::-ms-expand {
 }
 
 .modal__content .closes{
-  width: 29%;
+  width: 100%;
   background-color: #fff;
   color: #737373;
+}
+
+  .modal__content canvas{
+    max-width: 600px;
+    max-height: 600px;
+  }
+
+
+@media (max-width: 767px)  {
+  .modal__content canvas{
+    max-width: 270px;
+    max-height: 300px;
+  }
+}
+
+.thumbs {
+  width: 100%;
+  max-width: 150px;
+  position: relative;
+}
+.thumbs::before {
+  content: "";
+  display: block;
+  padding-top: 100%;
+}
+.thumbs img {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  object-fit: cover;
 }

@@ -3,22 +3,12 @@
     <article class="contain">
 		<div class="contain_inner bg-white">
 			<?= $this->element('shop_header', ["type" => "photo"]); ?>
-			<div class="panel panel-default text-center">
-				<div class="panel-body file">
-					<label>お店の写真を投稿
-					<?= $this->Form->control('field', ['type' => 'file' , 'name' => 'upload_image' , 'id' =>'upload_image','label'=>false]); ?>
-					</label>
-					<div id="uploaded_image"></div>
-				</div>
-			</div>
-			<div class="photo mt-5 mb-5">
+			<div class="photo_list mt-5 mb-5">
 
 				<?php if($shop_photos <> null): ?>
-					<ul>
 					<?php foreach ($shop_photos as $value) :?>
-						<li><?= $this->Html->image($shop_photo_dir.$value->file_name,array("class" => "img-fluid")); ?> </li>
+						<figure class="photo"><?= $this->Html->image($shop_photo_dir.$value->file_name,array("class" => "img-fluid thumbs")); ?> </figure>
 					<?php endforeach; ?>
-					</ul>
 				<?php endif; ?>
 			</div>
 		</div>

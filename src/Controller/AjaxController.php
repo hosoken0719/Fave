@@ -170,12 +170,12 @@ class AjaxController extends AppController
 						mkdir($shop_folder.'thumbnail/',0777);
 
 						//サムネイル情報をshopテーブルに書き込み
-						// $ShopTable = $this->loadModel('Shops');
-						// $shopData = $ShopTable->get($shop_id);
-						// $ShopsTable = TableRegistry::get('shops');
-						// $addData['thumbnail'] = $file_name;
-						// $shopEntity = $ShopsTable->patchEntity($shopData, $addData);
-						// $ShopsTable->save($shopEntity);
+						$ShopTable = $this->loadModel('Shops');
+						$shopData = $ShopTable->get($shop_id);
+						$ShopsTable = TableRegistry::get('shops');
+						$addData['thumbnail'] = $file_name;
+						$shopEntity = $ShopsTable->patchEntity($shopData, $addData);
+						$ShopsTable->save($shopEntity);
 
 					}
 
@@ -186,10 +186,26 @@ class AjaxController extends AppController
 
 					$baseImage = imagecreatefromjpeg($file_path);
 
+					//元のファイルサイズを取得
+					$size = getimagesize($file_path);
+
 					// サイズを変更してサムネイルを保存（高さはインスタの画像保存サイズを参考にしているため変更しないこと。横は可変でも問題なし）
-					$this->resize($baseImage , $shop_folder , $file_name,1440,1080,'large_');
-					$this->resize($baseImage ,$shop_folder,$file_name,427,320,'medium_');
-					$this->resize($baseImage ,$shop_folder,$file_name,200,150,'thumbnail_');
+					$this->resize($baseImage , $shop_folder , $file_name,$size[0],$size[1],'large_');
+
+
+					//横長の場合
+					if($size[0] > $size[1] ){
+						$ratio = 320 / $size[1];
+						$this->resize($baseImage ,$shop_folder,$file_name,$size[0]*$ratio,320,'midium_');
+						$ratio = 150 / $size[1];
+						$this->resize($baseImage ,$shop_folder,$file_name,$size[0]*$ratio,150,'small_');
+					//縦長の場合
+					}else{
+						$ratio = 320 / $size[0];
+						$this->resize($baseImage ,$shop_folder,$file_name,320,$size[1]*$ratio,'midium_');
+						$ratio = 150 / $size[0];
+						$this->resize($baseImage ,$shop_folder,$file_name,150,$size[1]*$ratio,'small_');
+					}
 
 					//メモリの開放
 					imagedestroy($baseImage);
