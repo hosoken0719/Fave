@@ -45,8 +45,7 @@ $(function() {
           var image_aspect = image.width/image.height;
           canvas_width = SQUARE_SIZE;
           canvas_height = SQUARE_SIZE　* image_aspect;
-          difference_width = 0;
-          difference_height = (image.width - image.height) * image_aspect / 2;
+          difference_height = (image.width - image.height) / 2;
 
           //canvasの縦横サイズを指定
           var canvas = $('#canvas')
@@ -62,8 +61,7 @@ $(function() {
           var image_aspect = image.width/image.height;
           canvas_width = SQUARE_SIZE * image_aspect;
           canvas_height = SQUARE_SIZE;
-          difference_width = (image.width - image.height) * image_aspect / 2;
-          difference_height = 0;
+          difference_width = (image.width - image.height) / 2;
 
           //canvasの縦横サイズを指定
           var canvas = $('#canvas')
@@ -77,23 +75,19 @@ $(function() {
 
 
         switch(exif){
-          case 1:
-
-            ctx.drawImage(image, difference_width,difference_height,image.width,image.height,0, 0, draw_width, draw_height); //横長OKパターン
-            break;
           case 2:
             ctx.transform(-1, 0, 0, 1, canvas_width, 0);
-            ctx.drawImage(image, difference_width,difference_height,image.width,image.height,0, 0, draw_width, draw_height); //横長OKパターン
+            ctx.drawImage(image, difference_width,0,image.width,image.height,0, 0, draw_width, draw_height);
           break;
 
           case 3:
             ctx.transform(-1, 0, 0, -1, canvas_width, canvas_height);
-            ctx.drawImage(image, difference_width,difference_height,image.width,image.height,0, 0, draw_width, draw_height); //横長OKパターン
+            ctx.drawImage(image, -difference_width,0,image.width,image.height,0, 0, draw_width, draw_height);
           break;
 
           case 4:
             ctx.transform(1, 0, 0, -1, 0, canvas_height);
-            ctx.drawImage(image, difference_width,difference_height,image.width,image.height,0, 0, draw_width, draw_height); //横長OKパターン
+            ctx.drawImage(image, difference_width,0,image.width,image.height,0, 0, draw_width, draw_height);
           break;
 
           case 5:
@@ -101,7 +95,7 @@ $(function() {
             ctx.rotate((90 * Math.PI) / 180);
             draw_width = canvas_height;
             draw_height = canvas_width;
-            ctx.drawImage(image, difference_height,difference_width,image.height,image.width,0,0,draw_height,draw_width);
+            ctx.drawImage(image, difference_height,0,image.height,image.width,0,0,draw_height,draw_width);
           break;
 
           case 6:
@@ -109,7 +103,7 @@ $(function() {
             ctx.rotate((90 * Math.PI) / 180);
             draw_width = canvas_height;
             draw_height = canvas_width;
-            ctx.drawImage(image, difference_height/2,difference_width,image.height,image.width,0,0,draw_height,draw_width);
+            ctx.drawImage(image, difference_height,0,image.height,image.width,0,0,draw_height,draw_width);
           break;
 
           case 7:
@@ -117,7 +111,7 @@ $(function() {
             ctx.rotate((-90 * Math.PI) / 180);
             draw_width = canvas_height;
             draw_height = canvas_width;
-            ctx.drawImage(image, difference_height,difference_width,image.height,image.width,0,0,draw_height,draw_width);
+            ctx.drawImage(image, difference_height,0,image.height,image.width,0,0,draw_height,draw_width);
           break;
 
           case 8:
@@ -125,10 +119,11 @@ $(function() {
             ctx.rotate((-90 * Math.PI) / 180);
             draw_width = canvas_height;
             draw_height = canvas_width;
-            ctx.drawImage(image, difference_width,difference_height/2,image.width,image.height,0, 0, draw_width, draw_height); //横長OKパターン
+            ctx.drawImage(image, -difference_height,0,image.width,image.height,0, 0, draw_width, draw_height); //横長OKパターン
           break;
 
           default:
+            ctx.drawImage(image, difference_width,0,image.width,image.height,0, 0, draw_width, draw_height);
           break;
 
         }
