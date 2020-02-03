@@ -1,3 +1,4 @@
+<?php ?>
 <div class="contents shop">
     <article class="contain">
 		<div class="contain_inner bg-white">
@@ -11,7 +12,7 @@
 <!-- サムネイル表示領域 -->
 				<?php if($shop_photos <> null): ?>
 					<?php foreach ($shop_photos as $value) :?>
-						<figure class="photo"><?= $this->Html->image($shop_photo_dir.$value->file_name,array("class" => "img-fluid thumbs")); ?> </figure>
+						<figure class="thumbnail"><div class="inner"><?= $this->Html->image($shop_photo_dir.$value->file_name,array("class" => "")); ?> </div></figure>
 					<?php endforeach; ?>
 				<?php endif; ?>
                 <?php //elseif($instagram_photos_count > 0): ?>
@@ -118,7 +119,4 @@
 	</article>
 </div>
 <div class="loading hide"></div>
-
-
-
 

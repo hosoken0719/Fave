@@ -138,105 +138,143 @@ class AjaxController extends AppController
 }
 
 //ショップ画像をフォルダに保存する
-    public function shopimage(){
+    public function shopphoto(){
 
 		if(!$this->request->is('ajax')) {
 			throw new BadRequestException();
 		}
 
 		$this->autoRender = false;
-			//画像ファイルを取得
-			$upload_file_path = $this->request->getData('file.tmp_name');
 
+		//画像ファイルを取得
+		$upload_file_path = $this->request->getData('file.tmp_name');
 
-			//フォーマットチェック_
-			$import_data = $this->checkFormat($upload_file_path);
+		//フォーマットチェック_
+		$import_data = $this->checkFormat($upload_file_path);
 
-				//jpegだった場合、処理を開始
-				if($import_data === 2){
+		//jpegだった場合、処理を開始
+		if($import_data === 2){
 
-					//shopIDを取得
-					$shop_id = $this->request->getData('id');
+			//shopIDを取得
+			$shop_id = $this->request->getData('id');
 
-					//ファイル名の設定
-					$file_name = $shop_id.time().".jpg";
+			//ファイル名の設定
+			$file_name = $shop_id.time().".jpg";
 
-					//正式な保存フォルダのパスを設定
-					$shop_folder = PHOTO_UPLOADDIR.'shop_photos/'.$shop_id.'/';
+			//正式な保存フォルダのパスを設定
+			$shop_folder = PHOTO_UPLOADDIR.'shop_photos/'.$shop_id.'/';
 
-					//ショップのディレクトリ有無を確認して、無ければ新規作成。併せてサムネイルもDBに登録
-					if(!file_exists($shop_folder)){
-						mkdir($shop_folder,0777);
-						mkdir($shop_folder.'thumbnail/',0777);
+			//ショップのディレクトリ有無を確認して、無ければ新規作成。併せてサムネイルもDBに登録
+			if(!file_exists($shop_folder)){
+				mkdir($shop_folder,0777);
+				mkdir($shop_folder.'thumbnail/',0777);
 
-						//サムネイル情報をshopテーブルに書き込み
-						$ShopTable = $this->loadModel('Shops');
-						$shopData = $ShopTable->get($shop_id);
-						$ShopsTable = TableRegistry::get('shops');
-						$addData['thumbnail'] = $file_name;
-						$shopEntity = $ShopsTable->patchEntity($shopData, $addData);
-						$ShopsTable->save($shopEntity);
+				//サムネイル情報をshopテーブルに書き込み
+				$ShopTable = $this->loadModel('Shops');
+				$shopData = $ShopTable->get($shop_id);
+				$ShopsTable = TableRegistry::get('shops');
+				$addData['thumbnail'] = $file_name;
+				$shopEntity = $ShopsTable->patchEntity($shopData, $addData);
+				$ShopsTable->save($shopEntity);
 
-					}
+			}
 
-					$file_path = $shop_folder.$file_name;
+			$file_path = $shop_folder.$file_name;
 
-					//オリジナルファイルの移動
-					copy($upload_file_path , $file_path);
+			//オリジナルファイルの移動
+			copy($upload_file_path , $file_path);
 
-					$baseImage = imagecreatefromjpeg($file_path);
+			$baseImage = imagecreatefromjpeg($file_path);
 
-					//元のファイルサイズを取得
-					$size = getimagesize($file_path);
+			//元のファイルサイズを取得
+			$size = getimagesize($file_path);
 
-					// サイズを変更してサムネイルを保存（高さはインスタの画像保存サイズを参考にしているため変更しないこと。横は可変でも問題なし）
-					$this->resize($baseImage , $shop_folder , $file_name,$size[0],$size[1],'large_');
+			// サイズを変更してサムネイルを保存（高さはインスタの画像保存サイズを参考にしているため変更しないこと。横は可変でも問題なし）
+			$this->resize($baseImage , $shop_folder , $file_name,$size[0],$size[1],'large_');
 
+			//横長の場合
+			if($size[0] > $size[1] ){
+				$ratio = 320 / $size[1];
+				$this->resize($baseImage ,$shop_folder,$file_name,$size[0]*$ratio,320,'midium_');
+				$ratio = 150 / $size[1];
+				$this->resize($baseImage ,$shop_folder,$file_name,$size[0]*$ratio,150,'small_');
+			//縦長の場合
+			}else{
+				$ratio = 320 / $size[0];
+				$this->resize($baseImage ,$shop_folder,$file_name,320,$size[1]*$ratio,'midium_');
+				$ratio = 150 / $size[0];
+				$this->resize($baseImage ,$shop_folder,$file_name,150,$size[1]*$ratio,'small_');
+			}
 
-					//横長の場合
-					if($size[0] > $size[1] ){
-						$ratio = 320 / $size[1];
-						$this->resize($baseImage ,$shop_folder,$file_name,$size[0]*$ratio,320,'midium_');
-						$ratio = 150 / $size[1];
-						$this->resize($baseImage ,$shop_folder,$file_name,$size[0]*$ratio,150,'small_');
-					//縦長の場合
-					}else{
-						$ratio = 320 / $size[0];
-						$this->resize($baseImage ,$shop_folder,$file_name,320,$size[1]*$ratio,'midium_');
-						$ratio = 150 / $size[0];
-						$this->resize($baseImage ,$shop_folder,$file_name,150,$size[1]*$ratio,'small_');
-					}
+			//メモリの開放
+			imagedestroy($baseImage);
 
-					//メモリの開放
-					imagedestroy($baseImage);
+			//ファイル情報をDBに書き込み
+			$PhotosTable = TableRegistry::get('shop_photos');
+	    	$photo = $PhotosTable->newEntity();
+	        $photo->user_id =  $this->Auth->user('id');
+	        $photo->shop_id = $shop_id;
+	        $photo->file_name = $file_name;
+	        $photo->created = date("Y-m-d H:i:s", strtotime('+9hour'));
+	        $PhotosTable->save($photo);
 
-					//ファイル情報をDBに書き込み
-	 				$PhotosTable = TableRegistry::get('shop_photos');
-			    	$photo = $PhotosTable->newEntity();
-			        $photo->user_id =  $this->Auth->user('id');
-			        $photo->shop_id = $shop_id;
-			        $photo->file_name = $file_name;
-			        $photo->created = date("Y-m-d H:i:s", strtotime('+9hour'));
-			        $PhotosTable->save($photo);
-
-			    }else{
-			    	echo "error";
-			    }
-		// }
-	return;
+	    }
+		return;
     }
 
     //アバターの登録
-    public function avatar(){
-		if ($this->request->is('ajax')) {
-			$data = $this->decode($this->request->getData("image"));
-			$imagename = $this->request->getData("id").'.jpg';
-			$path = PHOTO_UPLOADDIR.'/user_photos/';
-			file_put_contents($path.$imagename,$data);
-			$this->resize($path,$imagename,800,800,'full_');
-			$this->resize($path,$imagename,300,300,'max_');
-			$this->resize($path,$imagename,150,150,'middle_');
-			$this->resize($path,$imagename,75,75,'min_');
+    public function userphoto(){
+		if(!$this->request->is('ajax')) {
+			throw new BadRequestException();
+		}
+
+		$this->autoRender = false;
+
+		//画像ファイルを取得
+		$upload_file_path = $this->request->getData('file.tmp_name');
+
+		//フォーマットチェック_
+		$import_data = $this->checkFormat($upload_file_path);
+
+		//jpegだった場合、処理を開始
+		if($import_data === 2){
+
+			//userIDを取得
+			$user_id = $this->request->getData('id');
+			$file_name = $this->request->getData("id").'.jpg';
+
+
+			//保存フォルダのパスを設定
+			$user_folder = PHOTO_UPLOADDIR.'user_photos/';
+
+			$file_path = $user_folder.$file_name;
+
+			//オリジナルファイルの移動
+			copy($upload_file_path , $file_path);
+
+			$baseImage = imagecreatefromjpeg($upload_file_path);
+
+			//元のファイルサイズを取得(500*500)
+			$size = getimagesize($file_path);
+			// サイズを変更してサムネイルを保存（高さはインスタの画像保存サイズを参考にしているため変更しないこと。横は可変でも問題なし）
+			$this->resize($baseImage, $user_folder, $file_name, 500, 500, 'large_');
+			$this->resize($baseImage, $user_folder, $file_name, 320, 320, 'midium_');
+			$this->resize($baseImage, $user_folder, $file_name, 160, 160, 'small_');
+
+			//メモリの開放
+			imagedestroy($baseImage);
+
+
+
+
+			// $data = $this->decode($this->request->getData("image"));
+			// $imagename = $this->request->getData("id").'.jpg';
+			// $path = PHOTO_UPLOADDIR.'/user_photos/';
+			// file_put_contents($path.$imagename,$data);
+			// $this->resize($path,$imagename,800,800,'full_');
+			// $this->resize($path,$imagename,300,300,'max_');
+			// $this->resize($path,$imagename,150,150,'middle_');
+			// $this->resize($path,$imagename,75,75,'min_');
 		}
     }
 

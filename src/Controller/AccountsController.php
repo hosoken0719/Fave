@@ -43,17 +43,7 @@ class AccountsController extends AppController{
 
 		$avatar_path = $this->UserComp->getAvatar($userData->id);
 		$this->set('avatar',$avatar_path);
-    	// if(file_exists(PHOTO_UPLOADDIR.'/user_photos/'.$userData->id.'.png')){
-     //    	$this->set('avatar','/img/user_photos/thumbnail/max_'.$userData->id.'.png');
-     //    }else{
-     //    	$UsersTable = TableRegistry::get('Users');
-     //    	$avatar = $UsersTable->find()->contain(['social_accounts'])->where(['Users.id' => $this->Auth->user('id')])->select(['avatars' => 'social_accounts.avatar'])->first();
-     //    	if(Empty($avatar->avatars)){
-	    //     	$this->set('avatar',null);
-     //    	}else{
-     //    		$this->set('avatar',$avatar->avatars);
-     //    	}
-     //    }
+
 
         if (!$this->request->is(['patch', 'post', 'put'])) {
             return;

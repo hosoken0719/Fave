@@ -38,70 +38,78 @@
 
 	<div class="search_result">
 		<article class="contain">
-		<div class="contain_inner bg-white">
-			<div class="element_wrap">
+			<div class="contain_inner bg-white">
+				<div class="element_wrap">
 
-				<?= $this->Form->create('Searches',['type' => 'get','url' => ['action' => 'index'],'inputDefaults'=>['label'=>false,'div'=>false],'templates' => $template]);?>
-				<div class="input_wrap">
-					<div class="element">
-					<?php
-						//ショップタイプ
-						echo $this->Form->control('shoptype', [
-							'options' => $typename,
-						    'empty' => '選択してください',
-							'label' => 'ショップタイプ',
-							'default' => $shoptype
-						]);
-
-						?>
-					</div>
-					<div class="element ">
+					<?= $this->Form->create('Searches',['type' => 'get','url' => ['action' => 'index'],'inputDefaults'=>['label'=>false,'div'=>false],'templates' => $template]);?>
+					<div class="input_wrap">
+						<div class="element">
 						<?php
-						//エリア
-						echo $this->Form->control('area' , [
-							'maxlength' => false,
-							'placeholder' => '例)名古屋市',
-							'label' => '住所',
-							'default' => $area
-						]);
-						?>
-					</div>
-				</div>
-				<div class="button_wrap">
-					<div class="element">
-						<?php
-							echo $this->Form->button('検索',['class'=>'search_btn']);
-						?>
-					</div>
-				</div>
-				<?= $this->Form->end(); ?>
-			</div>
-			<div class="switch">
-				<ul class="display_tab clearfix">
-					<li class="active">リスト表示</li>
-					<li>地図表示</li>
-				</ul>
-			</div>
+							//ショップタイプ
+							echo $this->Form->control('shoptype', [
+								'options' => $typename,
+							    'empty' => '選択してください',
+								'label' => 'ショップタイプ',
+								'default' => $shoptype
+							]);
 
-			<hr />
-			<div class="result">
-				<ul class="show_result">
-					<li>
-						<div class="shop_flame">
-							<?= $this->element('shop_list',['Query' => $shopDatas,'follower_user'=>$follower_user]); ?>
+							?>
 						</div>
-					</li>
-				</ul>
-				<ul>
-					<li>
-						<div id="googlemap">
+						<div class="element ">
+							<?php
+							//エリア
+							echo $this->Form->control('area' , [
+								'maxlength' => false,
+								'placeholder' => '例)名古屋市',
+								'label' => '住所',
+								'default' => $area
+							]);
+							?>
 						</div>
-					</li>
-				</ul>
+					</div>
+					<div class="button_wrap">
+						<div class="element">
+							<?php
+								echo $this->Form->button('検索',['class'=>'search_btn']);
+							?>
+						</div>
+					</div>
+					<?= $this->Form->end(); ?>
+				</div>
+				<div class="switch">
+					<ul class="display_tab clearfix">
+						<li class="active">リスト表示</li>
+						<li>地図表示</li>
+					</ul>
+				</div>
+
+				<hr />
+				<div class="result">
+					<ul class="show_result">
+						<li>
+							<div class="shop_flame">
+								<?= $this->element('shop_list',['Query' => $shopDatas,'follower_user'=>$follower_user]); ?>
+							</div>
+						</li>
+					</ul>
+					<ul>
+						<li>
+							<div id="googlemap">
+							</div>
+						</li>
+					</ul>
+				</div>
 			</div>
+		<div class="paginator">
+			<ul class="pagination">
+				<?= $this->Paginator->first('<< ') ?>
+				<?= $this->Paginator->prev('<') ?>
+				<?= $this->Paginator->numbers(['modulus' => 6]) ?>
+				<?= $this->Paginator->next('>') ?>
+			</ul>
 		</div>
-	</div>
 		</article>
+	</div>
 </div>
 
 <?php endif;?>

@@ -8,16 +8,20 @@ class SearchesController extends AppController{
 
 	public $components = ['ShopRegist','Businesshour'];
 
+
+	public $paginate = ['limit' => 20];
+
     public function initialize()
     {
 	    parent::initialize();
 	    $this->loadComponent('FollowComp'); // コンポーネントの読み込み
 	    $this->loadComponent('ShopComp'); // コンポーネントの読み込み
-	    $this->set('header_link','search');
+	    // $this->set('header_link','search');
       	$this->Auth->allow();
     }
 
 	public function index(){
+
 
 	    $ShopTable = TableRegistry::get('shops');
 	    $ShoptypeTable = TableRegistry::get('shoptypes');
@@ -35,24 +39,25 @@ class SearchesController extends AppController{
 		$result_flg = 0; //0は検索窓を表示
 
 	//Queryの作成
-		$shopDatas = $ShopTable->find('all')
-		->where(['shops.status' => '1'])
-		->contain(['shoptypes','prefectures','follows','shop_photos'])
-		->group(['shops.id'])
-		->select([
-        	'shopname' => 'shops.shopname',
-        	'branch' => 'shops.branch',
-        	'user_id' => 'shops.user_id',
-        	'shop_id' => 'shops.id',
-        	'pref' => 'prefectures.name',
-        	'address' => 'shops.address',
-        	'lat' => 'shops.lat',
-        	'lng' => 'shops.lng',
-        	'typename' => 'shoptypes.typename',
-        	'thumbnail' => 'shops.thumbnail',
-			]
-		)
-        ->order(['avg_followed' => 'DESC']); //フォロー平均順
+		$shopDatas =
+			$ShopTable->find('all')
+			->where(['shops.status' => '1'])
+			->contain(['shoptypes','prefectures','follows','shop_photos'])
+			->group(['shops.id'])
+			->select([
+	        	'shopname' => 'shops.shopname',
+	        	'branch' => 'shops.branch',
+	        	'user_id' => 'shops.user_id',
+	        	'shop_id' => 'shops.id',
+	        	'pref' => 'prefectures.name',
+	        	'address' => 'shops.address',
+	        	'lat' => 'shops.lat',
+	        	'lng' => 'shops.lng',
+	        	'typename' => 'shoptypes.typename',
+	        	'thumbnail' => 'shops.thumbnail',
+				]
+			)
+			->order(['avg_followed' => 'DESC']);
 
 		//フォロー平均の条件設定
 	    //ログインユーザがフォローしているユーザーを取得
@@ -94,26 +99,28 @@ class SearchesController extends AppController{
         $shopDatas = $this->ShopComp->rating_avg($shopDatas,$LoginUserFollow['follower_user']);
 		$this->set(compact('shoptype','area'));
 
+		//ページネーション
+		$shopDatas = $this->paginate($shopDatas);
+
+
 	//googlemap関連の処理
 		$map_shops = array();
 		$followed = array();
 		foreach($shopDatas as $shopData): //follow/followeにはショップ以外が含まれているが、地図には不要のため削除する
-			// if(!is_null($shopData->shopname)){
 
-				$locate = array(
-					'lat' => $shopData->lat,
-					'lng' => $shopData->lng,
-					'shopname' => $shopData->shopname,
-					'shoptype' => $shopData->typename,
-					'shop_id' => $shopData->shop_id,
-					'shopaddress' => $shopData->pref.$shopData->city.$shopData->ward,
-				);
-				array_push($map_shops,$locate);
+			$locate = array(
+				'lat' => $shopData->lat,
+				'lng' => $shopData->lng,
+				'shopname' => $shopData->shopname,
+				'shoptype' => $shopData->typename,
+				'shop_id' => $shopData->shop_id,
+				'shopaddress' => $shopData->pref.$shopData->city.$shopData->ward,
+			);
+			array_push($map_shops,$locate);
 
-				$checkRating = ['follow'=>$this->Auth->user('id'),'follower_shop'=>$shopData->shop_id];
-				$rating[$shopData->shop_id] = $this->FollowComp->isShopFollow($checkRating);
+			$checkRating = ['follow'=>$this->Auth->user('id'),'follower_shop'=>$shopData->shop_id];
+			$rating[$shopData->shop_id] = $this->FollowComp->isShopFollow($checkRating);
 
-			// }
 		endforeach;
 
 	//検索結果が1件以上あった場合は地図の設定
@@ -122,13 +129,14 @@ class SearchesController extends AppController{
 			$map_default_center = $map_shops[0]['lat'].",".$map_shops[0]['lng'];
 
 		//ズームの値を設定
-			$map_zoom = 11;
+			$map_zoom = 12;
 			$locate_json = json_encode($map_shops);
 
 		//スマホの2本指操作を解除
 			$gestureHandling = "gestureHandling: 'greedy'";
 
 		}
+
 		$this->set(compact('rating','map_zoom','gestureHandling','map_default_center','locate_json','followed','followers','shopDatas','result_flg'));
 
 
@@ -153,6 +161,9 @@ class SearchesController extends AppController{
 	 	];
 
 		$this->set(compact('template'));
+
+
+
 	}
 
 }

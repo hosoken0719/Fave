@@ -4,9 +4,9 @@
 		<?php
 			if($shopData->thumbnail):
 				echo $this->Html->link(
-                $this->Html->image('shop_photos/'.$shopData->shop_id.'/thumbnail/middium_'.$shopData->thumbnail,array("class" => "")),
-                array('controller' => 'shops', 'action' => '/'. $shopData->shop_id),
-                array('escape' => false));
+                $this->Html->image('shop_photos/'.$shopData->shop_id.'/thumbnail/middle'.$shopData->thumbnail,["class" => ""]),
+                ['controller' => 'shops', 'action' => '/'. $shopData->shop_id],
+                ['escape' => false]);
 
 			else:
 				echo $this->Html->link(
@@ -22,7 +22,10 @@
 				<?= $shopData->typename; ?></p>
 			</div>
 			<h1>
-				<?= $shopData->shopname; ?>
+				<?= $this->Html->link($shopData->shopname,
+                ['controller' => 'shops', 'action' => '/'. $shopData->shop_id],
+                ['escape' => false]); ?>
+
 			</h1>
 			<p>
 				<?= $shopData->pref.$shopData->address; ?>

@@ -1,11 +1,7 @@
+<?php ?>
+<script type="text/javascript">var id = "<?= $shopData->shop_id ?>";</script>
+<?= $this->Html->script(['upload_shop_photo.js']); ?>
 
-<script type="text/javascript">var id = "<?= $shopData->shop_id ?>";
-
-</script>
-
-<?php echo $this->Html->script(['import_image.js']); ?>
-<?php echo $this->Html->script(['upload_image.js']); ?>
-<div class="uploaded_image"></div>
 			<div class="shop_header mb-3 text-left">
 				<div class="information">
 					<div class="name">
@@ -91,22 +87,20 @@
 				</div>
 			</div>
 
+			<!-- 写真投稿時のモーダルウィンドウ -->
 			<div class="modal js-modal">
 		        <div class="modal__bg js-modal-close"></div>
 		        <div class="modal__content">
 					<!-- アップロード開始ボタン -->
-<!-- サムネイル表示領域 -->
-<canvas id="canvas" width="0" height="0"></canvas>
+					<!-- サムネイル表示領域 -->
+					<canvas id="canvas" width="0" height="0"></canvas>
 
-<!-- アップロード開始ボタン -->
-<button class="btn" id="upload">投稿</button>
-<button class="btn closes js-modal-close">閉じる</button>
+					<!-- アップロード開始ボタン -->
+					<button class="btn" id="upload">投稿</button>
+					<button class="btn closes js-modal-close">閉じる</button>
 		        </div><!--modal__inner-->
 		    </div><!--modal-->
 
-
-<?php //echo $this->Html->script(['upload_image.js']); ?>
-	
 
 			<?php endif; ?>
 

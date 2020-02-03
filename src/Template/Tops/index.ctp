@@ -52,9 +52,9 @@
                 <p>エリア</p><h2>愛知</h2>
             </div>
             <ul>
-                <?php for($i=0 ; $i<4 ; $i++): ?>
-                <li><?php echo $this->element('shop_list2'); ?></li>
-                <? endfor; ?>
+                <?php foreach ($shopDatas as $shopData): ?>
+                    <li><?php echo $this->element('shop_list2',['shopData'=>$shopData]); ?></li>
+                <? endforeach; ?>
             </ul>
         </div>
     </section>
@@ -65,9 +65,9 @@
                 <p>ショップタイプ</p><h2>ファッション / お菓子 / インテリア / 雑貨</h2>
             </div>
             <ul>
-                <?php for($i=0 ; $i<4 ; $i++): ?>
-                <li><?php echo $this->element('shop_list2'); ?></li>
-                <? endfor; ?>
+                <?php foreach ($shopDatas as $shopData): ?>
+                    <li><?php echo $this->element('shop_list2',['shopData'=>$shopData]); ?></li>
+                <? endforeach; ?>
             </ul>
         </div>
     </section>
@@ -78,9 +78,9 @@
                 <p>エリア</p><h2>岐阜</h2>
             </div>
             <ul>
-                <?php for($i=0 ; $i<4 ; $i++): ?>
-                <li><?php echo $this->element('shop_list2'); ?></li>
-                <? endfor; ?>
+                <?php foreach ($shopDatas as $shopData): ?>
+                    <li><?php echo $this->element('shop_list2',['shopData'=>$shopData]); ?></li>
+                <? endforeach; ?>
             </ul>
         </div>
     </section>
@@ -91,9 +91,9 @@
                 <p>ショップタイプ</p><h2>ファッション / お菓子 / インテリア / 雑貨</h2>
             </div>
             <ul>
-                <?php for($i=0 ; $i<4 ; $i++): ?>
-                <li><?php echo $this->element('shop_list2'); ?></li>
-                <? endfor; ?>
+                <?php foreach ($shopDatas as $shopData): ?>
+                    <li><?php echo $this->element('shop_list2',['shopData'=>$shopData]); ?></li>
+                <? endforeach; ?>
             </ul>
         </div>
     </section>
@@ -103,9 +103,9 @@
                 <p>エリア</p><h2>三重</h2>
             </div>
             <ul>
-                <?php for($i=0 ; $i<4 ; $i++): ?>
-                <li><?php echo $this->element('shop_list2'); ?></li>
-                <? endfor; ?>
+                <?php foreach ($shopDatas as $shopData): ?>
+                    <li><?php echo $this->element('shop_list2',['shopData'=>$shopData]); ?></li>
+                <? endforeach; ?>
             </ul>
         </div>
     </section>
@@ -115,9 +115,9 @@
                 <p>ショップタイプ</p><h2>ファッション / お菓子 / インテリア / 雑貨</h2>
             </div>
             <ul>
-                <?php for($i=0 ; $i<4 ; $i++): ?>
-                <li><?php echo $this->element('shop_list2'); ?></li>
-                <? endfor; ?>
+                <?php foreach ($shopDatas as $shopData): ?>
+                    <li><?php echo $this->element('shop_list2',['shopData'=>$shopData]); ?></li>
+                <? endforeach; ?>
             </ul>
         </div>
     </section>

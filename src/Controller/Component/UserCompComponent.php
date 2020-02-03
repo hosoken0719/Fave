@@ -11,8 +11,8 @@ use Cake\ORM\TableRegistry;
 class UserCompComponent extends Component{
 
 	public function getAvatar($user_id){
-             if(file_exists(PHOTO_UPLOADDIR.'/user_photos/'.$user_id.'.png')){
-                     $avatar = '/img/user_photos/thumbnail/max_'.$user_id.'.png';
+             if(file_exists(PHOTO_UPLOADDIR.'/user_photos/thumbnail/large_'.$user_id.'.jpg')){
+                     $avatar = '/img/user_photos/thumbnail/large_'.$user_id.'.jpg';
               }else{
                   $UsersTable = TableRegistry::get('Users');
                   $query = $UsersTable->find()->contain(['social_accounts'])->where(['Users.id' => $user_id])->select(['avatars' => 'social_accounts.avatar'])->first();

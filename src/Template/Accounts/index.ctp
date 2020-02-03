@@ -1,4 +1,6 @@
-<?php echo $this->Html->script(['croppie.min.js','croppie_option.js'],['block' => true]) ?>
+<?php ?>
+<script type="text/javascript">var id = "<?= $userData->id ?>";</script>
+<?= $this->Html->script(['upload_user_photo.js']); ?>
 
 
 <div class="contents form account">
@@ -44,24 +46,20 @@
 		</div>
 	</article>
 </div>
-<div id="uploadimageModal" class="modal" role="dialog">
-	<div class="modal-dialog">
-		<div class="modal-content">
 
-			<div class="modal-body">
-				<div class="row">
-						<div id="image-demo" style="width:100%; margin-top:30px";></div>
-				</div>
-				<div class="button form">
-					<button class="btn vanilla-rotate">回転</button>
-					<?= $this->Form->create(); ?>
-					<?= $this->Form->button('登録', array('type' => 'button','class' => 'btn crop_image')); ?>
-					<?= $this->Form->end(); ?>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+			<!-- 写真投稿時のモーダルウィンドウ -->
+			<div class="modal js-modal">
+		        <div class="modal__bg js-modal-close"></div>
+		        <div class="modal__content">
+					<!-- アップロード開始ボタン -->
+					<!-- サムネイル表示領域 -->
+					<canvas id="canvas" width="0" height="0"></canvas>
+
+					<!-- アップロード開始ボタン -->
+					<button class="btn" id="upload">投稿</button>
+					<button class="btn closes js-modal-close">閉じる</button>
+		        </div><!--modal__inner-->
+		    </div><!--modal-->
 
 <script type="text/javascript">
 	var src = '<?= $avatar ?>';

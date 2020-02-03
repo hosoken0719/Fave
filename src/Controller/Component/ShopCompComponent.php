@@ -89,23 +89,6 @@ class ShopCompComponent extends Component
 		return $result;
 	}
 
-    // public function rating_avg($shop_id,$follower_user=null){
-
-    //     $FollowsTable = TableRegistry::get('follows');
-
-    //     $query = $FollowsTable->find()->where(['follower_shop'=>$shop_id]);
-    //     if($follower_user<>null){
-    //     	$query = $query->where(['follow IN'=>$follower_user]);
-    //     }
-    //     $result = $query->select(['avg' => $query->func()->avg('rating')])->first();
-    //     if($result->avg > 0){
-    //     	return round($result->avg,1);
-    //     }else{
-    //     	return 0;
-    //     }
-
-    // }
-
     public function rating_avg($query,$follower_user){
 		$avgFolloweCase = $query->newExpr()->addCase(
 		    $query->newExpr()->add(['follows.follow IN'=>$follower_user]),
@@ -118,7 +101,6 @@ class ShopCompComponent extends Component
 		    1,
 		    'integer'
 		);
-
  	    // $query = $query->group(['shops.id']);
 		$query = $query->select([
 		'avg_followed' => $query->func()->avg($avgFolloweCase), //フォロー平均レート
@@ -126,7 +108,6 @@ class ShopCompComponent extends Component
 		'avg_all' => $query->func()->avg('follows.rating'), //全員平均レート
 		'cnt_all' => $query->func()->count('follows.rating') //全員人数
 		]);
-
 		return $query;
 	}
 

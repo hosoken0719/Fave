@@ -1,13 +1,11 @@
-<?php echo $this->Html->script(['croppie.min.js','croppie_option.js'],['block' => true]) ?>
 <div class="contents shop">
     <article class="contain">
 		<div class="contain_inner bg-white">
 			<?= $this->element('shop_header', ["type" => "photo"]); ?>
 			<div class="photo_list mt-5 mb-5">
-
 				<?php if($shop_photos <> null): ?>
 					<?php foreach ($shop_photos as $value) :?>
-						<figure class="photo"><?= $this->Html->image($shop_photo_dir.$value->file_name,array("class" => "img-fluid thumbs")); ?> </figure>
+						<figure class="thumbnail"><div class="inner"><?= $this->Html->image($shop_photo_dir.$value->file_name,array("class" => "")); ?> </div></figure>
 					<?php endforeach; ?>
 				<?php endif; ?>
 			</div>

@@ -33,6 +33,31 @@ class TopsController extends AppController
     // 未ログイン
     if (!$this->Auth->user()) {
 
+
+      $ShopTable = TableRegistry::get('shops');
+      $shopDatas = $ShopTable->find('all')
+      ->where([
+        'shops.status' => '1',
+      ])
+      ->contain(['shoptypes','prefectures','follows'])
+      ->group(['shops.id'])
+      ->select([
+            'shopname' => 'shops.shopname',
+            'branch' => 'shops.branch',
+            'user_id' => 'shops.user_id',
+            'shop_id' => 'shops.id',
+            'pref' => 'prefectures.name',
+            'address' => 'shops.address',
+            'lat' => 'shops.lat',
+            'lng' => 'shops.lng',
+            'typename' => 'shoptypes.typename',
+            'thumbnail' => 'shops.thumbnail',
+        ]
+      )
+      ->limit(8)
+      ->order(['shops.id'=>'DESC']);
+      $this->set(compact('shopDatas'));
+
     // ログイン済
     } else {
 

@@ -6,7 +6,7 @@
             <?php
             if(!empty($shopData->thumbnail)){
                 echo $this->Html->link(
-                $this->Html->image('shop_photos/'.$shopData->shop_id.'/thumbnail/min_'.$shopData->thumbnail,array("class" => "trimming img-fluid")),
+                $this->Html->image('shop_photos/'.$shopData->shop_id.'/thumbnail/small_'.$shopData->thumbnail,array("class" => "trimming img-fluid")),
                 array('controller' => 'shops', 'action' => '/'. $shopData->shop_id),
                 array('escape' => false));
             }else{
@@ -32,23 +32,26 @@
 
 
     <?php //ログインユーザがフォローしているユーザの平均レーティングを表示 ?>
-                <?php if($this->request->getSession()->read('Auth.User')): ?>
-                <div class="rating d-inline">
-                    <?php //フォロー済みのrating
-                    echo $this->Html->link(
-                    $this->Html->image('followed_users.svg'). $this->element('rating',['rating'=>round($shopData->avg_followed),'shop_id'=>$shopData->shop_id,'enable'=>0]),
-                        [
-                            'controller' => 'shops',
-                            'action' => '/'.$shopData->shop_id.'/favorited_follow'
-                        ],
-                        ['escape' => false]);
-                    if($shopData->cnt_followed > 0) echo number_format(round(h($shopData->avg_followed),1),1). " (".h($shopData->cnt_followed)."人)";
-                    ?>
-                </div>
-                <br />
-                <? endif; ?>
-                <div class="rating d-inline all">
                 <?php
+                if($this->request->getSession()->read('Auth.User')): ?>
+                    <div class="rating d-inline">
+                        <?php //フォロー済みのrating
+                        echo $this->Html->link(
+                        $this->Html->image('followed_users.svg'). $this->element('rating',['rating'=>round($shopData->avg_followed),'shop_id'=>$shopData->shop_id,'enable'=>0]),
+                            [
+                                'controller' => 'shops',
+                                'action' => '/'.$shopData->shop_id.'/favorited_follow'
+                            ],
+                            ['escape' => false]);
+                        if($shopData->cnt_followed > 0) echo number_format(round(h($shopData->avg_followed),1),1). " (".h($shopData->cnt_followed)."人)";
+                        ?>
+                    </div>
+                    <br />
+                <? endif; ?>
+
+                <?php //ログイン時は人アイコンを表示
+                if($this->request->getSession()->read('Auth.User')):
+                    echo "<div class='rating d-inline all'>";
                     echo $this->Html->link(
                     $this->Html->image('all_users.svg'). $this->element('rating',['rating'=>round($shopData->avg_all),'shop_id'=>$shopData->shop_id,'enable'=>0]),
                         [
@@ -56,7 +59,20 @@
                             'action' => '/'.$shopData->shop_id.'/favorited_all'
                         ],
                         ['escape' => false]);
-                    if($shopData->cnt_all > 0) echo number_format(round($shopData->avg_all,1),1)." (".h($shopData->cnt_all)."人)";
+                else: //ログインしていない時は人アイコンを非表示とハートの色を濃くする
+                    echo "<div class='rating d-inline'>";
+                    echo $this->Html->link(
+                    $this->element('rating',['rating'=>round($shopData->avg_all),'shop_id'=>$shopData->shop_id,'enable'=>0]),
+                        [
+                            'controller' => 'shops',
+                            'action' => '/'.$shopData->shop_id.'/favorited_all'
+                        ],
+                        ['escape' => false]);
+                endif;
+
+                if($shopData->cnt_all > 0):
+                    echo number_format(round($shopData->avg_all,1),1)." (".h($shopData->cnt_all)."人)";
+                endif;
                 ?>
                 </div>
         </dd>

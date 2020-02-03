@@ -45,7 +45,7 @@ class ShopsTable extends Table
            'bindingKey' => 'follower_shop',
        ]);
 
-      $this->belongsTo('shop_photos',[
+      $this->hasMany('shop_photos',[
          'joinType' => 'LEFT',
          'foreignKey' => 'id',
          'bindingKey' => 'shop_id',
